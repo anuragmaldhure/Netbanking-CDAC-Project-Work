@@ -10,7 +10,9 @@ Issue to be addressed tomorrow :
 
 2. Discuss
 
-3. Finalise users, use cases, entities, complete Dataflow diagram and start ER diagram 
+3. Other users
+
+4. Finalise users, use cases, entities, complete Dataflow diagram and start ER diagram 
 
 
 
