@@ -5,7 +5,16 @@
 
 Sunday Goals: 
 
-Draw use cases diagram + Draw use UI diagrams + ER diagram complete and normalisation
+1. Create use - case diagram using draw.io
+
+2. Create UI diagrams for all pages / functionalities
+
+3. Database design
+
+4. Normalisation
+
+5. Draw ER diagram
+
 
 Monday - Discuss with mentor and make any correction if needed in 6-7 PM only 
 
