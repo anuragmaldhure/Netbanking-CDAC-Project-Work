@@ -1,0 +1,30 @@
+
+
+- Had discussion and figured out all functionalities
+
+
+Sunday Goals: 
+
+1. Create use - case diagram using draw.io
+
+2. Create UI diagrams for all pages / functionalities
+
+3. Database design
+
+4. Normalisation
+
+5. Draw ER diagram
+
+
+Monday - Discuss with mentor and make any correction if needed in 6-7 PM only 
+
+Tuesday - Project Evaluation
+
+
+
+
+
+
+
+
+

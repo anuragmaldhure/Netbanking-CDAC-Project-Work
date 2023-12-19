@@ -1,0 +1,18 @@
+
+
+
+- Looked similar project user case diagrams and entity diagrams 
+
+
+Issue to be addressed tomorrow : 
+
+1. Current account? Or only Savings account?
+
+2. Discuss
+
+3. Other users
+
+4. Finalise users, use cases, entities, complete Dataflow diagram and start ER diagram 
+
+
+

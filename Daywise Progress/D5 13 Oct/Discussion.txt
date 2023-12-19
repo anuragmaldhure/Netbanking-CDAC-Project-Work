@@ -1,0 +1,29 @@
+
+
+- Had discussion with Rushikesh and Manthan but couldn't come to any final conclusion of use case or ER diagram
+
+- Looked similar projects but no useful or functional project found (The ones we looked were very basic)
+
+- Decided to have a meet on Saturday and Sunday for finalising 
+
+
+Goals:
+
+Saturday - Need to figure out all use cases and ER diagram complete and normalisation
+
+
+Sunday - Refine yesterday's work and complete other formalities
+
+
+Monday - Discuss with mentor and make any correction if needed in 6-7 PM only 
+
+Tuesday - Project Evaluation
+
+
+
+
+
+
+
+
+
