@@ -14,7 +14,7 @@ function DepositMoney45() {
                         <br/>
                         <br/>
                         <div style={{ justifyContent: 'center', alignItems: 'center', width:'80%'}}>
-                            <h1> ₹1000 has been successfully withdrawn from your account. Thank you for banking with us!</h1>
+                            <h1> ₹1000 has been successfully deposited in Customer Account xxxxxx32 by Employee ID xxxxxx13 </h1>
                         </div>
                         <hr/>
                         <div>
