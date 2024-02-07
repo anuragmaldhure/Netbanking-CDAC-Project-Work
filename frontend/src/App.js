@@ -4,31 +4,17 @@ import './App.css';
 import { Route, Routes } from 'react-router-dom'
 import ViewAccountBalance5 from './pages/ViewAccountBalance5'
 import WithdrawMoney6 from './pages/WithdrawMoney6'
+import WithdrawMoney7 from './pages/WithdrawMoney7'
+import WithdrawMoney8 from './pages/WithdrawMoney8'
 
 function App() {
-  // return (
-  //   <div className="App">
-  //     <header className="App-header">
-  //       <img src={logo} className="App-logo" alt="logo" />
-  //       <p>
-  //         Edit <code>src/App.js</code> and save to reload.
-  //       </p>
-  //       <a
-  //         className="App-link"
-  //         href="https://reactjs.org"
-  //         target="_blank"
-  //         rel="noopener noreferrer"
-  //       >
-  //         Learn React
-  //       </a>
-  //     </header>
-  //   </div>
-  // );
   return (
     <div className='container-fluid'>
       <Routes>
         <Route path='/' element={<ViewAccountBalance5 />} />
         <Route path='/WithdrawMoney6' element={<WithdrawMoney6 />} />
+        <Route path='/WithdrawMoney7' element={<WithdrawMoney7 />} />
+        <Route path='/WithdrawMoney8' element={<WithdrawMoney8 />} />
       </Routes>
     </div>
   )

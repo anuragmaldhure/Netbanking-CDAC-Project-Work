@@ -1,38 +1,62 @@
-// WithdrawMoney6.jsx
+import CustomerSideNavigationMenu from '../components/CustomerSideNavigationMenu'
+import CustomerTopNavigationBar from '../components/CustomerTopNavigationBar'
 
-import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const WithdrawMoney6 = () => {
-    const [isChecked, setIsChecked] = useState(false);
-    const [amount, setAmount] = useState('')
 
-    const handleToggle = () => {
-        setIsChecked(prevState => !prevState);
-};
+    return (  
+       <div>
+            <CustomerTopNavigationBar/>
+            <div style={{"display" : 'flex'}}>
+                <CustomerSideNavigationMenu />
 
+                <div style={{ display: 'block', flexDirection: 'column', width:'100%' }}>
+                    
+                    <div style={{ justifyContent: 'center', alignItems: 'center', width:'50%'}}>
+                        <div>
+                            <br/>
+                            <h2><strong>Net Balance Available : ₹ 230000</strong></h2>
+                            <br/>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group mb-3" style={{ width:'50%'}} >
+                        <span class="input-group-text">Amount</span>
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="floatingInputGroup1" placeholder="Username" />
+                            <label for="floatingInputGroup1">Enter Amount to withdraw here</label>
+                        </div>
+                    </div>
 
-    return (
-        <div>
-            <div>
-            <input
-              onChange={(e) => setAmount(e.target.value)}
-              type='text'
-              className='form-control'
-            />
+                    <div class="input-group mb-3" style={{ width:'50%'}}>
+                        <span class="input-group-text">Confirm Amount</span>
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="floatingInputGroup2" placeholder="Username" />
+                            <label for="floatingInputGroup2">Re-enter amount to withdraw here</label>
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-3" style={{ width:'50%'}}>
+                        <span class="input-group-text">Remarks</span>
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="floatingInputGroup2" placeholder="Username" />
+                            <label for="floatingInputGroup2">Enter remarks here</label>
+                        </div>
+                    </div>
+
+                    <hr/>
+                    <div style={{ textAlign: 'center' }}>
+                        <Link to="/WithdrawMoney7" className="btn btn-primary">
+                            Proceed to withdraw
+                        </Link>
+                    </div>
+
+                </div>
+
             </div>
-            <div>
-                <label className="switch" style={{ position: "relative", display: "inline-block", width: "60px", height: "34px", cursor: "pointer" }} onClick={handleToggle}>
-                    <input className="switch__input" type="checkbox" role="switch" style={{ display: "none" }} checked={isChecked} />
-                    <span className="switch__base-outer" style={{ position: "absolute", top: "0", left: "0", right: "0", bottom: "0", backgroundColor: isChecked ? "#673ab7" : "#ccc", borderRadius: "34px", transition: "background-color 0.4s" }}></span>
-                    <span className="switch__base-inner" style={{ position: "absolute", top: "4px", left: "4px", right: "4px", bottom: "4px", backgroundColor: isChecked ? "#fff" : "white", borderRadius: "50%", transition: "transform 0.4s" }}></span>
-                    <span className="switch__knob-container" style={{ position: "absolute", top: "2px", left: isChecked ? "calc(100% - 28px)" : "2px", width: "26px", height: "26px", backgroundColor: isChecked ? "#673ab7" : "white", borderRadius: "50%", boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.3)", transition: "background-color 0.4s, transform 0.4s" }}>
-                        <span className="switch__knob" style={{ position: "absolute", top: "0", left: "0", right: "0", bottom: "0", width: "22px", height: "22px", backgroundColor: "#fff", borderRadius: "50%", boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.3)", transition: "transform 0.4s, box-shadow 0.4s" }}></span>
-                    </span>
-                    <span className="switch_text" style={{ position: "absolute", top: "50%", transform: "translateY(-50%)", left: "70px", color: isChecked ? "#673ab7" : "#000" }}>Power</span>
-                </label>
-            </div>
-        </div>
+       </div> 
     );
-};
+}
 
 export default WithdrawMoney6;
