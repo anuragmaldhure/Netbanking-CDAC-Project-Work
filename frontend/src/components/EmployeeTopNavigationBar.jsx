@@ -3,7 +3,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import { Link } from 'react-router-dom';
 
-function CustomerTopNavigationBar() {
+function EmployeeTopNavigationBar() {
     return ( 
             <nav class="navbar" style={{"background-color" : '#e3f2fd', "display" : 'block'}}>
                 <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -15,22 +15,13 @@ function CustomerTopNavigationBar() {
                     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true" href=".">Welcome @Customer Name (ID : xxxxxx)</a>
+                        <a class="nav-link disabled" aria-disabled="true" href=".">Welcome Employee @Employee Name (ID : xxxxxx)</a>
                         </li>
                         <li class="nav-item">
                         {/* <a class="nav-link active" aria-current="page" href=".">Home</a> */}
-                        <Link to="/Customer/Account" class="nav-link active" aria-current="page">
+                        <Link to="/Employee/Accounts/SearchCustomer47" class="nav-link active" aria-current="page">
                                 Home
                         </Link>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href=".">Offers Available for you</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href=".">Netbanking Tutorials</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href=".">Contact Us</a>
                         </li>
                     </ul>
                     <form class="d-flex" role="search">
@@ -44,4 +35,4 @@ function CustomerTopNavigationBar() {
     );
 }
 
-export default CustomerTopNavigationBar;
+export default EmployeeTopNavigationBar;

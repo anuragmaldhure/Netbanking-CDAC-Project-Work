@@ -1,5 +1,5 @@
-import CustomerSideNavigationMenu from '../components/CustomerSideNavigationMenu'
-import CustomerTopNavigationBar from '../components/CustomerTopNavigationBar'
+import CustomerSideNavigationMenu from '../../components/CustomerSideNavigationMenu'
+import CustomerTopNavigationBar from '../../components/CustomerTopNavigationBar'
 
 import { Link } from 'react-router-dom';
 
@@ -34,11 +34,11 @@ const WithdrawMoney7 = () => {
                     <br/>
                     <hr/>
                     <div style={{ textAlign: 'center' }}>
-                        <Link to="/WithdrawMoney8" className="btn btn-primary">
+                        <Link to="/Customer/FundTransfer/WithdrawMoney8" className="btn btn-primary">
                             Withdraw
                         </Link>
                         
-                        <Link to="/WithdrawMoney6" className="btn btn-warning">
+                        <Link to="/Customer/FundTransfer/WithdrawMoney6" className="btn btn-warning">
                             Back
                         </Link>
                     </div>

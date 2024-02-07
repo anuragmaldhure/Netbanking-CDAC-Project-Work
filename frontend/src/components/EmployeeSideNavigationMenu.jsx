@@ -16,12 +16,10 @@ function CustomerSideNavigationMenu() { //ffc to generate
                     <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                         <div className="accordion-body">
                             <div className="list-group">
-                                <Link to="/Customer/Account" className="list-group-item list-group-item-action list-group-item-primary">
-                                    View Account Balance
+                                <Link to="/Employee/Accounts/SearchCustomer47" className="list-group-item list-group-item-action list-group-item-primary">
+                                    Search Customer
                                 </Link>
-                                <a href="." className="list-group-item list-group-item-action list-group-item-secondary">Account Statement</a>
-                                <a href="." className="list-group-item list-group-item-action list-group-item-success">KYC Details</a>
-                                <a href="." className="list-group-item list-group-item-action list-group-item-danger">Close Account</a>
+                                <a href="." className="list-group-item list-group-item-action list-group-item-success">Verify / Approve KYC</a>
                             </div>
                         </div>
                     </div>
@@ -36,32 +34,9 @@ function CustomerSideNavigationMenu() { //ffc to generate
                     <div id="collapseTwo" className="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                         <div className="accordion-body">
                             <div className="list-group">
-                                <a href="." className="list-group-item list-group-item-action list-group-item-primary">Transfer within bank</a>
-                                <a href="." className="list-group-item list-group-item-action list-group-item-secondary">Add Beneficiary</a>
-                                <a href="." className="list-group-item list-group-item-action list-group-item-success">View / Delete Beneficiary</a>
-                                <Link to="/Customer/FundTransfer/WithdrawMoney6" className="list-group-item list-group-item-action list-group-item-warning">
-                                    Withdraw Money
+                                <Link to="/Employee/FundTransfer/DepositMoney43" className="list-group-item list-group-item-action list-group-item-warning">
+                                    Deposit Money
                                 </Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="accordion-item">
-                    <h2 className="accordion-header" id="headingThree">
-                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            Other Services
-                        </button>
-                    </h2>
-                    <div id="collapseThree" className="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                        <div className="accordion-body">
-                            <div className="list-group">
-                                <a href="." className="list-group-item list-group-item-action list-group-item-primary">Message / Email Alerts</a>
-                                <a href="." className="list-group-item list-group-item-action list-group-item-light">Account Statement</a>
-                                <a href="." className="list-group-item list-group-item-action list-group-item-success">Change password</a>
-                                <a href="." className="list-group-item list-group-item-action list-group-item-info">Offers Available for me</a>
-                                <a href="." className="list-group-item list-group-item-action list-group-item-warning">Contact Us</a>
-                                <a href="." className="list-group-item list-group-item-action list-group-item-dark">Netbanking Tutorials</a>
                             </div>
                         </div>
                     </div>

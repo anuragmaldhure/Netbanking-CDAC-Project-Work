@@ -1,12 +1,12 @@
-import '../../node_modules/bootstrap/dist/css/bootstrap.min.css'
-import CustomerSideNavigationMenu from '../components/CustomerSideNavigationMenu'
-import CustomerTopNavigationBar from '../components/CustomerTopNavigationBar'
+import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
+import CustomerSideNavigationMenu from '../../components/CustomerSideNavigationMenu'
+import CustomerTopNavigationBar from '../../components/CustomerTopNavigationBar'
 
 import { Link } from 'react-router-dom';
 
 //import SearchForm from '../features/SearchForm';
 
-import backgroundImage from '../resources/12.avif'; // Import your image file
+import backgroundImage from '../../resources/12.avif'; // Import your image file
 
 const ViewAccountBalance5 = () =>{
 
@@ -206,7 +206,7 @@ const ViewAccountBalance5 = () =>{
               <div style={{ textAlign: 'center', backgroundColor: 'rgba(255, 255, 255, 0.5)', backdropFilter: 'blur(5px)'}}>
                 <br/>
                 {/* <button onClick={withdrawMoney} className='btn btn-warning'> */}
-                <Link to="/WithdrawMoney6" className="btn btn-warning">
+                <Link to="/Customer/FundTransfer/WithdrawMoney6" className="btn btn-warning">
                   Withdraw Money
                 </Link>
                 {/* </button> */}

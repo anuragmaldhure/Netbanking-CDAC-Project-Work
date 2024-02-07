@@ -1,5 +1,5 @@
-import CustomerSideNavigationMenu from '../components/CustomerSideNavigationMenu'
-import CustomerTopNavigationBar from '../components/CustomerTopNavigationBar'
+import CustomerSideNavigationMenu from '../../components/CustomerSideNavigationMenu'
+import CustomerTopNavigationBar from '../../components/CustomerTopNavigationBar'
 
 import { Link } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ const WithdrawMoney8 = () => {
                     <br/>
                     <br/>
                     <div style={{ justifyContent: 'center', alignItems: 'center', width:'80%'}}>
-                        <h1> $1000 has been successfully withdrawn from your account. Thank you for banking with us!</h1>
+                        <h1> ₹1000 has been successfully withdrawn from your account. Thank you for banking with us!</h1>
                     </div>
                     <hr/>
                     <div>
@@ -31,10 +31,10 @@ const WithdrawMoney8 = () => {
                     <br/>
                     <hr/>
                     <div style={{ textAlign: 'center' }}>
-                        <Link to="/" className="btn btn-primary">
+                        <Link to="/Customer/Account" className="btn btn-primary">
                             Go to Home
                         </Link>
-                        <Link to="/WithdrawMoney6" className="btn btn-warning">
+                        <Link to="/Customer/FundTransfer/WithdrawMoney6" className="btn btn-warning">
                             Withdraw Again
                         </Link>
                     </div>
