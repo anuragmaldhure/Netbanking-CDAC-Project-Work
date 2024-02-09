@@ -9,7 +9,8 @@ import { BrowserRouter } from 'react-router-dom'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
-    <React.StrictMode>
+    <React.StrictMode> 
+      {/* <React.StrictMode>  => Will run the code twice, ex,  useEffect will render twice -> used in development mode */}
       <App />
     </React.StrictMode>
   </BrowserRouter>

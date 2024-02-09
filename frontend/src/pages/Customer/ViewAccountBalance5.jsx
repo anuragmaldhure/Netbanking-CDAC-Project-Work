@@ -1,6 +1,8 @@
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import CustomerSideNavigationMenu from '../../components/CustomerSideNavigationMenu'
 import CustomerTopNavigationBar from '../../components/CustomerTopNavigationBar'
+import CustomerLast7Transactions5 from '../../components/CustomerLast7Transactions5';
+//import { useState } from 'react';
 
 import { Link } from 'react-router-dom';
 
@@ -9,8 +11,11 @@ import { Link } from 'react-router-dom';
 import backgroundImage from '../../resources/12.avif'; // Import your image file
 
 const ViewAccountBalance5 = () =>{
+  const loadPrevioust7Trans = async () => {
+    
+  }
 
-  const viewMore = async () => {
+  const loadNext7Trans = async () => {
     
   }
 
@@ -24,6 +29,8 @@ const ViewAccountBalance5 = () =>{
     backgroundPosition: 'center',
     minHeight: '100vh', // Ensure the background covers the entire viewport height
   };
+
+
 
     return(
       <div >
@@ -45,162 +52,31 @@ const ViewAccountBalance5 = () =>{
                   <tr>
                     <th>Date & Time</th>
                     <th>Transaction ID</th>
-                    <th>Transaction Log</th>
+                    <th>Transaction By</th>
+                    <th>To</th>
                     <th>Credit Amount (+)</th>
                     <th>Debit Amount (-)</th>
                     <th>Account Balance</th>
                   </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                      <td>
-                        06/02/2024 18:00:00
-                      </td>
-                      <td>
-                        xGno$78BB
-                      </td>
-                      <td>
-                        
-                      </td>
-                      <td>
-                        230000
-                      </td>
-                      <td>
-                        
-                      </td>
-                      <td>
-                        230000
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        06/02/2024 18:00:00
-                      </td>
-                      <td>
-                        xGno$78BB
-                      </td>
-                      <td>
-                        
-                      </td>
-                      <td>
-                        230000
-                      </td>
-                      <td>
-                        
-                      </td>
-                      <td>
-                        230000
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        06/02/2024 18:00:00
-                      </td>
-                      <td>
-                        xGno$78BB
-                      </td>
-                      <td>
-                        
-                      </td>
-                      <td>
-                        230000
-                      </td>
-                      <td>
-                        
-                      </td>
-                      <td>
-                        230000
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        06/02/2024 18:00:00
-                      </td>
-                      <td>
-                        xGno$78BB
-                      </td>
-                      <td>
-                        
-                      </td>
-                      <td>
-                        230000
-                      </td>
-                      <td>
-                        
-                      </td>
-                      <td>
-                        230000
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        06/02/2024 18:00:00
-                      </td>
-                      <td>
-                        xGno$78BB
-                      </td>
-                      <td>
-                        
-                      </td>
-                      <td>
-                        230000
-                      </td>
-                      <td>
-                        
-                      </td>
-                      <td>
-                        230000
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        06/02/2024 18:00:00
-                      </td>
-                      <td>
-                        xGno$78BB
-                      </td>
-                      <td>
-                        
-                      </td>
-                      <td>
-                        230000
-                      </td>
-                      <td>
-                        
-                      </td>
-                      <td>
-                        230000
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        06/02/2024 18:00:00
-                      </td>
-                      <td>
-                        xGno$78BB
-                      </td>
-                      <td>
-                        
-                      </td>
-                      <td>
-                        230000
-                      </td>
-                      <td>
-                        
-                      </td>
-                      <td>
-                        230000
-                      </td>
-                    </tr>
-                </tbody>
+                <CustomerLast7Transactions5/>
               </table>
               <br/>
               </div>
               <br/>
-              <div style={{ textAlign: 'center' }}>
-                  <button onClick={viewMore} className='btn btn-light'>
-                      View More
-                  </button>
+              <div style={{ textAlign: 'center', display : 'flex', gap:'20px', justifyContent: 'center'}}>
+                  {/* Pagination and Sorting*/}
+                  <div>
+                    <button onClick={loadPrevioust7Trans} className='btn btn-primary'>
+                        Previous 7 transactions
+                    </button>
+                  </div>
+
+                  <div>
+                    <button onClick={loadNext7Trans} className='btn btn-info'>
+                        Next 7 transactions
+                    </button>
+                  </div>
               </div>
               <hr/>
               <div style={{ textAlign: 'center', backgroundColor: 'rgba(255, 255, 255, 0.5)', backdropFilter: 'blur(5px)'}}>
