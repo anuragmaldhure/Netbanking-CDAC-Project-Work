@@ -2,29 +2,109 @@ import CustomerSideNavigationMenu from '../../components/CustomerSideNavigationM
 import CustomerTopNavigationBar from '../../components/CustomerTopNavigationBar'
 import { useState } from 'react';
 
+// import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+
+import { toast } from 'react-toastify'
+
+//react redux
+import { useDispatch, useSelector} from 'react-redux';
+import { updateWithdrawMoney } from '../../features/WithdrawMoneyInfoSlice';
+
 // import { Link } from 'react-router-dom';
 
 const WithdrawMoney6 = () => {
 
+    // get the navigation object
+    const navigate = useNavigate()
+
+    //react redux
+    const dispatch = useDispatch();
+
+    // get the current state from redux
+    const withdrawMoneyRR = useSelector((state) => state.withdrawMoney);
+
     const [withdrawMoney, setWithdrawMoney] = useState({ amount: "", confirmAmount: "", remarks: "" });
+
+    const [balance, setBalance] = useState({balanceAmount : 12345});
 
     const handleChange = (e) => {
         setWithdrawMoney({...withdrawMoney, [e.target.name]: e.target.value})
-        // console.log(withdrawMoney)
+        console.log(withdrawMoney)
+        //react redux
+        dispatch(updateWithdrawMoney({[e.target.name]: e.target.value }));
     }
 
     const inputDataAndAmountValidation = () => {
         setWithdrawMoney(prevState => {
-            if (prevState.amount === prevState.confirmAmount) {
+            if (prevState.amount === prevState.confirmAmount && prevState.amount !== '') {
                 console.log("Data input from customer:");
                 console.log(prevState);
                 console.log(withdrawMoney)
-                window.location.href = '/Customer/FundTransfer/WithdrawMoney7'
+                if(withdrawMoney.remarks===""){
+                    toast.warn('🦄 Transaction remarks cannot be empty!', {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                        //transition: Bounce,
+                        });
+                }else{
+                    if(withdrawMoney.amount > balance.balanceAmount){
+                        toast.error('🦄 You do not have enough balance! Try again', {
+                            position: "top-center",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "dark",
+                            //transition: Bounce,
+                            });
+                    }else{
+                        navigate('/Customer/FundTransfer/WithdrawMoney7')
+                        //window.location.href = '/Customer/FundTransfer/WithdrawMoney7'
+                    }
+                }
                 return prevState; // Return previous state to prevent updating state
-            } else {
-                alert("Amount mismatch! Please enter the correct amount!");
-                window.location.reload();
-                return prevState; // Return previous state to prevent updating state
+            } 
+            else {
+                //window.location.reload();
+                // alert("Amount mismatch! Please enter the correct amount!");
+                if(prevState.amount === ''){
+                    toast.error('🦄 No amount! Please enter a amount to withdraw!', {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                        //transition: Bounce,
+                        });
+                        
+                    return prevState; // Return previous state to prevent updating state
+                }else{
+                    toast.error('🦄 Amount mismatch! Please enter the correct amount!', {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                        //transition: Bounce,
+                        });
+                        
+                    return prevState; // Return previous state to prevent updating state
+                    }
             }
         });
     };
@@ -35,12 +115,11 @@ const WithdrawMoney6 = () => {
             <div style={{ display: 'flex' }}>
                 <CustomerSideNavigationMenu />
 
-                <div style={{ display: 'block', flexDirection: 'column', width: '100%' }}>
-                    
-                    <div style={{ justifyContent: 'center', alignItems: 'center', width: '50%' }}>
+                <div style={{ display: 'block', flexDirection: 'column', width: '100%', justifyContent: 'center', textAlign: 'center'}}>          
+                    <div style={{ justifyContent: 'center', alignItems: 'center'}}>
                         <div>
                             <br/>
-                            <h2><strong>Net Balance Available : ₹ 230000</strong></h2>
+                            <h2><strong>Net Balance Available : ₹ {(balance.balanceAmount)}</strong></h2>
                             <br/>
                         </div>
                     </div>

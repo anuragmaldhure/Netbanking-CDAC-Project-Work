@@ -1,9 +1,68 @@
 import CustomerSideNavigationMenu from '../../components/CustomerSideNavigationMenu'
 import CustomerTopNavigationBar from '../../components/CustomerTopNavigationBar'
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { useSelector } from 'react-redux';
+
+import { toast } from 'react-toastify'
+
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const WithdrawMoney7 = () => {
+
+    useEffect(() => {
+        toast.info('🦄 OTP sent! Please enter the OTP below', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            //transition: Bounce,
+        });
+    }, []); // Empty dependency array ensures this effect runs only once on mount
+
+    const navigate = useNavigate()
+
+    //react redux
+    const withdrawMoney = useSelector(state => state.withdrawMoney);
+
+    //Checking if withdraw amount and remarks info is retrieved from last page}
+    // console.log(withdrawMoney);
+    // console.log(withdrawMoney.amount)
+    // console.log(withdrawMoney.confirmAmount)
+    // console.log(withdrawMoney.remarks)
+
+    const [otp, setOtp] = useState({otpValue :''});
+
+    const handleChange = (e) => {
+        setOtp({[e.target.name]: e.target.value})
+        console.log(otp.otpValue)
+    }
+
+    const verifyOTP = () => {
+        if(otp.otpValue === '123'){
+            navigate('/Customer/FundTransfer/WithdrawMoney8')
+        }
+        else{
+            toast.error('🦄 Wrong OTP! Please try again!', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                //transition: Bounce,
+            });
+        }
+    }
+    
 
     return (  
        <div>
@@ -11,7 +70,7 @@ const WithdrawMoney7 = () => {
             <div style={{"display" : 'flex'}}>
                 <CustomerSideNavigationMenu />
 
-                <div style={{ display: 'block', flexDirection: 'column', width:'100%' }}>
+                <div style={{ display: 'block', flexDirection: 'column', width: '100%', justifyContent: 'center', textAlign: 'center'}}>          
                     <br/>
                     <br/>
                     <br/>
@@ -26,21 +85,26 @@ const WithdrawMoney7 = () => {
                     <div class="input-group mb-3" style={{ width:'20%'}} >
                         <span class="input-group-text">OTP</span>
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="floatingInputGroup1" placeholder="Username" />
+                            <input type="text" name="otpValue" class="form-control" id="floatingInputGroup1" placeholder="Username" onChange={handleChange} />
                             <label for="floatingInputGroup1">Enter OTP here</label>
                         </div>
                     </div>
                     <br/>
                     <br/>
                     <hr/>
-                    <div style={{ textAlign: 'center' }}>
-                        <Link to="/Customer/FundTransfer/WithdrawMoney8" className="btn btn-primary">
-                            Withdraw
-                        </Link>
-                        
-                        <Link to="/Customer/FundTransfer/WithdrawMoney6" className="btn btn-warning">
-                            Back
-                        </Link>
+                    <div style={{ textAlign: 'center', display : 'flex', gap:'20px', justifyContent: 'center'}}>
+                        {/* Pagination and Sorting*/}
+                        <div>
+                            <button onClick={verifyOTP} className='btn btn-primary'>
+                                Withdraw
+                            </button>
+                        </div>
+
+                        <div>
+                            <Link to="/Customer/FundTransfer/WithdrawMoney6" className="btn btn-warning">
+                                Back
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -49,3 +113,12 @@ const WithdrawMoney7 = () => {
 }
 
 export default WithdrawMoney7;
+
+
+
+// const AnotherComponent = () => {
+//   const withdrawMoney = useSelector(state => state.withdrawMoney);
+
+//   // You can access withdrawMoney.amount, withdrawMoney.confirmAmount, and withdrawMoney.remarks here
+  
+

@@ -12,6 +12,12 @@ import DepositMoney43 from './pages/Employee/DepositMoney43';
 import DepositMoney44 from './pages/Employee/DepositMoney44';
 import DepositMoney45 from './pages/Employee/DepositMoney45';
 
+//React-toastify
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
+
+
 function App() {
   return (
     <div className='container-fluid'>
@@ -26,6 +32,7 @@ function App() {
         <Route path='/Employee/FundTransfer/DepositMoney44' element={<DepositMoney44/>} />
         <Route path='/Employee/FundTransfer/DepositMoney45' element={<DepositMoney45/>} />
       </Routes>
+      <ToastContainer/>
     </div>
   )
 }
