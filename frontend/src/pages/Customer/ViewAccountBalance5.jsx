@@ -18,19 +18,13 @@ const ViewAccountBalance5 = () =>{
   const loadNext7Trans = async () => {
     
   }
-
-  // const withdrawMoney = async () => {
-    
-  // }
-
+  
   const backgroundStyle = {
     backgroundImage: `url(${backgroundImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     minHeight: '100vh', // Ensure the background covers the entire viewport height
   };
-
-
 
     return(
       <div >

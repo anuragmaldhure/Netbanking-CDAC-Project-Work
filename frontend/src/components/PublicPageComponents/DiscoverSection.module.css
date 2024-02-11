@@ -1,0 +1,60 @@
+/* DiscoverSection.module.css */
+
+.discover {
+    background: #fff;
+    /* Add transition for background color */
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .text {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: auto;
+  }
+  
+  /* Styles for the title */
+  .title {
+    color: #00bf7f;
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 2px;
+    /* Add transition for color */
+    transition: color 0.3s ease-in-out;
+  }
+  
+  /* Styles for the heading */
+  .heading {
+    font-weight: 700;
+    font-size: 45px;
+    /* Add transition for font size */
+    transition: font-size 0.3s ease-in-out;
+  }
+  
+  /* Styles for the description */
+  .description {
+    font-weight: 400;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+    /* Add transition for font size and padding */
+    transition: font-size 0.3s ease-in-out, padding 0.3s ease-in-out;
+  }
+  
+  /* Styles for the "Learn More" link */
+  .learnMoreLink {
+    background: #111;
+    font-weight: 500;
+    padding: 15px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    color: #fff;
+    /* Add transition for background color and transform */
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+  }
+  
+  /* Hover effect for the "Learn More" link */
+  .learnMoreLink:hover {
+    background-color: #00bf85;
+    transform: translateY(-2px);
+  }
