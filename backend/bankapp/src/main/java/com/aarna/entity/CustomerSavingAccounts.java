@@ -1,4 +1,4 @@
-package com.aarna.pojos;
+package com.aarna.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

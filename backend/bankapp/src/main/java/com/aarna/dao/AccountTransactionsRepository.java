@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.aarna.pojos.AccountTransactions;
+import com.aarna.entity.AccountTransactions;
 
 import java.math.BigDecimal;
 import java.util.Date;

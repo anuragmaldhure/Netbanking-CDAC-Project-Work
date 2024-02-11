@@ -1,7 +1,6 @@
-package com.aarna.pojos;
+package com.aarna.entity;
 
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -12,6 +11,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "Account_Transactions")
@@ -19,91 +20,55 @@ public class AccountTransactions {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long transactionID;
+    @Column(name = "Transaction_ID")
+    private Long transactionId;
 
     @ManyToOne
-    @JoinColumn(name = "account_number", nullable = false)
-    private CustomerSavingAccounts customerSavingAccounts;
+    @JoinColumn(name = "Account_Number", nullable = false)
+    private CustomerDetails customer;
 
-    @Column(nullable = false)
-    private String accountType;
+    @Column(name = "Transaction_Amount", nullable = false)
+    private Double transactionAmount;
 
-    @Column(nullable = false)
-    private BigDecimal transactionAmount;
-
-    @Column(nullable = false)
+    @Column(name = "Transaction_Type", nullable = false)
     private String transactionType;
 
-    @Column(nullable = false)
-    private Date transactionDate;
+    @Column(name = "Transaction_Timestamp", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date transactionTimestamp;
 
-    @Column
-    private Date transactionTime;
+    @Column(name = "Recipient_ID")
+    private String recipientId;
 
-    @Column
-    private String recipientFirstName;
+    @Column(name = "Transaction_Remarks")
+    private String transactionRemarks;
 
-    @Column
-    private String transactionComment;
+    @Column(name = "Transaction_By_ID", nullable = false)
+    private Long transactionById;
 
-    @Column
-    private String recipientLastName;
+    // Add getters and setters here
 
-    @Column
-    private Integer recipientAccountNumber;
-
-    // Constructors
-
-    public AccountTransactions() {
+    public Long getTransactionId() {
+        return transactionId;
     }
 
-    public AccountTransactions(CustomerSavingAccounts customerSavingAccounts, String accountType,
-                               BigDecimal transactionAmount, String transactionType,
-                               Date transactionDate, String recipientFirstName,
-                               String transactionComment, String recipientLastName,
-                               Integer recipientAccountNumber) {
-        this.customerSavingAccounts = customerSavingAccounts;
-        this.accountType = accountType;
-        this.transactionAmount = transactionAmount;
-        this.transactionType = transactionType;
-        this.transactionDate = transactionDate;
-        this.recipientFirstName = recipientFirstName;
-        this.transactionComment = transactionComment;
-        this.recipientLastName = recipientLastName;
-        this.recipientAccountNumber = recipientAccountNumber;
+    public void setTransactionId(Long transactionId) {
+        this.transactionId = transactionId;
     }
 
-    // Getters and Setters
-
-    public Long getTransactionID() {
-        return transactionID;
+    public CustomerDetails getCustomer() {
+        return customer;
     }
 
-    public void setTransactionID(Long transactionID) {
-        this.transactionID = transactionID;
+    public void setCustomer(CustomerDetails customer) {
+        this.customer = customer;
     }
 
-    public CustomerSavingAccounts getCustomerSavingAccounts() {
-        return customerSavingAccounts;
-    }
-
-    public void setCustomerSavingAccounts(CustomerSavingAccounts customerSavingAccounts) {
-        this.customerSavingAccounts = customerSavingAccounts;
-    }
-
-    public String getAccountType() {
-        return accountType;
-    }
-
-    public void setAccountType(String accountType) {
-        this.accountType = accountType;
-    }
-
-    public BigDecimal getTransactionAmount() {
+    public Double getTransactionAmount() {
         return transactionAmount;
     }
 
-    public void setTransactionAmount(BigDecimal transactionAmount) {
+    public void setTransactionAmount(Double transactionAmount) {
         this.transactionAmount = transactionAmount;
     }
 
@@ -115,52 +80,38 @@ public class AccountTransactions {
         this.transactionType = transactionType;
     }
 
-    public Date getTransactionDate() {
-        return transactionDate;
+    public Date getTransactionTimestamp() {
+        return transactionTimestamp;
     }
 
-    public void setTransactionDate(Date transactionDate) {
-        this.transactionDate = transactionDate;
+    public void setTransactionTimestamp(Date transactionTimestamp) {
+        this.transactionTimestamp = transactionTimestamp;
     }
 
-    public Date getTransactionTime() {
-        return transactionTime;
+    public String getRecipientId() {
+        return recipientId;
     }
 
-    public void setTransactionTime(Date transactionTime) {
-        this.transactionTime = transactionTime;
+    public void setRecipientId(String recipientId) {
+        this.recipientId = recipientId;
     }
 
-    public String getRecipientFirstName() {
-        return recipientFirstName;
+    public String getTransactionRemarks() {
+        return transactionRemarks;
     }
 
-    public void setRecipientFirstName(String recipientFirstName) {
-        this.recipientFirstName = recipientFirstName;
+    public void setTransactionRemarks(String transactionRemarks) {
+        this.transactionRemarks = transactionRemarks;
     }
 
-    public String getTransactionComment() {
-        return transactionComment;
+    public Long getTransactionById() {
+        return transactionById;
     }
 
-    public void setTransactionComment(String transactionComment) {
-        this.transactionComment = transactionComment;
+    public void setTransactionById(Long transactionById) {
+        this.transactionById = transactionById;
     }
+    
 
-    public String getRecipientLastName() {
-        return recipientLastName;
-    }
-
-    public void setRecipientLastName(String recipientLastName) {
-        this.recipientLastName = recipientLastName;
-    }
-
-    public Integer getRecipientAccountNumber() {
-        return recipientAccountNumber;
-    }
-
-    public void setRecipientAccountNumber(Integer recipientAccountNumber) {
-        this.recipientAccountNumber = recipientAccountNumber;
-    }
 }
 

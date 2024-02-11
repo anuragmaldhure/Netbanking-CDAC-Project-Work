@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.aarna.pojos.BankEmployeeDetails;
+import com.aarna.entity.BankEmployeeDetails;
 
 import java.util.Date;
 import java.util.List;

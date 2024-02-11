@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.aarna.pojos.Beneficiary;
+import com.aarna.entity.Beneficiary;
 
 import java.util.List;
 import java.util.Optional;

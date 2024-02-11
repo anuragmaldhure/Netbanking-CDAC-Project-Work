@@ -1,4 +1,4 @@
-package com.aarna.pojos;
+package com.aarna.entity;
 
 
 
@@ -19,284 +19,317 @@ public class CustomerDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long customerID;
+    @Column(name = "Customer_ID")
+    private Long customerId;
 
-    @Column(nullable = false)
+    @Column(name = "Username", nullable = false)
+    private String username;
+
+    @Column(name = "Password", nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private String firstName;
+    @Column(name = "Account_Holder_First_Name", nullable = false)
+    private String accountHolderFirstName;
 
-    @Column(nullable = false)
-    private String lastName;
+    @Column(name = "Account_Holder_Last_Name", nullable = false)
+    private String accountHolderLastName;
 
-    @Column(nullable = false)
+    @Column(name = "Mobile_Number", nullable = false)
     private String mobileNumber;
 
-    @Column(nullable = false, unique = true)
-    private String emailID;
+    @Column(name = "Email_ID", unique = true, nullable = false)
+    private String emailId;
 
+    @Column(name = "Last_Login")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastLogin;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "PAN_Number", unique = true, nullable = false)
     private String panNumber;
 
-    @Column(nullable = false, unique = true)
-    private String aadhaarNumber;
+    @Column(name = "Adhaar_Number", unique = true, nullable = false)
+    private String adhaarNumber;
 
-    @Column
+    @Column(name = "Occupation")
+    private String occupation;
+
+    @Column(name = "Annual_Income")
+    private Double annualIncome;
+
+    @Column(name = "Address")
     private String address;
 
-    @Column
+    @Column(name = "City")
     private String city;
 
-    @Column
+    @Column(name = "State")
     private String state;
 
-    @Column
+    @Column(name = "Pin_Code")
     private String pinCode;
 
-    @Column
+    @Column(name = "Nationality")
     private String nationality;
 
-    @Column(unique = true)
-    private Integer secureProfileID;
-
-    private String secureProfilePassword;
-
-    @Column(length = 1)
+    @Column(name = "Gender")
     private String gender;
 
-    @Column
+    @Column(name = "Signup_Timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date signupTimestamp;
+
+    @Column(name = "KYC_Submission_Timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date kycSubmissionTimestamp;
+
+    @Column(name = "KYC_Verified_Timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date kycVerifiedTimestamp;
+
+    @Column(name = "KYC_Rejected_Timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date kycRejectedTimestamp;
+
+    @Column(name = "Savings_Account_Number")
+    private String savingsAccountNumber;
+
+    @Column(name = "Date_of_Birth")
     private Date dateOfBirth;
 
-    @Column
-    private Integer ticketsRaised;
-
-    @Column
+    @Column(name = "KYC_Status")
     private String kycStatus;
 
-    @Column
+    @Column(name = "Message_Email_Alerts_Status")
     private String messageEmailAlertsStatus;
 
-    @Column
-    private String transactionPassword;
-
-    @Column
-    private String securityQuestions;
-
-    @Column
+    @Column(name = "Offers")
     private String offers;
 
-    // Constructors
+    @Column(name = "Account_Number")
+    private String accountNumber;
 
-    public CustomerDetails() {
-    }
+	public Long getCustomerId() {
+		return customerId;
+	}
 
-    public CustomerDetails(String password, String firstName, String lastName, String mobileNumber,
-                           String emailID, String panNumber, String aadhaarNumber) {
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.mobileNumber = mobileNumber;
-        this.emailID = emailID;
-        this.panNumber = panNumber;
-        this.aadhaarNumber = aadhaarNumber;
-    }
+	public void setCustomerId(Long customerId) {
+		this.customerId = customerId;
+	}
 
-    // Getters and Setters
+	public String getUsername() {
+		return username;
+	}
 
-    public Long getCustomerID() {
-        return customerID;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public void setCustomerID(Long customerID) {
-        this.customerID = customerID;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getAccountHolderFirstName() {
+		return accountHolderFirstName;
+	}
 
-    public String getFirstName() {
-        return firstName;
-    }
+	public void setAccountHolderFirstName(String accountHolderFirstName) {
+		this.accountHolderFirstName = accountHolderFirstName;
+	}
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+	public String getAccountHolderLastName() {
+		return accountHolderLastName;
+	}
 
-    public String getLastName() {
-        return lastName;
-    }
+	public void setAccountHolderLastName(String accountHolderLastName) {
+		this.accountHolderLastName = accountHolderLastName;
+	}
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
 
-    public String getMobileNumber() {
-        return mobileNumber;
-    }
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
 
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
-    }
+	public String getEmailId() {
+		return emailId;
+	}
 
-    public String getEmailID() {
-        return emailID;
-    }
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
 
-    public void setEmailID(String emailID) {
-        this.emailID = emailID;
-    }
+	public Date getLastLogin() {
+		return lastLogin;
+	}
 
-    public Date getLastLogin() {
-        return lastLogin;
-    }
+	public void setLastLogin(Date lastLogin) {
+		this.lastLogin = lastLogin;
+	}
 
-    public void setLastLogin(Date lastLogin) {
-        this.lastLogin = lastLogin;
-    }
+	public String getPanNumber() {
+		return panNumber;
+	}
 
-    public String getPanNumber() {
-        return panNumber;
-    }
+	public void setPanNumber(String panNumber) {
+		this.panNumber = panNumber;
+	}
 
-    public void setPanNumber(String panNumber) {
-        this.panNumber = panNumber;
-    }
+	public String getAdhaarNumber() {
+		return adhaarNumber;
+	}
 
-    public String getAadhaarNumber() {
-        return aadhaarNumber;
-    }
+	public void setAdhaarNumber(String adhaarNumber) {
+		this.adhaarNumber = adhaarNumber;
+	}
 
-    public void setAadhaarNumber(String aadhaarNumber) {
-        this.aadhaarNumber = aadhaarNumber;
-    }
+	public String getOccupation() {
+		return occupation;
+	}
 
-    public String getAddress() {
-        return address;
-    }
+	public void setOccupation(String occupation) {
+		this.occupation = occupation;
+	}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+	public Double getAnnualIncome() {
+		return annualIncome;
+	}
 
-    public String getCity() {
-        return city;
-    }
+	public void setAnnualIncome(Double annualIncome) {
+		this.annualIncome = annualIncome;
+	}
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+	public String getAddress() {
+		return address;
+	}
 
-    public String getState() {
-        return state;
-    }
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
-    public void setState(String state) {
-        this.state = state;
-    }
+	public String getCity() {
+		return city;
+	}
 
-    public String getPinCode() {
-        return pinCode;
-    }
+	public void setCity(String city) {
+		this.city = city;
+	}
 
-    public void setPinCode(String pinCode) {
-        this.pinCode = pinCode;
-    }
+	public String getState() {
+		return state;
+	}
 
-    public String getNationality() {
-        return nationality;
-    }
+	public void setState(String state) {
+		this.state = state;
+	}
 
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
+	public String getPinCode() {
+		return pinCode;
+	}
 
-    public Integer getSecureProfileID() {
-        return secureProfileID;
-    }
+	public void setPinCode(String pinCode) {
+		this.pinCode = pinCode;
+	}
 
-    public void setSecureProfileID(Integer secureProfileID) {
-        this.secureProfileID = secureProfileID;
-    }
+	public String getNationality() {
+		return nationality;
+	}
 
-    public String getSecureProfilePassword() {
-        return secureProfilePassword;
-    }
+	public void setNationality(String nationality) {
+		this.nationality = nationality;
+	}
 
-    public void setSecureProfilePassword(String secureProfilePassword) {
-        this.secureProfilePassword = secureProfilePassword;
-    }
+	public String getGender() {
+		return gender;
+	}
 
-    public String getGender() {
-        return gender;
-    }
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
+	public Date getSignupTimestamp() {
+		return signupTimestamp;
+	}
 
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
+	public void setSignupTimestamp(Date signupTimestamp) {
+		this.signupTimestamp = signupTimestamp;
+	}
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
+	public Date getKycSubmissionTimestamp() {
+		return kycSubmissionTimestamp;
+	}
 
-    public Integer getTicketsRaised() {
-        return ticketsRaised;
-    }
+	public void setKycSubmissionTimestamp(Date kycSubmissionTimestamp) {
+		this.kycSubmissionTimestamp = kycSubmissionTimestamp;
+	}
 
-    public void setTicketsRaised(Integer ticketsRaised) {
-        this.ticketsRaised = ticketsRaised;
-    }
+	public Date getKycVerifiedTimestamp() {
+		return kycVerifiedTimestamp;
+	}
 
-    public String getKycStatus() {
-        return kycStatus;
-    }
+	public void setKycVerifiedTimestamp(Date kycVerifiedTimestamp) {
+		this.kycVerifiedTimestamp = kycVerifiedTimestamp;
+	}
 
-    public void setKycStatus(String kycStatus) {
-        this.kycStatus = kycStatus;
-    }
+	public Date getKycRejectedTimestamp() {
+		return kycRejectedTimestamp;
+	}
 
-    public String getMessageEmailAlertsStatus() {
-        return messageEmailAlertsStatus;
-    }
+	public void setKycRejectedTimestamp(Date kycRejectedTimestamp) {
+		this.kycRejectedTimestamp = kycRejectedTimestamp;
+	}
 
-    public void setMessageEmailAlertsStatus(String messageEmailAlertsStatus) {
-        this.messageEmailAlertsStatus = messageEmailAlertsStatus;
-    }
+	public String getSavingsAccountNumber() {
+		return savingsAccountNumber;
+	}
 
-    public String getTransactionPassword() {
-        return transactionPassword;
-    }
+	public void setSavingsAccountNumber(String savingsAccountNumber) {
+		this.savingsAccountNumber = savingsAccountNumber;
+	}
 
-    public void setTransactionPassword(String transactionPassword) {
-        this.transactionPassword = transactionPassword;
-    }
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
 
-    public String getSecurityQuestions() {
-        return securityQuestions;
-    }
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
 
-    public void setSecurityQuestions(String securityQuestions) {
-        this.securityQuestions = securityQuestions;
-    }
+	public String getKycStatus() {
+		return kycStatus;
+	}
 
-    public String getOffers() {
-        return offers;
-    }
+	public void setKycStatus(String kycStatus) {
+		this.kycStatus = kycStatus;
+	}
 
-    public void setOffers(String offers) {
-        this.offers = offers;
-    }
+	public String getMessageEmailAlertsStatus() {
+		return messageEmailAlertsStatus;
+	}
+
+	public void setMessageEmailAlertsStatus(String messageEmailAlertsStatus) {
+		this.messageEmailAlertsStatus = messageEmailAlertsStatus;
+	}
+
+	public String getOffers() {
+		return offers;
+	}
+
+	public void setOffers(String offers) {
+		this.offers = offers;
+	}
+
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+
 }
-

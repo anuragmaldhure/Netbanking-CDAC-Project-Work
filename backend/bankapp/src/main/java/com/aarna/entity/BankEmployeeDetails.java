@@ -1,4 +1,4 @@
-package com.aarna.pojos;
+package com.aarna.entity;
 
 
 
@@ -19,109 +19,87 @@ public class BankEmployeeDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long employeeID;
+    @Column(name = "Employee_ID")
+    private Long employeeId;
 
-    @Column(nullable = false)
-    private String firstName;
+    @Column(name = "Employee_First_Name", nullable = false)
+    private String employeeFirstName;
 
-    @Column(nullable = false)
-    private String lastName;
+    @Column(name = "Employee_Last_Name", nullable = false)
+    private String employeeLastName;
 
-    @Column(nullable = false)
-    private String mobileNo;
+    @Column(name = "Mobile_No", nullable = false)
+    private String mobileNumber;
 
-    @Column(nullable = false)
-    private String emailID;
+    @Column(name = "Email_ID", nullable = false)
+    private String emailId;
 
-    @Column
-    private String departmentName;
+    @Column(name = "Username", nullable = false)
+    private String username;
 
+    @Column(name = "Last_Login")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastLogin;
 
-    @Column(nullable = false)
+    @Column(name = "Password", nullable = false)
     private String password;
 
-    @Column
+    @Column(name = "Date_of_Birth")
+    @Temporal(TemporalType.DATE)
     private Date dateOfBirth;
 
-    @Column
-    private String address;
+    @Column(name = "Joining_Timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date joiningTimestamp;
 
-    @Column
-    private String city;
+    // Add getters and setters here
 
-    @Column
-    private String state;
-
-    @Column
-    private String pinCode;
-
-    @Column
-    private String nationality;
-
-    // Constructors
-
-    public BankEmployeeDetails() {
+    public Long getEmployeeId() {
+        return employeeId;
     }
 
-    public BankEmployeeDetails(String firstName, String lastName, String mobileNo,
-                               String emailID, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.mobileNo = mobileNo;
-        this.emailID = emailID;
-        this.password = password;
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
     }
 
-    // Getters and Setters
-
-    public Long getEmployeeID() {
-        return employeeID;
+    public String getEmployeeFirstName() {
+        return employeeFirstName;
     }
 
-    public void setEmployeeID(Long employeeID) {
-        this.employeeID = employeeID;
+    public void setEmployeeFirstName(String employeeFirstName) {
+        this.employeeFirstName = employeeFirstName;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getEmployeeLastName() {
+        return employeeLastName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setEmployeeLastName(String employeeLastName) {
+        this.employeeLastName = employeeLastName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getMobileNumber() {
+        return mobileNumber;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
     }
 
-    public String getMobileNo() {
-        return mobileNo;
+    public String getEmailId() {
+        return emailId;
     }
 
-    public void setMobileNo(String mobileNo) {
-        this.mobileNo = mobileNo;
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
     }
 
-    public String getEmailID() {
-        return emailID;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmailID(String emailID) {
-        this.emailID = emailID;
-    }
-
-    public String getDepartmentName() {
-        return departmentName;
-    }
-
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Date getLastLogin() {
@@ -148,44 +126,14 @@ public class BankEmployeeDetails {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getAddress() {
-        return address;
+    public Date getJoiningTimestamp() {
+        return joiningTimestamp;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setJoiningTimestamp(Date joiningTimestamp) {
+        this.joiningTimestamp = joiningTimestamp;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getPinCode() {
-        return pinCode;
-    }
-
-    public void setPinCode(String pinCode) {
-        this.pinCode = pinCode;
-    }
-
-    public String getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
+   
 }
 

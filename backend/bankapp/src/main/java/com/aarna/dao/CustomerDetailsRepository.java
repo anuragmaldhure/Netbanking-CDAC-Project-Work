@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.aarna.pojos.CustomerDetails;
+import com.aarna.entity.CustomerDetails;
 
 import java.util.Date;
 import java.util.List;

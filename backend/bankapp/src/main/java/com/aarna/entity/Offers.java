@@ -1,4 +1,4 @@
-package com.aarna.pojos;
+package com.aarna.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,44 +13,37 @@ public class Offers {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long offerID;
+    @Column(name = "Offer_ID")
+    private Long offerId;
 
-    @Column(nullable = false)
-    private String offerSource;
+    @Column(name = "Offer_Title", nullable = false)
+    private String offerTitle;
 
-    @Column(nullable = false)
+    @Column(name = "Offer_Details", nullable = false)
     private String offerDetails;
 
-    @Column(nullable = false)
-    private String offerAvailability;
+    @Column(name = "Offer_Availability", nullable = false)
+    private boolean offerAvailability;
 
-    // Constructors
+    @Column(name = "Offer_Minimum_Balance", nullable = false)
+    private Double offerMinimumBalance;
 
-    public Offers() {
+    // Add getters and setters here
+
+    public Long getOfferId() {
+        return offerId;
     }
 
-    public Offers(String offerSource, String offerDetails, String offerAvailability) {
-        this.offerSource = offerSource;
-        this.offerDetails = offerDetails;
-        this.offerAvailability = offerAvailability;
+    public void setOfferId(Long offerId) {
+        this.offerId = offerId;
     }
 
-    // Getters and Setters
-
-    public Long getOfferID() {
-        return offerID;
+    public String getOfferTitle() {
+        return offerTitle;
     }
 
-    public void setOfferID(Long offerID) {
-        this.offerID = offerID;
-    }
-
-    public String getOfferSource() {
-        return offerSource;
-    }
-
-    public void setOfferSource(String offerSource) {
-        this.offerSource = offerSource;
+    public void setOfferTitle(String offerTitle) {
+        this.offerTitle = offerTitle;
     }
 
     public String getOfferDetails() {
@@ -61,11 +54,22 @@ public class Offers {
         this.offerDetails = offerDetails;
     }
 
-    public String getOfferAvailability() {
+    public boolean isOfferAvailability() {
         return offerAvailability;
     }
 
-    public void setOfferAvailability(String offerAvailability) {
+    public void setOfferAvailability(boolean offerAvailability) {
         this.offerAvailability = offerAvailability;
     }
+
+    public Double getOfferMinimumBalance() {
+        return offerMinimumBalance;
+    }
+
+    public void setOfferMinimumBalance(Double offerMinimumBalance) {
+        this.offerMinimumBalance = offerMinimumBalance;
+    }
+
+    // You can also add any necessary constructors or other methods as needed
 }
+

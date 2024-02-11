@@ -1,11 +1,17 @@
-package com.aarna.pojos;
+package com.aarna.entity;
+
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "Beneficiary")
@@ -13,41 +19,40 @@ public class Beneficiary {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long beneficiaryID;
+    @Column(name = "Beneficiary_ID")
+    private Long beneficiaryId;
 
-    @Column
+    @Column(name = "Beneficiary_Nickname")
     private String beneficiaryNickname;
 
-    @Column(nullable = false)
+    @Column(name = "Beneficiary_First_Name", nullable = false)
     private String beneficiaryFirstName;
 
-    @Column(nullable = false)
+    @Column(name = "Beneficiary_Last_Name", nullable = false)
     private String beneficiaryLastName;
 
-    @Column(nullable = false, unique = true)
-    private Integer beneficiaryAccountNumber;
+    @Column(name = "Beneficiary_Account_Number", unique = true, nullable = false)
+    private String beneficiaryAccountNumber;
 
-    // Constructors
+    @Column(name = "Beneficiary_Mobile_Number")
+    private String beneficiaryMobileNumber;
 
-    public Beneficiary() {
+    @Column(name = "Beneficiary_Timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date beneficiaryTimestamp;
+
+    @ManyToOne
+    @JoinColumn(name = "Customer_ID", nullable = false)
+    private CustomerDetails customer;
+
+    // Add getters and setters here
+
+    public Long getBeneficiaryId() {
+        return beneficiaryId;
     }
 
-    public Beneficiary(String beneficiaryNickname, String beneficiaryFirstName,
-                       String beneficiaryLastName, Integer beneficiaryAccountNumber) {
-        this.beneficiaryNickname = beneficiaryNickname;
-        this.beneficiaryFirstName = beneficiaryFirstName;
-        this.beneficiaryLastName = beneficiaryLastName;
-        this.beneficiaryAccountNumber = beneficiaryAccountNumber;
-    }
-
-    // Getters and Setters
-
-    public Long getBeneficiaryID() {
-        return beneficiaryID;
-    }
-
-    public void setBeneficiaryID(Long beneficiaryID) {
-        this.beneficiaryID = beneficiaryID;
+    public void setBeneficiaryId(Long beneficiaryId) {
+        this.beneficiaryId = beneficiaryId;
     }
 
     public String getBeneficiaryNickname() {
@@ -74,11 +79,36 @@ public class Beneficiary {
         this.beneficiaryLastName = beneficiaryLastName;
     }
 
-    public Integer getBeneficiaryAccountNumber() {
+    public String getBeneficiaryAccountNumber() {
         return beneficiaryAccountNumber;
     }
 
-    public void setBeneficiaryAccountNumber(Integer beneficiaryAccountNumber) {
+    public void setBeneficiaryAccountNumber(String beneficiaryAccountNumber) {
         this.beneficiaryAccountNumber = beneficiaryAccountNumber;
     }
+
+    public String getBeneficiaryMobileNumber() {
+        return beneficiaryMobileNumber;
+    }
+
+    public void setBeneficiaryMobileNumber(String beneficiaryMobileNumber) {
+        this.beneficiaryMobileNumber = beneficiaryMobileNumber;
+    }
+
+    public Date getBeneficiaryTimestamp() {
+        return beneficiaryTimestamp;
+    }
+
+    public void setBeneficiaryTimestamp(Date beneficiaryTimestamp) {
+        this.beneficiaryTimestamp = beneficiaryTimestamp;
+    }
+
+    public CustomerDetails getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerDetails customer) {
+        this.customer = customer;
+    }
+
 }
