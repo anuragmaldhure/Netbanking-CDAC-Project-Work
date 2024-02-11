@@ -1,0 +1,62 @@
+/* Navbar.module.css */
+
+.navbar {
+  background: black;
+  padding: 15px 50px !important;
+  z-index: 100;
+  transition: all 0.1s ease-in-out;
+}
+
+.navbar .navbar-brand {
+  font-size: 24px;
+  font-weight: 700;
+  transition: color 0.1s ease-in-out;
+  color: #fff;
+}
+
+.navbar a.nav-link {
+  color: #fff;
+  font-size: 16px;
+  padding: 0 14px;
+  transition: color 0.1s ease-in-out;
+}
+
+.navbar a.nav-link:hover {
+  color: black;
+}
+.signInBtn {
+  background: rgba(0, 0, 0, 0.339);
+  font-weight: 600;
+  padding: 8px 24px;
+
+  transition: all 0.1s ease-in-out;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.signInBtn:hover {
+  background: #00af75;
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.signInBtn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background: rgba(255, 255, 255, 0.1);
+  transition: all 1.0s ease-in-out;
+  border-radius: 50%;
+  z-index: 0;
+  transform: translate(-50%, -50%) scale(0);
+}
+
+.signInBtn:hover::before {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 0;
+}
