@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "twilio.account.sid",
+    "type": "java.lang.String",
+    "description": "A description for 'twilio.account.sid'"
+  },
+  {
+    "name": "twilio.auth.token",
+    "type": "java.lang.String",
+    "description": "A description for 'twilio.auth.token'"
+  }
+]}

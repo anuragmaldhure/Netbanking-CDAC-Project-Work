@@ -2,6 +2,8 @@ package com.app.service;
 
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,8 +18,21 @@ public class CustomerServiceImpl implements CustomerService{
 	CustomerDao customerDao;
 
 	@Override
-	public Optional<CustomerDetails> getCustomerDetailsByCustomerId(Long accountNumber) {
-		return customerDao.findByCustomerId(accountNumber);
+	public Optional<CustomerDetails> getCustomerDetailsByCustomerId(Long customerId) {
+		return customerDao.findByCustomerId(customerId);
 	}
+	
+	@Override
+    public void changePassword(Long customerId, String newPassword) {
+        CustomerDetails customer = customerDao.findById(customerId)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
 
+        // Perform any necessary validations or checks before updating the password
+
+        // Update the password
+        customer.setPassword(newPassword);
+
+        // Save the updated customer
+        customerDao.save(customer);
+    }
 }

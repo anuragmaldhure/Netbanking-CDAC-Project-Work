@@ -23,13 +23,13 @@ public class AccountTransactions {
     private Long transactionId;
 
     @ManyToOne
-    @JoinColumn(name = "Account_Number", nullable = false)
-    private CustomerDetails customer;
+    @JoinColumn(name = "Customer_ID", nullable = false)
+    private CustomerDetails customerID;
 
     @Column(name = "Transaction_Amount", nullable = false)
     private Double transactionAmount;
 
-    @Column(name = "Transaction_Type", nullable = false)
+    @Column(name = "Transaction_Type", nullable = false) //Either '-' for Debit or '+' for Credit
     private String transactionType;
 
     @Column(name = "Transaction_Timestamp", nullable = false)
@@ -37,7 +37,7 @@ public class AccountTransactions {
     private Date transactionTimestamp;
 
     @Column(name = "Recipient_ID")
-    private String recipientId;
+    private Long recipientId;
 
     @Column(name = "Transaction_Remarks")
     private String transactionRemarks;
@@ -55,12 +55,12 @@ public class AccountTransactions {
         this.transactionId = transactionId;
     }
 
-    public CustomerDetails getCustomer() {
-        return customer;
+    public CustomerDetails getCustomerID() {
+        return customerID;
     }
 
-    public void setCustomer(CustomerDetails customer) {
-        this.customer = customer;
+    public void setCustomer(CustomerDetails customerID) {
+        this.customerID = customerID;
     }
 
     public Double getTransactionAmount() {
@@ -87,11 +87,11 @@ public class AccountTransactions {
         this.transactionTimestamp = transactionTimestamp;
     }
 
-    public String getRecipientId() {
+    public Long getRecipientId() {
         return recipientId;
     }
 
-    public void setRecipientId(String recipientId) {
+    public void setRecipientId(Long recipientId) {
         this.recipientId = recipientId;
     }
 
