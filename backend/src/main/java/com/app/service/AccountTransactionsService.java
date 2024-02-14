@@ -13,4 +13,6 @@ public interface AccountTransactionsService {
 
 	Page<AccountTransactions> getTransactionsByCustomerId(Long customerId, int pageNumber, int pageSize);
 
+	Page<AccountTransactions> getAllTransactionDetailsPaginated(Long customerId, int pageNumber, int pageSize);
+
 }

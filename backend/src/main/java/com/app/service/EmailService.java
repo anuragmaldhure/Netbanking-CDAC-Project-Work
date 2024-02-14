@@ -19,7 +19,7 @@ public class EmailService {
         this.javaMailSender = javaMailSender;
     }
 
-    public void sendOtp(String userEmail) {
+    public String sendOtp(String userEmail) {
         setOtp(generateOtp());
 
         try {
@@ -28,13 +28,18 @@ public class EmailService {
 
             helper.setTo(userEmail);
             helper.setSubject("Aarna Bank : Secure OTP for your transaction");
-            helper.setText("Your OTP is: " + otp +"\n Please do not share this OTP with anyone. In case of any suspicious activity, contact us");
+            helper.setText("Your OTP is: " + otp +"\nPlease do not share OTP for security reasons. In case of any suspicious activity, contact us"+
+            "\n"
+            + "© Aarna Bank ");
+            
 
             javaMailSender.send(message);
+            return otp;
         } catch (MessagingException e) {
             e.printStackTrace();
             // Handle exception
         }
+        return null;
     }
 
     private String generateOtp() {

@@ -9,9 +9,7 @@ import com.app.entities.*;
 import com.app.service.AccountTransactionsService;
 import com.app.service.CustomerService;
 import com.app.service.EmailService;
-import com.app.service.SMSService;
 
-import org.apache.tomcat.util.net.TLSClientHelloExtractor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -36,9 +34,6 @@ public class CustomerController {
 	@Autowired
 	EmailService emailService;
 	
-	@Autowired 
-	SMSService smsService;
-	
 //  Page 1 => /public 
 //	Page 2 => /login 
 //  Page 3 => /register
@@ -52,34 +47,8 @@ public class CustomerController {
 	}
 	
 //	Pagination to get last 3 transactions set - INTERNAL SERVER ERROR 500
-	@GetMapping("/Account")
-	public ResponseEntity<?> getPagedTransactions(
-            @RequestParam Long customerId,
-            @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "3") int pageSize) {
-		
-		System.out.println("in get paged transaction by customer in customer controller");
+//	@GetMapping("/transactions/{customerId}")
 
-        try {
-            // Validate customerId (you may add more validation as needed)
-            if (customerId <= 0) {
-                return ResponseEntity.badRequest().body("Invalid customerId");
-            }
-
-            // Get transactions for the customer using the service
-            Page<AccountTransactions> transactions = accountTransactionsService.getTransactionsByCustomerId(customerId, pageNumber, pageSize);
-
-            // Check if transactions are found
-            if (transactions.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No transactions found for the customer");
-            }
-
-            return ResponseEntity.ok(transactions);
-        } catch (Exception e) {
-            // Log the exception or handle it according to your needs
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
-        }
-    }
 
 	//Get account balance
 //	@GetMapping("/FundTransfer/WithdrawMoney6")
@@ -116,11 +85,17 @@ public class CustomerController {
 //	@PostMapping("/FundTransfer/TransferWithinBank20")
 	
 	//Get account balance
-	@GetMapping("/FundTransfer/SendMoney21")
-	public void sendEmail(){
-		emailService.sendOtp("anurag.maldhure@gmail.com");
-		smsService.getOTP(emailService.getOtp());
-
+	@GetMapping("/FundTransfer/SendMoney21/{customerId}")
+	public ResponseEntity<String> sendOtpToCustomer(@PathVariable Long customerId) {
+        Optional<CustomerDetails> customerDetails = customerService.getCustomerDetailsByCustomerId(customerId);
+        if(!customerDetails.isEmpty()){
+        	String email = customerDetails.get().getEmailId();
+            System.out.println("Sending OTP as email to "+email);
+            String otpSentToCustomer = emailService.sendOtp(email); 		//OTP generated : otpSentToCustomer 
+            System.out.println("OTP sent to customer : "+ otpSentToCustomer);
+            return ResponseEntity.ok("OTP sent successfully to " + email);
+        }
+        return ResponseEntity.ok("Customer not found!");
 	}
 	
 	//To get OTP on mobile/email and verify it

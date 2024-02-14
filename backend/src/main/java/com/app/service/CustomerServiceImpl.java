@@ -19,8 +19,10 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Override
 	public Optional<CustomerDetails> getCustomerDetailsByCustomerId(Long customerId) {
-		return customerDao.findByCustomerId(customerId);
+		return Optional.ofNullable(customerDao.findByCustomerId(customerId)
+				.orElseThrow(() -> new RuntimeException("Customer not found")));
 	}
+
 	
 	@Override
     public void changePassword(Long customerId, String newPassword) {
@@ -35,4 +37,5 @@ public class CustomerServiceImpl implements CustomerService{
         // Save the updated customer
         customerDao.save(customer);
     }
+	
 }
