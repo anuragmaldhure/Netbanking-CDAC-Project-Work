@@ -41,5 +41,55 @@ public class ImageHandlingServiceImplDB implements ImageHandlingService {
         // Return the image data from the customer entity
         return customer.getCustomerPhoto();
     }
+    
+    
+    @Override
+    public ApiResponse uploadCustomerPAN(Long customerId, MultipartFile image) throws IOException {
+        // Retrieve the customer from the database using the customer ID
+        CustomerDetails customer = customerDao.findByCustomerId(customerId).orElseThrow(() -> new ResourceNotFoundException("Invalid customer ID"));
+
+        // Set the image data to the customer entity
+        customer.setPanCardPhoto(image.getBytes());
+
+        // Save the updated customer entity
+        customerDao.save(customer);
+
+        return new ApiResponse("Pan card uploaded successfully for customer ID: " + customerId);
+    }
+
+    @Override
+    public byte[] downloadCustomerPAN(Long customerId) throws IOException {
+        // Retrieve the customer from the database using the customer ID
+    	CustomerDetails customer = customerDao.findByCustomerId(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Invalid customer ID"));
+
+        // Return the image data from the customer entity
+        return customer.getPanCardPhoto();
+    }
+    
+    
+    @Override
+    public ApiResponse uploadCustomerAadhar(Long customerId, MultipartFile image) throws IOException {
+        // Retrieve the customer from the database using the customer ID
+        CustomerDetails customer = customerDao.findByCustomerId(customerId).orElseThrow(() -> new ResourceNotFoundException("Invalid customer ID"));
+
+        // Set the image data to the customer entity
+        customer.setAadharCardPhoto(image.getBytes());
+
+        // Save the updated customer entity
+        customerDao.save(customer);
+
+        return new ApiResponse("Aadhar card uploaded successfully for customer ID: " + customerId);
+    }
+
+    @Override
+    public byte[] downloadCustomerAadhar(Long customerId) throws IOException {
+        // Retrieve the customer from the database using the customer ID
+    	CustomerDetails customer = customerDao.findByCustomerId(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Invalid customer ID"));
+
+        // Return the image data from the customer entity
+        return customer.getAadharCardPhoto();
+    }
 }
 

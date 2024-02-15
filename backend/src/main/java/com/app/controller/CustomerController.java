@@ -120,10 +120,6 @@ public class CustomerController {
 	//Get String response of pending KYC if KYC status = 0
 //	@PostMapping("/FundTransfer/TransferWithinBank20")
 	
-	
-	
-	//********************************
-	
 	//KYC
 //  upload image from clnt n saving it either on db or in server side folder
 	// http://host:port/customer/documents/photo/{customerId} ,
@@ -144,8 +140,35 @@ public class CustomerController {
 		return ResponseEntity.ok(imgService.downloadCustomerPhoto(customerId));
 	}
 	
+	@PostMapping(value = "/documents/pan/{customerId}", consumes = "multipart/form-data")
+	public ResponseEntity<?> uploadCustomerPAN(@PathVariable Long customerId, @RequestParam MultipartFile imageFile)
+			throws IOException, RuntimeException {
+		System.out.println("in upload customer pan " + customerId);
+		return ResponseEntity.status(HttpStatus.CREATED).body(imgService.uploadCustomerPAN(customerId, imageFile));
+	}
+
+	// serve(download image) of specific customer
+	// http://host:port/employees/images/{empId} , method=GET
+	@GetMapping(value =  "/documents/pan/{customerId}", produces = { IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE })
+	public ResponseEntity<?> serveCustomerPAN(@PathVariable Long customerId) throws IOException {
+		System.out.println("in download customer pan " + customerId);
+		return ResponseEntity.ok(imgService.downloadCustomerPAN(customerId));
+	}
 	
-	//********************************
+	@PostMapping(value = "/documents/aadhar/{customerId}", consumes = "multipart/form-data")
+	public ResponseEntity<?> uploadCustomerAadhaar(@PathVariable Long customerId, @RequestParam MultipartFile imageFile)
+			throws IOException, RuntimeException {
+		System.out.println("in upload customer aadhar " + customerId);
+		return ResponseEntity.status(HttpStatus.CREATED).body(imgService.uploadCustomerAadhar(customerId, imageFile));
+	}
+
+	// serve(download image) of specific customer
+	// http://host:port/employees/images/{empId} , method=GET
+	@GetMapping(value =  "/documents/aadhar/{customerId}", produces = { IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE })
+	public ResponseEntity<?> serveCustomerAadhar(@PathVariable Long customerId) throws IOException {
+		System.out.println("in download customer aadhar " + customerId);
+		return ResponseEntity.ok(imgService.downloadCustomerAadhar(customerId));
+	}
 	
 	//Get account balance
 	@GetMapping("/FundTransfer/SendMoney21/{customerId}")
