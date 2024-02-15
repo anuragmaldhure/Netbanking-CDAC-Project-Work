@@ -29,14 +29,4 @@ public class AccountTransactionsServiceImpl implements AccountTransactionsServic
 	public List<AccountTransactions> getAllTransactionDetails(Long customerId) {
 		return accountTransactionsDao.findAllTransactionsWithCustomerIdInCustomerDetails(customerId);
 	}
-
-	@Override
-	public Page<AccountTransactions> getTransactionsByCustomerId(Long customerId, int pageNumber, int pageSize) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public Page<AccountTransactions> getAllTransactionDetailsPaginated(Long customerId, int pageNumber, int pageSize) {
-        return accountTransactionsDao.findByCustomerId(customerId, PageRequest.of(pageNumber, pageSize));
-    }
 }

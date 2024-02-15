@@ -113,12 +113,12 @@
 	        <artifactId>spring-boot-starter-mail</artifactId>
 	    </dependency>
 	    
-	    <!--sms service dependency -->
+	    <!--sms service dependency 
 	    <dependency>
 		    <groupId>com.twilio.sdk</groupId>
 		    <artifactId>twilio</artifactId>
-		    <version>8.22.0</version> <!-- Use the latest version -->
-		</dependency>
+		    <version>8.22.0</version>  Use the latest version 
+		</dependency> -->
 	   
 
 	</dependencies>

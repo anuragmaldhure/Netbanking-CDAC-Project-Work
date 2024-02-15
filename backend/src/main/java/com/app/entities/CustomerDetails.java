@@ -96,7 +96,7 @@ public class CustomerDetails {
     private Date dateOfBirth;
 
     @Column(name = "KYC_Status")
-    private String kycStatus;
+    private Boolean kycStatus; 
 
     @Column(name = "Message_Email_Alerts_Status")
     private String messageEmailAlertsStatus;
@@ -299,11 +299,11 @@ public class CustomerDetails {
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public String getKycStatus() {
+	public Boolean getKycStatus() {
 		return kycStatus;
 	}
 
-	public void setKycStatus(String kycStatus) {
+	public void setKycStatus(Boolean kycStatus) {
 		this.kycStatus = kycStatus;
 	}
 

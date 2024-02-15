@@ -11,8 +11,4 @@ public interface AccountTransactionsService {
 	
 	List<AccountTransactions> getAllTransactionDetails(Long customerId);
 
-	Page<AccountTransactions> getTransactionsByCustomerId(Long customerId, int pageNumber, int pageSize);
-
-	Page<AccountTransactions> getAllTransactionDetailsPaginated(Long customerId, int pageNumber, int pageSize);
-
 }
