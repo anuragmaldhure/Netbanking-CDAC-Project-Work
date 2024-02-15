@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -106,6 +107,67 @@ public class CustomerDetails {
 
     @Column(name = "Account_Number")
     private String accountNumber;
+    
+    //Documents Images
+	@Lob
+	private byte[] customerPhoto;	//for storing image in blob format in db
+	private String customerPhotoImagePath;// This will be used for storing n restoring images in server side folder
+	
+	@Lob
+	private byte[] panCardPhoto;
+	private String panCardPhotoImagePath;
+	
+	@Lob
+	private byte[] aadharCardPhoto;
+	private String aadharCardPhotoImagePath;
+
+	public byte[] getCustomerPhoto() {
+		return customerPhoto;
+	}
+
+	public void setCustomerPhoto(byte[] customerPhoto) {
+		this.customerPhoto = customerPhoto;
+	}
+
+	public String getCustomerPhotoImagePath() {
+		return customerPhotoImagePath;
+	}
+
+	public void setCustomerPhotoImagePath(String customerPhotoImagePath) {
+		this.customerPhotoImagePath = customerPhotoImagePath;
+	}
+
+	public byte[] getPanCardPhoto() {
+		return panCardPhoto;
+	}
+
+	public void setPanCardPhoto(byte[] panCardPhoto) {
+		this.panCardPhoto = panCardPhoto;
+	}
+
+	public String getPanCardPhotoImagePath() {
+		return panCardPhotoImagePath;
+	}
+
+	public void setPanCardPhotoImagePath(String panCardPhotoImagePath) {
+		this.panCardPhotoImagePath = panCardPhotoImagePath;
+	}
+
+	public byte[] getAadharCardPhoto() {
+		return aadharCardPhoto;
+	}
+
+	public void setAadharCardPhoto(byte[] aadharCardPhoto) {
+		this.aadharCardPhoto = aadharCardPhoto;
+	}
+
+	public String getAadharCardPhotoImagePath() {
+		return aadharCardPhotoImagePath;
+	}
+
+	public void setAadharCardPhotoImagePath(String aadharCardPhotoImagePath) {
+		this.aadharCardPhotoImagePath = aadharCardPhotoImagePath;
+	}
 
 	public Long getCustomerId() {
 		return customerId;

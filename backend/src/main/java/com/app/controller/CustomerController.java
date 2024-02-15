@@ -1,5 +1,10 @@
 package com.app.controller;
 
+import static org.springframework.http.MediaType.IMAGE_GIF_VALUE;
+import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
+import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,12 +15,15 @@ import com.app.service.AccountTransactionsService;
 import com.app.service.BeneficiaryService;
 import com.app.service.CustomerService;
 import com.app.service.EmailService;
+import com.app.service.ImageHandlingService;
 import com.app.service.OffersService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,9 +33,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/Customer")
+@CrossOrigin(origins = "http://localhost:3000")
 public class CustomerController {
 	
 	@Autowired
@@ -44,6 +54,14 @@ public class CustomerController {
 	
 	@Autowired 
 	BeneficiaryService beneficiaryService;
+	
+	@Autowired
+	@Qualifier("image_db")
+	private ImageHandlingService imgService;
+	
+	public CustomerController() {
+		System.out.println("in ctor of " + getClass());
+	}
 	
 //  Page 1 => /public 
 //	Page 2 => /login 
@@ -101,6 +119,33 @@ public class CustomerController {
 
 	//Get String response of pending KYC if KYC status = 0
 //	@PostMapping("/FundTransfer/TransferWithinBank20")
+	
+	
+	
+	//********************************
+	
+	//KYC
+//  upload image from clnt n saving it either on db or in server side folder
+	// http://host:port/customer/documents/photo/{customerId} ,
+	// method=POST , req param :
+	// multipart file(image data)
+	@PostMapping(value = "/documents/photo/{customerId}", consumes = "multipart/form-data")
+	public ResponseEntity<?> uploadCustomerPhoto(@PathVariable Long customerId, @RequestParam MultipartFile imageFile)
+			throws IOException, RuntimeException {
+		System.out.println("in upload customer photo " + customerId);
+		return ResponseEntity.status(HttpStatus.CREATED).body(imgService.uploadCustomerPhoto(customerId, imageFile));
+	}
+
+	// serve(download image) of specific customer
+	// http://host:port/employees/images/{empId} , method=GET
+	@GetMapping(value =  "/documents/photo/{customerId}", produces = { IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE })
+	public ResponseEntity<?> serveCustomerPhoto(@PathVariable Long customerId) throws IOException {
+		System.out.println("in download customer photo " + customerId);
+		return ResponseEntity.ok(imgService.downloadCustomerPhoto(customerId));
+	}
+	
+	
+	//********************************
 	
 	//Get account balance
 	@GetMapping("/FundTransfer/SendMoney21/{customerId}")
