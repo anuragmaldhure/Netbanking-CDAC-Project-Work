@@ -45,6 +45,15 @@ public class Beneficiary {
     @ManyToOne
     @JoinColumn(name = "Customer_ID", nullable = false)
     private CustomerDetails customer;
+    
+//    @ManyToOne
+//    @JoinColumn(name = "Customer_Username", referencedColumnName = "Username", nullable = false) // Foreign key referencing username
+//    private CustomerDetails customerByUsername;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "Customer_ID", referencedColumnName = "Customer_ID", nullable = false) // Foreign key referencing customerId
+//    private CustomerDetails customerByCustomerId;
+
 
     // Add getters and setters here
 
@@ -104,12 +113,20 @@ public class Beneficiary {
         this.beneficiaryTimestamp = beneficiaryTimestamp;
     }
 
-    public CustomerDetails getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(CustomerDetails customer) {
-        this.customer = customer;
-    }
+//	public CustomerDetails getCustomerByUsername() {
+//		return customerByUsername;
+//	}
+//
+//	public void setCustomerByUsername(CustomerDetails customerByUsername) {
+//		this.customerByUsername = customerByUsername;
+//	}
+//
+//	public CustomerDetails getCustomerByCustomerId() {
+//		return customerByCustomerId;
+//	}
+//
+//	public void setCustomerByCustomerId(CustomerDetails customerByCustomerId) {
+//		this.customerByCustomerId = customerByCustomerId;
+//	}
 
 }

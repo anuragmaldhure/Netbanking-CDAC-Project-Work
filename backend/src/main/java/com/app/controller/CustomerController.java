@@ -102,8 +102,6 @@ public class CustomerController {
 		return ResponseEntity.ok(list);
 	}
 
-
-
 	//Get account balance
 	@GetMapping("/Account/balance/{customerId}")
 	public BigDecimal getAccountBalance(@PathVariable Long customerId){
@@ -117,7 +115,30 @@ public class CustomerController {
 
 	
 	//To get OTP on mobile/email and verify it
-//	@PostMapping("/FundTransfer/WithdrawMoney7")
+	//Deposit transaction after getting amount and remarks from request
+	@PostMapping("/FundTransfer/WithdrawMoney7/{customerId}")
+	public ResponseEntity<String> withdrawMoneyByCustomer (@PathVariable Long customerId,
+				@RequestBody Double amountToWithdraw, String remarks) {
+		try {
+			Optional<CustomerDetails> customer = customerService.getCustomerDetailsByCustomerId(customerId);
+				
+			accountTransactionsService.withdrawMoney(amountToWithdraw, customerId, remarks);
+				
+			emailService.withdrawMoneyMail(customer.get().getEmailId(), 
+						customer.get().getAccountHolderFirstName(),
+						customer.get().getAccountHolderLastName(),
+						amountToWithdraw
+					);
+				
+			return ResponseEntity.ok("Successfully withdrawn " + amountToWithdraw + " from account of customer id : "+ customerId);
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in withdrawing money...");
+		}
+	}
 
 	
 	//Withdraw transaction after getting amount and remarks from request
@@ -214,8 +235,37 @@ public class CustomerController {
 //	@PostMapping("/FundTransfer/SendMoney22")
 
 	
-	//Withdraw transaction after getting amount and remarks from request
-//	@GetMapping("/FundTransfer/SendMoney23")
+	//send money after getting amount and remarks from request
+	//by to
+	@PostMapping("/FundTransfer/SendMoney23/{customerId}/{beneficairyId}")
+	public ResponseEntity<String> sendMoneyToBeneficiary(@PathVariable Long customerId, String benificiaryAccountNo,
+				@RequestBody Double amountToSend, String remarks) {
+		try {
+			Optional<CustomerDetails> customer = customerService.getCustomerDetailsByCustomerId(customerId);
+			
+			Optional<Beneficiary> beneficiary =  beneficiaryService.getBenificiaryDetailsByAccountNumber(benificiaryAccountNo);
+				
+			accountTransactionsService.sendMoney(amountToSend, customer, beneficiary, remarks);
+				
+//			emailService.sendMoneyMail(customer.get().getEmailId(), 
+//						customer.get().getAccountHolderFirstName(),
+//						customer.get().getAccountHolderLastName(),
+//						amountToSend,
+//						beneficiary.get().getBeneficiaryAccountNumber(),
+//						beneficiary.get().getBeneficiaryFirstName(),
+//						beneficiary.get().getBeneficiaryLastName()
+//					);
+				
+			return ResponseEntity.ok("Successfully sent " + amountToSend + " from account of customer id : "+ customerId +
+					" to beneficiary with id :" + beneficiary.get().getBeneficiaryId());
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in sending money...");
+		}
+	}
 
 	//Add Beneficiary
 	@PostMapping("/FundTransfer/AddBenificiary24")

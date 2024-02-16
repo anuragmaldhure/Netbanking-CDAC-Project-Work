@@ -12,4 +12,10 @@ public interface BeneficiaryService {
 	List<Beneficiary> getAllBenificiariesDetails(Long customerId);
 
 	String deleteBenificiary(Long benId);
+	
+	
+	///not used
+	public Optional<Beneficiary> getBeneficiaryDetailsByBeneficiaryId(Long beneficiaryId);
+
+	Optional<Beneficiary> getBenificiaryDetailsByAccountNumber(String AccountNumber);
 }

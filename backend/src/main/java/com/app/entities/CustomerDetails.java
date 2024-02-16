@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -21,12 +22,14 @@ public class CustomerDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Customer_ID")
     private Long customerId;
-    
 
-    @Column(name = "Username", nullable = false)
+    @Column(name = "Username", unique = true, nullable = false)
     private String username;
-
-    @Column(name = "Password", nullable = false)
+//    
+//    @OneToOne(mappedBy = "customerByUsername")
+//    private Beneficiary customerByUsername;
+    
+	@Column(name = "Password", nullable = false)
     private String password;
 
     @Column(name = "Account_Holder_First_Name", nullable = false)
@@ -393,5 +396,13 @@ public class CustomerDetails {
 	public void setAccountNumber(String accountNumber) {
 		this.accountNumber = accountNumber;
 	}
+	
+//    public Beneficiary getCustomerByUsername() {
+//		return customerByUsername;
+//	}
+//
+//	public void setCustomerByUsername(Beneficiary customerByUsername) {
+//		this.customerByUsername = customerByUsername;
+//	}
 
 }

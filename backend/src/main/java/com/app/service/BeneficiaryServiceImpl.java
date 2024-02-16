@@ -43,4 +43,18 @@ public class BeneficiaryServiceImpl implements BeneficiaryService {
 		return "deletion of beneficiary details failed !!!!!";
 	}
 	
+	
+	//not used
+	@Override
+	public Optional<Beneficiary> getBeneficiaryDetailsByBeneficiaryId(Long beneficiaryId) {
+		return Optional.ofNullable(beneficiaryDao.findById(beneficiaryId)
+				.orElseThrow(() -> new RuntimeException("beneficiary not found with id "+beneficiaryId)));
+	}
+	
+	@Override
+	public Optional<Beneficiary> getBenificiaryDetailsByAccountNumber(String AccountNumber) {
+		return Optional.ofNullable(beneficiaryDao.findByBeneficiaryAccountNumber(AccountNumber)
+				.orElseThrow(() -> new RuntimeException("beneficiary not found with account number "+ AccountNumber)));
+	}
+	
 }

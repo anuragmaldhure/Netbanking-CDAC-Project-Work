@@ -98,7 +98,7 @@ public class EmailService {
 
             helper.setTo(userEmail);
             helper.setSubject("Aarna Bank : ₹ "+ amountDeposited +" deposited in your bank account!");
-            String messageString = "Dear "+ FirstName + " "+ LastName +", Our bank employee wiht id : " + employeeId + " has successfully deposited  ₹"+ amountDeposited +" in your bank account!\""
+            String messageString = "Dear "+ FirstName + " "+ LastName +", Our bank employee with id : " + employeeId + " has successfully deposited  ₹"+ amountDeposited +" in your bank account!"
             		+ " In case of any suspicious activity, contact us."
             		+"\n"
             		+"\nAlso checkout our latest offers crafted just for for you in Offers Section."
@@ -116,7 +116,32 @@ public class EmailService {
         return null;
     }
     
+	public String withdrawMoneyMail(String emailId, String FirstName, String LastName,
+			Double amountToWithdraw) {
+		 try {
+	            MimeMessage message = javaMailSender.createMimeMessage();
+	            MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
+	            helper.setTo(emailId);
+	            helper.setSubject("Aarna Bank : ₹ "+ amountToWithdraw +" withdrawn from your bank account!");
+	            String messageString = "Dear "+ FirstName + " "+ LastName +", You have successfully withdrawn  ₹"+ amountToWithdraw +" from your bank account!"
+	            		+ " In case of any suspicious activity, contact us."
+	            		+"\n"
+	            		+"\nAlso checkout our latest offers crafted just for for you in Offers Section."
+	            		+"\n"
+	            		+"\nHappy Banking :)"
+	            		+"\n"+ "© Aarna Bank ";
+	            helper.setText(messageString);
+
+	            javaMailSender.send(message);
+	            return messageString;
+	        } catch (MessagingException e) {
+	            e.printStackTrace();
+	            // Handle exception
+	        }
+	        return null;
+	}
+    
     private String generateOtp() {
         // Generate a 6-digit OTP
         Random random = new Random();
