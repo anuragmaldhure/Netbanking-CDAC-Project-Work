@@ -15,5 +15,5 @@ public interface CustomerService {
 	void changeKYCstatusApproved(Long customerId);
 
 	CustomerDetails registerNewCustomer(CustomerDetails customer);
-
+	
 }

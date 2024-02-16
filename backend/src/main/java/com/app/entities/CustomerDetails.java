@@ -1,5 +1,6 @@
 package com.app.entities;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -54,7 +55,7 @@ public class CustomerDetails {
     private String occupation;
 
     @Column(name = "Annual_Income")
-    private Double annualIncome;
+    private BigDecimal annualIncome;
 
     @Column(name = "Address")
     private String address;
@@ -257,11 +258,11 @@ public class CustomerDetails {
 		this.occupation = occupation;
 	}
 
-	public Double getAnnualIncome() {
+	public BigDecimal getAnnualIncome() {
 		return annualIncome;
 	}
 
-	public void setAnnualIncome(Double annualIncome) {
+	public void setAnnualIncome(BigDecimal annualIncome) {
 		this.annualIncome = annualIncome;
 	}
 

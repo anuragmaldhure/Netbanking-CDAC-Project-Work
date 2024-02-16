@@ -5,18 +5,23 @@ import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
+import com.app.dto.AccountTransactionsDTO;
 import com.app.entities.*;
 import com.app.service.AccountTransactionsService;
 import com.app.service.BeneficiaryService;
+import com.app.service.CustomerSavingsAccountService;
 import com.app.service.CustomerService;
 import com.app.service.EmailService;
 import com.app.service.ImageHandlingService;
 import com.app.service.OffersService;
+
+import net.bytebuddy.asm.Advice.Return;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -41,19 +46,22 @@ import org.springframework.web.multipart.MultipartFile;
 public class CustomerController {
 	
 	@Autowired
-	CustomerService customerService;
+	private CustomerService customerService;
 	
 	@Autowired
-	AccountTransactionsService accountTransactionsService;
+	private AccountTransactionsService accountTransactionsService;
 	
 	@Autowired
-	EmailService emailService;
+	private EmailService emailService;
 	
 	@Autowired
-	OffersService offersService;
+	private OffersService offersService;
 	
 	@Autowired 
-	BeneficiaryService beneficiaryService;
+	private BeneficiaryService beneficiaryService;
+	
+	@Autowired 
+	private CustomerSavingsAccountService customerSavingsAccountService;
 	
 	@Autowired
 	@Qualifier("image_db")
@@ -77,16 +85,34 @@ public class CustomerController {
 
 //	Get all transactions of a customer
 	@GetMapping("/Account/{customerId}")
-	List<AccountTransactions> getAllTransaction(@PathVariable Long customerId){
+	List<AccountTransactionsDTO> getAllTransaction(@PathVariable Long customerId){
 		System.out.println("in get all transaction by customer id in customer controller");
 		return accountTransactionsService.getAllTransactionDetails(customerId);
 	}
 	
 //	Pagination to get last 3 transactions set - INTERNAL SERVER ERROR 500
-//	@GetMapping("/transactions/{customerId}")
+	@GetMapping("/Account/paginate/{customerId}")
+	public ResponseEntity<?> getAllEmpsPaginated(@PathVariable Long customerId,  @RequestParam(defaultValue = "0", required = false) int pageNumber,
+			@RequestParam(defaultValue = "3", required = false) int pageSize) {
+		System.out.println("in get paged transactions of employee id " + customerId + " " + pageNumber + " " + pageSize);
+		List<AccountTransactionsDTO> list = accountTransactionsService.getAllTransactionDetailsByCustomer(customerId, pageNumber, pageSize);
+		if (list.isEmpty())
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		// customer transactions found
+		return ResponseEntity.ok(list);
+	}
+
 
 
 	//Get account balance
+	@GetMapping("/Account/balance/{customerId}")
+	public BigDecimal getAccountBalance(@PathVariable Long customerId){
+		System.out.println("in get account balance of customer id "+customerId);
+		return customerSavingsAccountService.getAccountBalanceByCustomerId(customerId);
+	}
+	
+	
+	
 //	@GetMapping("/FundTransfer/WithdrawMoney6")
 
 	

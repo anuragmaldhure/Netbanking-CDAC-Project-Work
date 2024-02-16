@@ -17,10 +17,10 @@ import com.app.entities.CustomerDetails;
 public class BeneficiaryServiceImpl implements BeneficiaryService {
 	
 	@Autowired
-	BeneficiaryDao beneficiaryDao;
+	private BeneficiaryDao beneficiaryDao;
 	
 	@Autowired
-	CustomerDao customerDao;
+	private CustomerDao customerDao;
 
 	@Override
 	public Beneficiary addBenDetails(Beneficiary beneficiary) {

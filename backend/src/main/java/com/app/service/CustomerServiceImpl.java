@@ -16,7 +16,7 @@ import com.app.entities.CustomerDetails;
 @Transactional
 public class CustomerServiceImpl implements CustomerService{
 	@Autowired
-	CustomerDao customerDao;
+	private CustomerDao customerDao;
 	
 	
 	@Override

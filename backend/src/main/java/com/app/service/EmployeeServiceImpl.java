@@ -13,7 +13,7 @@ import com.app.entities.BankEmployeeDetails;
 @Transactional
 public class EmployeeServiceImpl implements EmployeeService{
 	@Autowired
-	EmployeeDao empDao;
+	private EmployeeDao empDao;
 	
 	@Override
 	public Optional<BankEmployeeDetails> getEmpDetails(Long empId) {

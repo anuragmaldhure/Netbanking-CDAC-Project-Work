@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+
+import java.math.BigDecimal;
 import java.util.Random;
 
 @Service
@@ -53,8 +55,7 @@ public class EmailService {
             		+ "account and carry put your transactions (Withdraw/ Depoit/ Send Money). In case of any issues, contact us via contact details given in Other Services / Contact Us "
             		+ "section."
             		+"\n"
-            		+"Happy Banking :)"
-            		+"\n"
+            		+"\nHappy Banking :)"
             		+"\n"+ "© Aarna Bank ";
             helper.setText(messageString);
 
@@ -78,6 +79,32 @@ public class EmailService {
             		+ "submitted data!! Please login to your netbanking account and contact us via contact details given in Other Services / Contact Us "
             		+ "section."+"Please complete your KYC to carry out transaction (Withdraw/ Depoit/ Send Money)"
             		+"\n" + "© Aarna Bank ";
+            helper.setText(messageString);
+
+            javaMailSender.send(message);
+            return messageString;
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            // Handle exception
+        }
+        return null;
+    }
+    
+    public String sendMoneyDepositMail(String userEmail, String FirstName, String LastName, Double amountDeposited,
+    		Long employeeId) {
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setTo(userEmail);
+            helper.setSubject("Aarna Bank : ₹ "+ amountDeposited +" deposited in your bank account!");
+            String messageString = "Dear "+ FirstName + " "+ LastName +", Our bank employee wiht id : " + employeeId + " has successfully deposited  ₹"+ amountDeposited +" in your bank account!\""
+            		+ " In case of any suspicious activity, contact us."
+            		+"\n"
+            		+"\nAlso checkout our latest offers crafted just for for you in Offers Section."
+            		+"\n"
+            		+"\nHappy Banking :)"
+            		+"\n"+ "© Aarna Bank ";
             helper.setText(messageString);
 
             javaMailSender.send(message);

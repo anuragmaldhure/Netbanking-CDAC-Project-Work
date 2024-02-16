@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.app.dao.CustomerDao;
-import com.app.dao.CustomerSavingsAccountServiceDao;
+import com.app.dao.CustomerSavingsAccountDao;
 import com.app.dao.OffersDao;
 import com.app.entities.CustomerDetails;
 import com.app.entities.Offers;
@@ -18,13 +18,10 @@ import com.app.entities.Offers;
 @Transactional
 public class OffersServiceImpl implements OffersService {
 	@Autowired
-	OffersDao offersDao;
+	private OffersDao offersDao;
 	
 	@Autowired
-	CustomerDao customerDao;
-	
-	@Autowired
-	CustomerSavingsAccountServiceDao customerSavingsAccountServiceDao;
+	private CustomerSavingsAccountDao customerSavingsAccountServiceDao;
 
 	@Override
 	public List<Offers> getAllOffersAvailableForMe(Long customerId) {
