@@ -1,47 +1,65 @@
-import '../../node_modules/bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+// CustomerTopNavigationBar.jsx
 
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Badge, IconButton, InputBase, useTheme } from "@mui/material";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
+import SearchIcon from "@mui/icons-material/Search";
+import "./CustomerTopNavigationBar.css"; // Import the CSS file
 
 function CustomerTopNavigationBar() {
-    return ( 
-            <nav class="navbar" style={{"background-color" : '#e3f2fd', "display" : 'block'}}>
-                <nav class="navbar navbar-expand-lg bg-body-tertiary">
-                <div class="container-fluid">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <a class="navbar-brand" href=".">Aarna Bank</a>
-                    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true" href=".">Welcome @Customer Name (ID : xxxxxx)</a>
-                        </li>
-                        <li class="nav-item">
-                        {/* <a class="nav-link active" aria-current="page" href=".">Home</a> */}
-                        <Link to="/Customer/Account" class="nav-link active" aria-current="page">
-                                Home
-                        </Link>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href=".">Offers Available for you</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href=".">Netbanking Tutorials</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href=".">Contact Us</a>
-                        </li>
-                    </ul>
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                    </div>
-                </div>
-                </nav>
-            </nav>
-    );
+  const theme = useTheme();
+
+  return (
+    <div className="customer-top-navbar-container">
+      {/* Logo and Navigation Links */}
+      <div className="logo-container">
+        <span className="logo">Aarna Bank</span>
+        <div className="nav-links-container">
+          <Link to="/Customer/Account" className="nav-link">
+            Home
+          </Link>
+          <span className="nav-link">Offers Available</span>
+          <span className="nav-link">Netbanking Tutorials</span>
+          <span className="nav-link">Contact Us</span>
+        </div>
+      </div>
+
+      {/* Search Bar */}
+      <div className="search-bar">
+        <InputBase placeholder="Search" className="search-input" />
+        <IconButton type="button" className="search-icon">
+          <SearchIcon />
+        </IconButton>
+      </div>
+
+      {/* User Icons */}
+      <div className="user-icons-container">
+        <IconButton className="user-icon">
+          {theme.palette.mode === "dark" ? (
+            <DarkModeOutlinedIcon />
+          ) : (
+            <LightModeOutlinedIcon />
+          )}
+        </IconButton>
+        <IconButton className="user-icon">
+          <Badge variant="dot" color="secondary">
+            <NotificationsOutlinedIcon />
+          </Badge>
+        </IconButton>
+        <IconButton  className="user-icon">
+          <SettingsOutlinedIcon />
+        </IconButton>
+        <IconButton  className="user-icon">
+          <PersonOutlinedIcon />
+        </IconButton>
+      </div>
+    </div>
+  );
 }
 
 export default CustomerTopNavigationBar;

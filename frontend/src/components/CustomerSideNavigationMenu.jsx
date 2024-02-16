@@ -1,89 +1,107 @@
-import '../../node_modules/bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Typography,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import { Link } from 'react-router-dom';
+function CustomerSideNavigationMenu() {
+  const location = useLocation();
+  const [openSection, setOpenSection] = useState(null);
 
-function CustomerSideNavigationMenu() { //ffc to generate
-    return ( 
-        <div>
-            <div className="accordion" id="accordionExample">
-                <div className="accordion-item">
-                    <h2 className="accordion-header" id="headingOne">
-                        <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            Accounts
-                        </button>
-                    </h2>
-                    <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                        <div className="accordion-body">
-                            <div className="list-group">
-                                <Link to="/Customer/Account" className="list-group-item list-group-item-action list-group-item-primary">
-                                    View Account Balance
-                                </Link>
-                                <a href="." className="list-group-item list-group-item-action list-group-item-secondary">Account Statement</a>
-                                <a href="." className="list-group-item list-group-item-action list-group-item-success">KYC Details</a>
-                                <a href="." className="list-group-item list-group-item-action list-group-item-danger">Close Account</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  const isActiveLink = (path) => {
+    return location.pathname === path;
+  };
 
-                <div className="accordion-item">
-                    <h2 className="accordion-header" id="headingTwo">
-                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Funds Transfer
-                        </button>
-                    </h2>
-                    <div id="collapseTwo" className="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                        <div className="accordion-body">
-                            <div className="list-group">
-                                <a href="." className="list-group-item list-group-item-action list-group-item-primary">Transfer within bank</a>
-                                <a href="." className="list-group-item list-group-item-action list-group-item-secondary">Add Beneficiary</a>
-                                <a href="." className="list-group-item list-group-item-action list-group-item-success">View / Delete Beneficiary</a>
-                                <Link to="/Customer/FundTransfer/WithdrawMoney6" className="list-group-item list-group-item-action list-group-item-warning">
-                                    Withdraw Money
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  const handleSectionToggle = (section) => {
+    setOpenSection((prevSection) => (prevSection === section ? null : section));
+  };
 
-                <div className="accordion-item">
-                    <h2 className="accordion-header" id="headingThree">
-                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            Other Services
-                        </button>
-                    </h2>
-                    <div id="collapseThree" className="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                        <div className="accordion-body">
-                            <div className="list-group">
-                                <a href="." className="list-group-item list-group-item-action list-group-item-primary">Message / Email Alerts</a>
-                                <a href="." className="list-group-item list-group-item-action list-group-item-light">Account Statement</a>
-                                <a href="." className="list-group-item list-group-item-action list-group-item-success">Change password</a>
-                                <a href="." className="list-group-item list-group-item-action list-group-item-info">Offers Available for me</a>
-                                <a href="." className="list-group-item list-group-item-action list-group-item-warning">Contact Us</a>
-                                <a href="." className="list-group-item list-group-item-action list-group-item-dark">Netbanking Tutorials</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  const renderAccordionItem = (sectionHeading, links) => (
+    <Accordion
+      key={sectionHeading}
+      expanded={openSection === sectionHeading}
+      onChange={() => handleSectionToggle(sectionHeading)}
+    >
+      <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ p: 1 }}>
+        <Typography>{sectionHeading}</Typography>
+      </AccordionSummary>
+      <AccordionDetails sx={{ p: 1 }}>
+        <List>
+          {links.map((link) => (
+            <ListItem key={link.to} component={Link} to={link.to} sx={{ p: 1 }}>
+              <ListItemButton
+                className={isActiveLink(link.to) ? "active" : ""}
+                sx={{ p: 1 }}
+              >
+                <ListItemText primary={link.label} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </AccordionDetails>
+    </Accordion>
+  );
 
-                <div className="accordion-item">
-                    <h2 className="accordion-header" id="headingFour">
-                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                            Logout
-                        </button>
-                    </h2>
-                    <div id="collapseFour" className="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
-                        <div className="accordion-body">
-                            <div className="list-group">
-                                <a href="." className="list-group-item list-group-item-action list-group-item-danger">Log Out</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-     );
+  const sections = [
+    {
+      heading: "Accounts",
+      links: [
+        { to: "/Customer/Account", label: "View Account Balance" },
+        {
+          to: "/Customer/Account/ViewAccountStatement9",
+          label: "Account Statement",
+        },
+        { to: "/Customer/Account/KYCDetails12", label: "KYC Details" },
+        { to: "/Customer/Account/CloseAccount18", label: "Close Account" },
+      ],
+    },
+    {
+      heading: "Funds Transfer",
+      links: [
+        { to: "/", label: "Transfer within bank" },
+        { to: "/", label: "Add Beneficiary" },
+        { to: "/", label: "View / Delete Beneficiary" },
+        {
+          to: "/Customer/FundTransfer/WithdrawMoney6",
+          label: "Withdraw Money",
+        },
+      ],
+    },
+    {
+      heading: "Other Services",
+      links: [
+        { to: "/", label: "Message / Email Alerts" },
+        { to: "/", label: "Account Statement" },
+        {
+          to: "/Customer/OtherServices/ChangePassword",
+          label: "Change password",
+        },
+        { to: "/", label: "Offers Available for me" },
+        { to: "/", label: "Contact Us" },
+        { to: "/", label: "Netbanking Tutorials" },
+      ],
+    },
+    {
+      heading: "Logout",
+      links: [{ to: "/", label: "Log Out" }],
+    },
+  ];
+
+  return (
+    <div>
+      {sections.map((section) =>
+        renderAccordionItem(section.heading, section.links)
+      )}
+    </div>
+  );
 }
 
 export default CustomerSideNavigationMenu;

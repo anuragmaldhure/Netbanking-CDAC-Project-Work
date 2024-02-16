@@ -1,0 +1,63 @@
+.signup {
+    background: #fff;
+  }
+  .signup .text {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: auto;
+  }
+  .signup .text h6 {
+    color: #00bf7f;
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
+  .signup .text h2 {
+    color: #111;
+    font-weight: 700;
+    font-size: 45px;
+  }
+  .signup .text p {
+    font-weight: 400;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+  }
+  .signup .text a {
+    background: #111;
+    font-weight: 500;
+    padding: 15px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    color: #fff;
+  }
+  
+  .signup .text a {
+    background: transparent; /* Change button background to transparent */
+    border: 2px solid #111; /* Add border */
+    color: #111; /* Set text color */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transition effect */
+  }
+  
+  .signup .text a:hover {
+    background: #111; /* Change background on hover */
+    color: #fff; /* Change text color on hover */
+  }
+  
+  
+  
+  @media screen and (max-width: 988px) {
+    /* Adjust responsive styles for the SignUp section */
+    .signup .text h6 {
+      font-size: 14px;
+    }
+    .signup .text h2 {
+      font-size: 25px;
+    }
+    .signup .text p {
+      font-size: 14px;
+      padding: 15px 0;
+    }
+    /* Additional responsive styles as per the original styles.css */
+  }
