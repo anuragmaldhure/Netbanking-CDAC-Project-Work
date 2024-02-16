@@ -5,6 +5,7 @@ import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,10 +15,13 @@ import com.app.dto.AccountTransactionsDTO;
 import com.app.entities.*;
 import com.app.service.AccountTransactionsService;
 import com.app.service.BeneficiaryService;
+import com.app.service.CustomerSavingsAccountService;
 import com.app.service.CustomerService;
 import com.app.service.EmailService;
 import com.app.service.ImageHandlingService;
 import com.app.service.OffersService;
+
+import net.bytebuddy.asm.Advice.Return;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -55,6 +59,9 @@ public class CustomerController {
 	
 	@Autowired 
 	private BeneficiaryService beneficiaryService;
+	
+	@Autowired 
+	private CustomerSavingsAccountService customerSavingsAccountService;
 	
 	@Autowired
 	@Qualifier("image_db")
@@ -98,6 +105,14 @@ public class CustomerController {
 
 
 	//Get account balance
+	@GetMapping("/Account/balance/{customerId}")
+	public BigDecimal getAccountBalance(@PathVariable Long customerId){
+		System.out.println("in get account balance of customer id "+customerId);
+		return customerSavingsAccountService.getAccountBalanceByCustomerId(customerId);
+	}
+	
+	
+	
 //	@GetMapping("/FundTransfer/WithdrawMoney6")
 
 	
