@@ -25,7 +25,17 @@ import CustomerTopNavigationBar from "../../components/CustomerTopNavigationBar"
 const KYCDetails12 = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    name: "John Doe",
+    firstName: null,
+    lastName: null,
+    occupation: null,
+    annualIncome: null,
+    mobileNumber: null,
+    emailId: null,
+    address: null,
+    city: null,
+    state:null,
+    pincode:null,
+    nationality:null,
     gender: "Male",
     aadharCard: null,
     panCard: null,
@@ -76,7 +86,7 @@ const KYCDetails12 = () => {
                     <TextField
                       label="First Name"
                       fullWidth
-                      value={formData.name}
+                      value={formData.firstName}
                       onChange={(e) =>
                         handleInputChange("name", e.target.value)
                       }
@@ -87,7 +97,7 @@ const KYCDetails12 = () => {
                     <TextField
                       label="Last Name"
                       fullWidth
-                      value={formData.name}
+                      value={formData.lastName}
                       onChange={(e) =>
                         handleInputChange("name", e.target.value)
                       }
@@ -98,7 +108,7 @@ const KYCDetails12 = () => {
                     <TextField
                       label="Occupation"
                       fullWidth
-                      value={formData.name}
+                      value={formData.occupation}
                       onChange={(e) =>
                         handleInputChange("name", e.target.value)
                       }
@@ -109,7 +119,7 @@ const KYCDetails12 = () => {
                     <TextField
                       label="Annual Income"
                       fullWidth
-                      value={formData.name}
+                      value={formData.annualIncome}
                       onChange={(e) =>
                         handleInputChange("name", e.target.value)
                       }
@@ -120,7 +130,7 @@ const KYCDetails12 = () => {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
                         label="Birthdate"
-                        value={formData.birthdate}
+                        value={formData.birthDate}
                         onChange={(date) =>
                           handleInputChange("birthdate", date)
                         }
@@ -138,7 +148,7 @@ const KYCDetails12 = () => {
                     <TextField
                       label="Mobile Number"
                       fullWidth
-                      value={formData.name}
+                      value={formData.mobileNumber}
                       onChange={(e) =>
                         handleInputChange("name", e.target.value)
                       }
@@ -149,7 +159,7 @@ const KYCDetails12 = () => {
                     <TextField
                       label="Email ID"
                       fullWidth
-                      value={formData.name}
+                      value={formData.emailId}
                       onChange={(e) =>
                         handleInputChange("name", e.target.value)
                       }
@@ -160,7 +170,7 @@ const KYCDetails12 = () => {
                     <TextField
                       label="Address"
                       fullWidth
-                      value={formData.name}
+                      value={formData.address}
                       onChange={(e) =>
                         handleInputChange("name", e.target.value)
                       }
@@ -171,7 +181,7 @@ const KYCDetails12 = () => {
                     <TextField
                       label="City"
                       fullWidth
-                      value={formData.name}
+                      value={formData.city}
                       onChange={(e) =>
                         handleInputChange("name", e.target.value)
                       }
@@ -182,7 +192,7 @@ const KYCDetails12 = () => {
                     <TextField
                       label="State"
                       fullWidth
-                      value={formData.name}
+                      value={formData.state}
                       onChange={(e) =>
                         handleInputChange("name", e.target.value)
                       }
@@ -193,7 +203,7 @@ const KYCDetails12 = () => {
                     <TextField
                       label="Pincode"
                       fullWidth
-                      value={formData.name}
+                      value={formData.pincode}
                       onChange={(e) =>
                         handleInputChange("name", e.target.value)
                       }
@@ -204,7 +214,7 @@ const KYCDetails12 = () => {
                     <TextField
                       label="Nationality"
                       fullWidth
-                      value={formData.name}
+                      value={formData.nationality}
                       onChange={(e) =>
                         handleInputChange("name", e.target.value)
                       }

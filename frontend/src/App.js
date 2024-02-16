@@ -25,6 +25,7 @@ import ViewAccountStatement9 from './pages/Customer/ViewAccountStatement9';
 import KYCDetails12 from './pages/Customer/KYCDetails12';
 
 import CloseAccount18 from './pages/Customer/CloseAccount18';
+import AddBeneficiary24 from './pages/Customer/AddBeneficiary24';
 
 
 
@@ -42,6 +43,7 @@ function App() {
         <Route path='/Customer/Account/KYCDetails12' element={<KYCDetails12 />} />
         <Route path='/Customer/Account/CloseAccount18' element={<CloseAccount18/>} />
 
+        <Route path='/Customer/FundTransfer/AddBeneficiary24' element={<AddBeneficiary24 />} />
         <Route path='/Customer/FundTransfer/WithdrawMoney6' element={<WithdrawMoney6 />} />
         <Route path='/Customer/FundTransfer/WithdrawMoney7' element={<WithdrawMoney7 />} />
         <Route path='/Customer/FundTransfer/WithdrawMoney8' element={<WithdrawMoney8 />} />

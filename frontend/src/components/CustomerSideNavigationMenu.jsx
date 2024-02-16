@@ -67,7 +67,7 @@ function CustomerSideNavigationMenu() {
       heading: "Funds Transfer",
       links: [
         { to: "/", label: "Transfer within bank" },
-        { to: "/", label: "Add Beneficiary" },
+        { to: "/Customer/FundTransfer/AddBeneficiary24", label: "Add Beneficiary" },
         { to: "/", label: "View / Delete Beneficiary" },
         {
           to: "/Customer/FundTransfer/WithdrawMoney6",

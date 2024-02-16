@@ -6,7 +6,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px;
-  background-color: #112d32; 
+  background-color: #112d32;
   color: #fff; /* White text color */
 }
 
@@ -64,7 +64,6 @@
   color: #fff;
   cursor: pointer;
 }
-
 /* User Icons styles */
 .user-icons-container {
   display: flex;
@@ -80,5 +79,5 @@
 }
 
 .user-icon:hover {
-  color: #ffd700; /* Gold color on hover */
+  color: yellow; /* Set hover color to yellow */
 }
