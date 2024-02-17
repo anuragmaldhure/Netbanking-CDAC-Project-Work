@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,25 +32,30 @@ public class Beneficiary {
 
     @Column(name = "Beneficiary_Last_Name", nullable = false)
     private String beneficiaryLastName;
+    
+    //******************************************Send Money
+	@OneToOne
+	@JoinColumn(name = "Beneficiary_Account_Number", referencedColumnName = "Account_Number", 
+		nullable = false) // Foreign key referencing account number   
+    private CustomerDetails beneficiaryAccountNumber;
 
-    @Column(name = "Beneficiary_Account_Number", unique = true, nullable = false)
-    private String beneficiaryAccountNumber;
-
-    @Column(name = "Beneficiary_Mobile_Number")
-    private String beneficiaryMobileNumber;
+    @Column(name = "Beneficiary_Email")
+    private String beneficiaryEmail;
 
     @Column(name = "Beneficiary_Timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date beneficiaryTimestamp;
 
     @ManyToOne
-    @JoinColumn(name = "Customer_ID", nullable = false)
-    private CustomerDetails customer;
+    @JoinColumn(name = "Customer_ID", referencedColumnName = "Customer_ID",
+    	nullable = false)  // Foreign key referencing customerId
+    private CustomerDetails customerId;
     
+    //******************************************Send Money
 //    @ManyToOne
 //    @JoinColumn(name = "Customer_Username", referencedColumnName = "Username", nullable = false) // Foreign key referencing username
 //    private CustomerDetails customerByUsername;
-//
+
 //    @ManyToOne
 //    @JoinColumn(name = "Customer_ID", referencedColumnName = "Customer_ID", nullable = false) // Foreign key referencing customerId
 //    private CustomerDetails customerByCustomerId;
@@ -89,44 +95,45 @@ public class Beneficiary {
         this.beneficiaryLastName = beneficiaryLastName;
     }
 
-    public String getBeneficiaryAccountNumber() {
-        return beneficiaryAccountNumber;
-    }
+    //******************************************Send Money  
 
-    public void setBeneficiaryAccountNumber(String beneficiaryAccountNumber) {
-        this.beneficiaryAccountNumber = beneficiaryAccountNumber;
-    }
+    public CustomerDetails getBeneficiaryAccountNumber() {
+		return beneficiaryAccountNumber;
+	}
 
-    public String getBeneficiaryMobileNumber() {
-        return beneficiaryMobileNumber;
-    }
+	public void setBeneficiaryAccountNumber(CustomerDetails beneficiaryAccountNumber) {
+		this.beneficiaryAccountNumber = beneficiaryAccountNumber;
+	}
 
-    public void setBeneficiaryMobileNumber(String beneficiaryMobileNumber) {
-        this.beneficiaryMobileNumber = beneficiaryMobileNumber;
-    }
+    public String getBeneficiaryEmail() {
+		return beneficiaryEmail;
+	}
 
-    public Date getBeneficiaryTimestamp() {
+	public void setBeneficiaryEmail(String beneficiaryEmail) {
+		this.beneficiaryEmail = beneficiaryEmail;
+	}
+
+	public CustomerDetails getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(CustomerDetails customerId) {
+		this.customerId = customerId;
+	}
+
+	public Date getBeneficiaryTimestamp() {
         return beneficiaryTimestamp;
     }
 
     public void setBeneficiaryTimestamp(Date beneficiaryTimestamp) {
         this.beneficiaryTimestamp = beneficiaryTimestamp;
     }
+    
+	public CustomerDetails getCustomer() {
+		return customerId;
+	}
 
-//	public CustomerDetails getCustomerByUsername() {
-//		return customerByUsername;
-//	}
-//
-//	public void setCustomerByUsername(CustomerDetails customerByUsername) {
-//		this.customerByUsername = customerByUsername;
-//	}
-//
-//	public CustomerDetails getCustomerByCustomerId() {
-//		return customerByCustomerId;
-//	}
-//
-//	public void setCustomerByCustomerId(CustomerDetails customerByCustomerId) {
-//		this.customerByCustomerId = customerByCustomerId;
-//	}
-
+	public void setCustomer(CustomerDetails customer) {
+		this.customerId = customer;
+	}
 }

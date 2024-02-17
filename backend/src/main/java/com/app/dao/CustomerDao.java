@@ -12,7 +12,7 @@ import com.app.entities.CustomerDetails;
 public interface CustomerDao extends JpaRepository<CustomerDetails, Long>{
 	// add a finder : JPQL : select e from Employee e where e.dept.id=:id
 		Optional<CustomerDetails> findByCustomerId(Long customerId);
-
-//		void saveOrUpdate(CustomerDetails customer);
+		
+		Optional<CustomerDetails> findByAccountNumber(String accountNumber);
 		
 }

@@ -12,6 +12,7 @@ import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 
 import com.app.dto.AccountTransactionsDTO;
+import com.app.dto.AddBeneficiaryDTO;
 import com.app.entities.*;
 import com.app.service.AccountTransactionsService;
 import com.app.service.BeneficiaryService;
@@ -268,19 +269,37 @@ public class CustomerController {
 	}
 
 	//Add Beneficiary
-	@PostMapping("/FundTransfer/AddBenificiary24")
-	public Beneficiary addEmpDetails(@RequestBody Beneficiary beneficiary) {
-		System.out.println("in add beneficiary customer controller : " + beneficiary);
-		return beneficiaryService.addBenDetails(beneficiary);
+	@PostMapping("/FundTransfer/AddBenificiary24/{customerId}")
+	public ResponseEntity<String> addEmpDetails(@RequestBody AddBeneficiaryDTO beneficiaryDTO, Long customerId) {
+		System.out.println("in add beneficiary customer controller : " + beneficiaryDTO +" for customer id :"+ customerId);
+		try {
+			Beneficiary beneficiary =  beneficiaryService.addBeneficiaryDetails(beneficiaryDTO,customerId);
+			Optional<CustomerDetails> customer = customerService.getCustomerDetailsByCustomerId(customerId);
+			
+			
+			emailService.sendMoneyMail(customer.get().getEmailId(), 
+					customer.get().getAccountHolderFirstName(),
+					customer.get().getAccountHolderLastName(),
+					beneficiary.getBeneficiaryFirstName(),
+					beneficiary.getBeneficiaryLastName(),
+					beneficiary.getBeneficiaryAccountNumber()
+			);
+			return ResponseEntity.ok("Successfully added " + beneficiary + " to account of customer id : "+ customerId);
+		}
+		catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in adding beneficiary...");
+		}
 	}
-
-	//Get All Beneficiaries
-	@GetMapping("/FundTransfer/ViewAllBeneficiaries/{customerId}")
-	List<Beneficiary> getAllBenificiaries(@PathVariable Long customerId){
-		System.out.println("in get all beinifiaries by customer id in customer controller");
-		return beneficiaryService.getAllBenificiariesDetails(customerId);
-	}
-	
+//
+//	//Get All Beneficiaries
+//	@GetMapping("/FundTransfer/ViewAllBeneficiaries/{customerId}")
+//	List<Beneficiary> getAllBenificiaries(@PathVariable Long customerId){
+//		System.out.println("in get all beinifiaries by customer id in customer controller");
+//		return beneficiaryService.getAllBenificiariesDetails(customerId);
+//	}
+//	
 	//Get Beneficiary
 //	@GetMapping("/FundTransfer/ViewBeneficiaryDetails/{benId}")
 

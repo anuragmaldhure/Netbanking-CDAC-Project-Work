@@ -10,10 +10,9 @@ import com.app.entities.Beneficiary;
 import com.app.entities.CustomerDetails;
 
 public interface BeneficiaryDao extends JpaRepository<Beneficiary, Long>{
-
-	List<Beneficiary> findByCustomer(Optional<CustomerDetails> customer);
+//
+//	List<Beneficiary> findByCustomer(CustomerDetails customer);
 
 	Optional<Beneficiary> findByBeneficiaryAccountNumber(String accountNumber);
 	
-//	List<Beneficiary> findByCustomerByUsername(CustomerDetails customerByUsername);
 }

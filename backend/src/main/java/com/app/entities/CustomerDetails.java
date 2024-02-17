@@ -25,9 +25,6 @@ public class CustomerDetails {
 
     @Column(name = "Username", unique = true, nullable = false)
     private String username;
-//    
-//    @OneToOne(mappedBy = "customerByUsername")
-//    private Beneficiary customerByUsername;
     
 	@Column(name = "Password", nullable = false)
     private String password;
@@ -93,9 +90,6 @@ public class CustomerDetails {
     @Column(name = "KYC_Rejected_Timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date kycRejectedTimestamp;
-
-    @Column(name = "Savings_Account_Number")
-    private String savingsAccountNumber;
 
     @Column(name = "Date_of_Birth")
     private Date dateOfBirth;
@@ -347,14 +341,6 @@ public class CustomerDetails {
 
 	public void setKycRejectedTimestamp(Date kycRejectedTimestamp) {
 		this.kycRejectedTimestamp = kycRejectedTimestamp;
-	}
-
-	public String getSavingsAccountNumber() {
-		return savingsAccountNumber;
-	}
-
-	public void setSavingsAccountNumber(String savingsAccountNumber) {
-		this.savingsAccountNumber = savingsAccountNumber;
 	}
 
 	public Date getDateOfBirth() {
