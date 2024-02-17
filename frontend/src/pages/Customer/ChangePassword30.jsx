@@ -24,8 +24,13 @@ const ChangePassword30 = () => {
   const handleDialogClose = () => {
     setOpenDialog(false);
   };
-
   const handleSubmit = () => {
+    // Validate if any of the fields is empty
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      toast.error("Please enter all fields");
+      return;
+    }
+
     // Perform password validation logic here
     // For demonstration purposes, let's assume the validation is checking if the current password is "testPassword123"
     if (currentPassword !== "testPassword123") {

@@ -20,12 +20,18 @@ function CustomerTopNavigationBar() {
       <div className="logo-container">
         <span className="logo">Aarna Bank</span>
         <div className="nav-links-container">
-          <Link to="/Customer/Account" className="nav-link">
+          <Link to="/Customer/Account/ViewAccountBalance" className="nav-link">
             Home
           </Link>
-          <span className="nav-link">Offers Available</span>
-          <span className="nav-link">Netbanking Tutorials</span>
-          <span className="nav-link">Contact Us</span>
+          <Link to="/Customer/OtherServices/OffersAvailableForMe31" className="nav-link">
+            Offers Available
+            </Link>
+          <Link to="/Customer/OtherServices/NetBankingTutorials38" className="nav-link">
+            Netbanking Tutorials
+            </Link>
+          <Link to="/Customer/OtherServices/ContactUs37" className="nav-link">
+            Contact Us
+            </Link>
         </div>
       </div>
 
@@ -51,10 +57,10 @@ function CustomerTopNavigationBar() {
             <NotificationsOutlinedIcon />
           </Badge>
         </IconButton>
-        <IconButton  className="user-icon">
+        <IconButton className="user-icon">
           <SettingsOutlinedIcon />
         </IconButton>
-        <IconButton  className="user-icon">
+        <IconButton className="user-icon">
           <PersonOutlinedIcon />
         </IconButton>
       </div>
