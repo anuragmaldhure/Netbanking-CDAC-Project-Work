@@ -54,7 +54,7 @@ function CustomerSideNavigationMenu() {
     {
       heading: "Accounts",
       links: [
-        { to: "/Customer/Account", label: "View Account Balance" },
+        { to: "/Customer/Account/ViewAccountBalance", label: "View Account Balance" },
         {
           to: "/Customer/Account/ViewAccountStatement9",
           label: "Account Statement",
@@ -66,9 +66,18 @@ function CustomerSideNavigationMenu() {
     {
       heading: "Funds Transfer",
       links: [
-        { to: "/", label: "Transfer within bank" },
-        { to: "/Customer/FundTransfer/AddBeneficiary24", label: "Add Beneficiary" },
-        { to: "/", label: "View / Delete Beneficiary" },
+        {
+          to: "/Customer/FundTransfer/TransferWithinBank20",
+          label: "Transfer within bank",
+        },
+        {
+          to: "/Customer/FundTransfer/AddBeneficiary24",
+          label: "Add Beneficiary",
+        },
+        {
+          to: "/Customer/FundTransfer/AddDeleteBeneficiary24  ",
+          label: "View / Delete Beneficiary",
+        },
         {
           to: "/Customer/FundTransfer/WithdrawMoney6",
           label: "Withdraw Money",
@@ -78,15 +87,19 @@ function CustomerSideNavigationMenu() {
     {
       heading: "Other Services",
       links: [
-        { to: "/", label: "Message / Email Alerts" },
-        { to: "/", label: "Account Statement" },
         {
-          to: "/Customer/OtherServices/ChangePassword",
+          to: "/Customer/OtherServices/ChangePassword30",
           label: "Change password",
         },
-        { to: "/", label: "Offers Available for me" },
-        { to: "/", label: "Contact Us" },
-        { to: "/", label: "Netbanking Tutorials" },
+        {
+          to: "/Customer/OtherServices/OffersAvailableForMe31",
+          label: "Offers Available for me",
+        },
+        { to: "/Customer/OtherServices/ContactUs37", label: "Contact Us" },
+        {
+          to: "/Customer/OtherServices/NetBankingTutorials38",
+          label: "Netbanking Tutorials",
+        },
       ],
     },
     {

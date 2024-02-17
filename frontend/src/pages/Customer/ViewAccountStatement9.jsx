@@ -61,12 +61,16 @@ const ViewAccountStatement9 = () => {
         <CustomerSideNavigationMenu />
         <Box m="15px">
           <Helmet>
-            <title>Contacts | ReactDashX</title>
+            <title>Account Statement</title>
           </Helmet>
-          <Header title="CONTACTS" subtitle="List of Contacts for Reference" />
+          <Header
+            title="Account Statement"
+            subtitle="List of Transactions a for Reference"
+          />
           <Box
             m="30px 0 0 0"
             height="75vh"
+            width="75vw"
             sx={{
               "& .MuiDataGrid-root": {
                 border: "none",

@@ -32,7 +32,6 @@ const CloseAccount18 = () => {
     console.log("Feedback:", feedback);
     handleCloseCloseAccount();
   };
-
   return (
     <div>
       <CustomerTopNavigationBar />

@@ -26,25 +26,6 @@ const AddBeneficiary24 = () => {
   // State for tracking the visibility of the "Add Beneficiary" dialog
   const [isAddBeneficiaryDialogOpen, setAddBeneficiaryDialogOpen] =
     useState(false);
- // Function to handle input changes
- const handleInputChange = (field, value) => {
-  setFormData((prevData) => ({
-    ...prevData,
-    [field]: value,
-  }));
-};
-
-// Function to handle the "Edit" button click
-const handleEditClick = () => {
-  setIsEditing(true);
-};
-
-// Function to handle the "Save" button click
-const handleSaveClick = () => {
-  setIsEditing(false);
-  // You can handle saving the form data (including file uploads) here
-  console.log("Form data saved:", formData);
-};
 
   // State for storing form data
   const [formData, setFormData] = useState({
@@ -57,6 +38,26 @@ const handleSaveClick = () => {
     beneficiaryBankIFSCCode: null,
     beneficiaryMobileNumber: null,
   });
+
+  // Function to handle input changes
+  const handleInputChange = (field, value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
+  };
+
+  // Function to handle the "Edit" button click
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  // Function to handle the "Save" button click
+  const handleSaveClick = () => {
+    setIsEditing(false);
+    // You can handle saving the form data (including file uploads) here
+    console.log("Form data saved:", formData);
+  };
 
   // Function to handle the "Add Beneficiary" button click
   const handleAddBeneficiaryClick = () => {
@@ -91,8 +92,9 @@ const handleSaveClick = () => {
                 {/* Form fields */}
                 <Grid item xs={12} md={6} display="flex">
                   <Stack spacing={2} width="100%">
+                    {/* Beneficiary ID, Nickname, Account Number */}
                     <TextField
-                      label="Beneficiary Id "
+                      label="Beneficiary Id"
                       fullWidth
                       value={formData.beneficiaryId}
                       onChange={(e) =>
@@ -114,7 +116,7 @@ const handleSaveClick = () => {
                       margin="normal"
                     />
                     <TextField
-                      label="Account Number "
+                      label="Account Number"
                       fullWidth
                       value={formData.accountNumber}
                       onChange={(e) =>
@@ -126,7 +128,8 @@ const handleSaveClick = () => {
                     />
                   </Stack>
 
-                  <Stack spacing={2} width="100%">
+                  <Stack spacing={2} width="100%" ml={2}>
+                    {/* First Name, Last Name, Confirm Account Number */}
                     <TextField
                       label="First Name"
                       fullWidth
@@ -170,20 +173,6 @@ const handleSaveClick = () => {
                       onChange={(e) =>
                         handleInputChange(
                           "beneficiaryBankIFSCCode",
-                          e.target.value
-                        )
-                      }
-                      disabled={!isEditing}
-                      variant="outlined"
-                      margin="normal"
-                    />
-                    <TextField
-                      label="Beneficiary Mobile Number"
-                      fullWidth
-                      value={formData.beneficiaryMobileNumber}
-                      onChange={(e) =>
-                        handleInputChange(
-                          "beneficiaryMobileNumber",
                           e.target.value
                         )
                       }
