@@ -1,27 +1,20 @@
-// Import necessary libraries and components
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import { FaSearch, FaFileExport, FaPrint } from "react-icons/fa";
-import { useNavigate, useLocation } from "react-router-dom";
-import "./SearchCustomer48.css";
-
-import {
-  Navbar,
-  Nav,
-  Form,
-  FormControl,
-  Button,
-  Row,
-  Col,
-} from "react-bootstrap";
-
-import EmployeeSideNavigationMenu from "../../components/EmployeeSideNavigationMenu";
+import { Modal, Button } from "react-bootstrap";
 import EmployeeTopNavigationBar from "../../components/EmployeeTopNavigationBar";
-import "./SearchCustomer47.css";
+import EmployeeSideNavigationMenu from "../../components/EmployeeSideNavigationMenu";
 
-// Function to fetch customer data
-const fetchCustomerData = async () => {
-  // Simulate asynchronous data fetching (replace with actual API call)
-  return [
+const SearchCustomer48 = () => {
+  // Use the useParams hook to get the customer ID from the URL parameter
+  const { customerId } = useParams();
+  const [showModal, setShowModal] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState(null);
+  console.log({ customerId });
+
+  // Fetch customer details and uploaded documents based on the customer ID
+  // Replace this with your actual logic to fetch data
+  const allCustomerDetails = [
     {
       id: 101,
       accountNumber: 9876543210,
@@ -278,76 +271,28 @@ const fetchCustomerData = async () => {
       nationality: "American",
     },
   ];
-};
 
-// Define the SearchCustomer47 component
-function SearchCustomer47() {
-  const [customerDetails, setCustomerDetails] = useState([]);
-  const [filteredCustomers, setFilteredCustomers] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
-
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  // Fetch customer data on component mount
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchCustomerData();
-      setCustomerDetails(data);
-      setFilteredCustomers(data);
-    };
-
-    fetchData();
-  }, []);
-
-  // Calculate the index of the last and first item for pagination
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredCustomers.slice(
-    indexOfFirstItem,
-    indexOfLastItem
+  const customerDetails = allCustomerDetails.find(
+    (customer) => customer.id === Number(customerId)
   );
 
-  // Handle the search input change
-  const handleSearch = (e) => {
-    const query = e.target.value.toLowerCase();
+  if (!customerDetails) {
+    return <p>Customer not found</p>;
+  }
 
-    // Filter the customer details based on the search query
-    const filtered = customerDetails.filter((customer) => {
-      // Convert accountNumber to string before calling toLowerCase
-      const accountNumberString = String(customer.accountNumber);
-
-      return (
-        accountNumberString.toLowerCase().includes(query) ||
-        customer.customerName.toLowerCase().includes(query)
-      );
-    });
-
-    setFilteredCustomers(filtered);
-    setCurrentPage(1);
-    setSearchQuery(e.target.value);
-  };
-
-  // Function to navigate to the customer details page
-
-  const navigateToDetailsPage = (customerId) => {
-    if (customerDetails && currentPage && itemsPerPage) {
-      navigate(`/Employee/Accounts/SearchCustomer48/${customerId}`, {});
-    } else {
-      console.error("Some data is undefined. Unable to navigate.");
-    }
-  };
-
-  // Handle export button click
+  const uploadedDocuments = [
+    { id: 1, name: "AADHAR CARD", link: "/path/to/document1.pdf" },
+    { id: 2, name: "PAN CARD", link: "/path/to/document2.pdf" },
+    { id: 3, name: "PROFILE PHOTO", link: "/path/to/document3.pdf" },
+    // Add more documents as needed
+  ];
   const handleExport = () => {
     const csvContent =
-      "Customer ID,Account Number , Name , Balance , Mobile Number\n" +
-      customerDetails
+      "Customer ID,Account Number,Name,Balance,Occupation,Annual Income,Gender,Birth Date,Mobile Number,Email ID,Address,City,State,Pincode,Nationality\n" +
+      [customerDetails] // Wrap customerDetails in an array
         .map(
           (customer) =>
-            `${customer.id},${customer.accountNumber},${customer.customerName},${customer.balance},${customer.mobileNumber}`
+            `${customer.id},${customer.accountNumber},"${customer.customerName}",${customer.balance},"${customer.occupation}",${customer.annualIncome},"${customer.gender}",${customer.birthDate},${customer.mobileNumber},${customer.emailID},"${customer.address}","${customer.city}","${customer.state}",${customer.pincode},"${customer.nationality}"`
         )
         .join("\n");
 
@@ -365,115 +310,142 @@ function SearchCustomer47() {
   };
 
   // Handle print button click
-  const handlePrint = () => {
+  const handleDownload = () => {
     window.print();
   };
 
-  // Handle view details button click
-  const handleViewDetails = (customerId) => {
-    console.log(`View details for customer ${customerId}`);
+  const handleDocumentClick = (document) => {
+    setSelectedDocument(document);
+    setShowModal(true);
   };
 
-  // Handle pagination button click
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
+  const handleDownloadDocument = () => {
+    if (selectedDocument) {
+      // Implement logic to download the document
+      console.log("Downloading document:", selectedDocument.name);
+    }
+  };
   return (
-    <>
-      {/* Header section */}
+    <div>
       <EmployeeTopNavigationBar />
       <div className="d-flex">
         <EmployeeSideNavigationMenu />
-        <div className="customer-list-container">
-          {/* Updated Header */}
-          {/* Updated Header section */}
-          <Navbar bg="light" variant="light">
-            <Row className="align-items-center">
-              <Col>
-                <Form inline>
-                  <FormControl
-                    type="text"
-                    placeholder="Search"
-                    className="mr-sm-2"
-                    value={searchQuery}
-                    onChange={handleSearch}
-                  />
-                </Form>
-              </Col>
-              <Col>
-                <Button variant="outline-info" onClick={handleExport}>
-                  <FaFileExport /> Export
-                </Button>
-              </Col>
-              <Col>
-                <Button variant="outline-info" onClick={handlePrint}>
-                  <FaPrint /> Download
-                </Button>
-              </Col>
-            </Row>
-          </Navbar>
-          {/* ... (existing action buttons) */}
-          {/* Customer table section */}
-          <div className="table-responsive">
-            <table className="table table-bordered">
-              <thead className="thead-dark">
-                <tr>
-                  <th>Customer ID</th>
-                  <th>Account Number</th>
-                  <th>Name</th>
-                  <th>Balance</th>
-                  <th>Mobile Number</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentItems.map((customer) => (
-                  <tr key={customer.id}>
-                    <td>{customer.id}</td>
-                    <td>{customer.accountNumber}</td>
-                    <td>{customer.customerName}</td>
-                    <td>{customer.balance}</td>
-                    <td>{customer.mobileNumber}</td>
-                    <td>
-                      <button
-                        className="btn btn-primary"
-                        onClick={() => navigateToDetailsPage(customer.id)}
-                      >
-                        View Details
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <div className="customer-details-container mt-4 ml-4 p-4">
+          <h2 className="mb-3">Customer Details</h2>
+
+          <div className="row">
+            <div className="col-md-6">
+              <div className="mb-3">
+                <strong>ID:</strong> {customerDetails.id}
+              </div>
+              <div className="mb-3">
+                <strong>Account Number:</strong> {customerDetails.accountNumber}
+              </div>
+              <div className="mb-3">
+                <strong>Name :</strong> {customerDetails.customerName}
+              </div>
+              <div className="mb-3">
+                <strong>Balance :</strong> {customerDetails.balance}
+              </div>
+              <div className="mb-3">
+                <strong>Occupation :</strong> {customerDetails.occupation}
+              </div>
+              <div className="mb-3">
+                <strong>Annual Income :</strong> {customerDetails.annualIncome}
+              </div>
+            </div>
+
+            <div className="col-md-6">
+              <div className="mb-3">
+                <strong>Gender :</strong> {customerDetails.gender}
+              </div>
+              <div className="mb-3">
+                <strong>Birth Date :</strong> {customerDetails.birthDate}
+              </div>
+              <div className="mb-3">
+                <strong>Mobile Number :</strong> {customerDetails.mobileNumber}
+              </div>
+              <div className="mb-3">
+                <strong>Email Id :</strong> {customerDetails.emailID}
+              </div>
+              <div className="mb-3">
+                <strong>Address :</strong> {customerDetails.address}
+              </div>
+              <div className="mb-3">
+                <strong>City :</strong> {customerDetails.city}
+              </div>
+              <div className="mb-3">
+                <strong>State :</strong> {customerDetails.state}
+              </div>
+              <div className="mb-3">
+                <strong>Pincode :</strong> {customerDetails.pincode}
+              </div>
+              <div className="mb-3">
+                <strong>Nationality :</strong> {customerDetails.nationality}
+              </div>
+            </div>
           </div>
-          {/* Pagination section */}
-          <div className="pagination-container">
-            <ul className="pagination">
-              {[
-                ...Array(
-                  Math.ceil(filteredCustomers.length / itemsPerPage)
-                ).keys(),
-              ].map((number) => (
-                <li
-                  key={number + 1}
-                  className={`page-item ${
-                    currentPage === number + 1 ? "active" : ""
-                  }`}
-                >
+
+          <h3 className="mt-4 mb-3">Uploaded Documents</h3>
+          <ul className="list-group">
+            {uploadedDocuments.map((document) => (
+              <li
+                key={document.id}
+                className="list-group-item d-flex justify-content-between align-items-center"
+              >
+                <span>{document.name}</span>
+                <div>
                   <button
-                    onClick={() => paginate(number + 1)}
-                    className="page-link"
+                    className="btn btn-primary btn-sm mr-2"
+                    onClick={() => handleDocumentClick(document)}
                   >
-                    {number + 1}
+                    View Document
                   </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          {/* Document Modal */}
+          <Modal show={showModal} onHide={handleCloseModal}>
+            <Modal.Header closeButton>
+              <Modal.Title>
+                {selectedDocument && selectedDocument.name}
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              {/* Embed a PDF viewer or an iframe to display the document */}
+              {/* Example: */}
+              {/* <iframe src={selectedDocument && selectedDocument.link} title="Document Viewer" width="100%" height="500px"></iframe> */}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleCloseModal}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={handleDownloadDocument}>
+                Download
+              </Button>
+            </Modal.Footer> 
+            </Modal>
+            <div>
+              <button className="btn btn-success mr-3" onClick={handleExport}>
+                <FaFileExport />
+                Export as CSV
+              </button>
+              <button className="btn btn-info ml-3" onClick={handleDownload}>
+                <FaPrint />
+                Download Page
+              </button>
+            </div>
+         
         </div>
       </div>
-    </>
+    </div>
   );
-}
+};
 
-export default SearchCustomer47;
+export default SearchCustomer48;

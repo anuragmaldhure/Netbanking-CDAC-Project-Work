@@ -36,6 +36,7 @@ import NetBankingTutorials38 from "./pages/Customer/NetabankingTutorials38";
 import TransferWithinBank22 from "./pages/Customer/TransferWithinBank22";
 import VerifyApproveKYC50 from "./pages/Employee/VerifyApproveKYC50";
 import VerifyApproveKYC51 from "./pages/Employee/VerifyApproveKYC51";
+import SearchCustomer48 from "./pages/Employee/SearchCustomer48";
 
 function App() {
   return (
@@ -122,11 +123,15 @@ function App() {
           path="/Employee/Accounts/SearchCustomer47"
           element={<SeachCustomer47 />}
         />
-         <Route
+        <Route
+          path="/Employee/Accounts/SearchCustomer48/:customerId"
+          element={<SearchCustomer48 />}
+        />
+        <Route
           path="/Employee/Accounts/VerifyApproveKYC50"
           element={<VerifyApproveKYC50 />}
         />
-         <Route
+        <Route
           path="/Employee/Accounts/VerifyApproveKYC51"
           element={<VerifyApproveKYC51 />}
         />
@@ -142,7 +147,6 @@ function App() {
           path="/Employee/FundTransfer/DepositMoney45"
           element={<DepositMoney45 />}
         />
-        
       </Routes>
       <ToastContainer />
     </div>
