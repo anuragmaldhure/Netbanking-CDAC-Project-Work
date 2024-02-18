@@ -1,6 +1,0 @@
-
-
-
-- Decided to go with Banking Portal
-- Discussed on HDFC Bank portal 
-- Some unique point must be implemented like Disability support for blind people

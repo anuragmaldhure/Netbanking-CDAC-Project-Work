@@ -23,38 +23,60 @@ function CustomerSideNavigationMenu() {
   const handleSectionToggle = (section) => {
     setOpenSection((prevSection) => (prevSection === section ? null : section));
   };
-
-  const renderAccordionItem = (sectionHeading, links) => (
-    <Accordion
-      key={sectionHeading}
-      expanded={openSection === sectionHeading}
-      onChange={() => handleSectionToggle(sectionHeading)}
-    >
-      <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ p: 1 }}>
-        <Typography>{sectionHeading}</Typography>
-      </AccordionSummary>
-      <AccordionDetails sx={{ p: 1 }}>
-        <List>
-          {links.map((link) => (
-            <ListItem key={link.to} component={Link} to={link.to} sx={{ p: 1 }}>
-              <ListItemButton
-                className={isActiveLink(link.to) ? "active" : ""}
-                sx={{ p: 1 }}
-              >
-                <ListItemText primary={link.label} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </AccordionDetails>
-    </Accordion>
-  );
+  const renderAccordionItem = (sectionHeading, links) => {
+    if (sectionHeading === "Logout") {
+      const link = links[0];
+      return (
+        <ListItem
+          key={link.to}
+          component={Link}
+          to={link.to}
+          className={isActiveLink(link.to) ? "active" : ""}
+          sx={{ p: 1, color: "inherit", textDecoration: "none" }} // Customize styles here
+        >
+          <ListItemButton sx={{ p: 1 }}>
+            <ListItemText primary={link.label} />
+          </ListItemButton>
+        </ListItem>
+      );
+    } else {
+      return (
+        <Accordion
+          key={sectionHeading}
+          expanded={openSection === sectionHeading}
+          onChange={() => handleSectionToggle(sectionHeading)}
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ p: 1 }}>
+            <Typography>{sectionHeading}</Typography>
+          </AccordionSummary>
+          <AccordionDetails sx={{ p: 1 }}>
+            <List>
+              {links.map((link) => (
+                <ListItem key={link.to} component={Link} to={link.to} sx={{ p: 1 }}>
+                  <ListItemButton
+                    className={isActiveLink(link.to) ? "active" : ""}
+                    sx={{ p: 1 }}
+                  >
+                    <ListItemText primary={link.label} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </AccordionDetails>
+        </Accordion>
+      );
+    }
+  };
+  
 
   const sections = [
     {
       heading: "Accounts",
       links: [
-        { to: "/Customer/Account/ViewAccountBalance", label: "View Account Balance" },
+        {
+          to: "/Customer/Account/ViewAccountBalance",
+          label: "View Account Balance",
+        },
         {
           to: "/Customer/Account/ViewAccountStatement9",
           label: "Account Statement",
@@ -67,17 +89,17 @@ function CustomerSideNavigationMenu() {
       heading: "Funds Transfer",
       links: [
         {
-          to: "/Customer/FundTransfer/TransferWithinBank20",
+          to: "/Customer/FundTransfer/TransferWithinBank21",
           label: "Transfer within bank",
         },
-        {
-          to: "/Customer/FundTransfer/AddBeneficiary24",
-          label: "Add Beneficiary",
-        },
-        {
-          to: "/Customer/FundTransfer/AddDeleteBeneficiary24  ",
-          label: "View / Delete Beneficiary",
-        },
+        // {
+        //   to: "/Customer/FundTransfer/AddBeneficiary24",
+        //   label: "Add Beneficiary",
+        // },
+        // {
+        //   to: "/Customer/FundTransfer/AddDeleteBeneficiary24  ",
+        //   label: "View / Delete Beneficiary",
+        // },
         {
           to: "/Customer/FundTransfer/WithdrawMoney6",
           label: "Withdraw Money",
