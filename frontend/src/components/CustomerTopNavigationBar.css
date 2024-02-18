@@ -37,17 +37,15 @@
 
 .nav-link:hover {
   color: #ffd700; /* Gold color on hover */
-}
-
-/* Search Bar styles */
+} /* Search Bar styles */
 .search-bar {
   display: flex;
-  background-color: whitesmoke;
+  background-color: #37474f; /* Dark background color */
   border-radius: 3px;
   margin-left: 15px;
 }
 
-.search-input {
+.search-bar .search-input {
   flex: 1;
   padding: 10px;
   border: none;
@@ -55,16 +53,15 @@
   color: #fff;
 }
 
-.search-input::placeholder {
+.search-bar .search-input::placeholder {
   color: #ddd; /* Light gray placeholder text */
 }
 
-.search-icon {
+.search-bar .search-icon {
   padding: 10px;
-  color: #fff;
+  color: #ddd; /* Light gray icon color */
   cursor: pointer;
-}
-/* User Icons styles */
+} /* User Icons styles */
 .user-icons-container {
   display: flex;
   align-items: center;
@@ -72,7 +69,7 @@
 
 .user-icon {
   font-size: 20px;
-  color: #fff;
+  color: #fff; /* Set default color to white */
   margin-left: 10px;
   cursor: pointer;
   transition: color 0.3s ease;

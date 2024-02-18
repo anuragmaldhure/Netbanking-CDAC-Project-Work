@@ -33,6 +33,7 @@ import ChangePassword30 from "./pages/Customer/ChangePassword30";
 import OffersAvailableForMe31 from "./pages/Customer/OffersAvailableForMe31";
 import ContactUs37 from "./pages/Customer/ContactUs37";
 import NetBankingTutorials38 from "./pages/Customer/NetabankingTutorials38";
+import TransferWithinBank22 from "./pages/Customer/TransferWithinBank22";
 
 function App() {
   return (
@@ -70,7 +71,7 @@ function App() {
         />
         <Route
           path="/Customer/FundTransfer/TransferWithinBank22"
-          element={<AddBeneficiary24 />}
+          element={<TransferWithinBank22 />}
         />
         <Route
           path="/Customer/FundTransfer/TransferWithinBank23"
