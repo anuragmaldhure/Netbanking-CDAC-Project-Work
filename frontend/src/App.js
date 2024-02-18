@@ -34,6 +34,8 @@ import OffersAvailableForMe31 from "./pages/Customer/OffersAvailableForMe31";
 import ContactUs37 from "./pages/Customer/ContactUs37";
 import NetBankingTutorials38 from "./pages/Customer/NetabankingTutorials38";
 import TransferWithinBank22 from "./pages/Customer/TransferWithinBank22";
+import VerifyApproveKYC50 from "./pages/Employee/VerifyApproveKYC50";
+import VerifyApproveKYC51 from "./pages/Employee/VerifyApproveKYC51";
 
 function App() {
   return (
@@ -120,6 +122,14 @@ function App() {
           path="/Employee/Accounts/SearchCustomer47"
           element={<SeachCustomer47 />}
         />
+         <Route
+          path="/Employee/Accounts/VerifyApproveKYC50"
+          element={<VerifyApproveKYC50 />}
+        />
+         <Route
+          path="/Employee/Accounts/VerifyApproveKYC51"
+          element={<VerifyApproveKYC51 />}
+        />
         <Route
           path="/Employee/FundTransfer/DepositMoney43"
           element={<DepositMoney43 />}
@@ -132,6 +142,7 @@ function App() {
           path="/Employee/FundTransfer/DepositMoney45"
           element={<DepositMoney45 />}
         />
+        
       </Routes>
       <ToastContainer />
     </div>

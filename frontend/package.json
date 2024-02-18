@@ -24,6 +24,7 @@
     "i": "^0.3.7",
     "mui-datatables": "^4.3.0",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.10.1",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
     "react-icons": "^5.0.1",

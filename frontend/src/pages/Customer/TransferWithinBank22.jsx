@@ -18,7 +18,9 @@ import {
   CheckCircleOutline as CheckCircleOutlineIcon,
 } from "@mui/icons-material";
 import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 
 import CustomerSideNavigationMenu from "../../components/CustomerSideNavigationMenu";
 import CustomerTopNavigationBar from "../../components/CustomerTopNavigationBar";
@@ -155,6 +157,7 @@ const TransferWithinBank22 = () => {
           </Typography>
         </DialogContent>
       </Dialog>
+      <ToastContainer />
     </div>
   );
 };

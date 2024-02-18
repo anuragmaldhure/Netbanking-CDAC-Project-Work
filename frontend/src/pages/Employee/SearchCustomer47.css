@@ -1,0 +1,22 @@
+.search-customer-page {
+  padding: 20px;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.customer-list-container {
+  width: 80%; /* Adjust as needed */
+  margin-left: 20px;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
