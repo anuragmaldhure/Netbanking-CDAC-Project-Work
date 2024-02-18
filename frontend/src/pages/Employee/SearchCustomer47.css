@@ -20,3 +20,43 @@
   justify-content: center;
   margin-top: 20px;
 }
+/* Add this to your existing CSS file or create a new one */
+
+/* Navbar styling with padding */
+.navbar:not(.EmployeeTopNavigationBar) {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px 20px; /* Adjust the padding values as needed */
+}
+
+.navbar:not(.EmployeeTopNavigationBar) .navbar-brand {
+  font-size: 1.5rem;
+}
+
+/* Form styling */
+.navbar:not(.EmployeeTopNavigationBar) .form-inline {
+  display: flex;
+  align-items: center;
+}
+
+/* Search bar styling */
+.navbar:not(.EmployeeTopNavigationBar) .form-control {
+  border-radius: 20px;
+}
+
+/* Button styling */
+.navbar:not(.EmployeeTopNavigationBar) .btn {
+  border-radius: 20px;
+  margin-left: 10px;
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 576px) {
+  .navbar:not(.EmployeeTopNavigationBar) .navbar-brand {
+    font-size: 1.2rem;
+  }
+
+  .navbar:not(.EmployeeTopNavigationBar) .btn {
+    margin-left: 0;
+    margin-top: 5px;
+  }
+}
