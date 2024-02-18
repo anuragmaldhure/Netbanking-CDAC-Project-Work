@@ -1,0 +1,36 @@
+/* ServiceSection.module.css */
+
+/* Existing styles */
+.service {
+    background: #000;
+  }
+  
+  .service .card {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 32px 24px;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .service .card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .service .card img {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .service .card:hover img {
+    transform: scale(1.1);
+  }
+  
+  .scrollLink {
+    text-decoration: none;
+    color: inherit; /* Maintain the default link color */
+  }
