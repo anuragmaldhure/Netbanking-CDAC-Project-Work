@@ -292,15 +292,15 @@ public class CustomerController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in adding beneficiary...");
 		}
 	}
-//
-//	//Get All Beneficiaries
-//	@GetMapping("/FundTransfer/ViewAllBeneficiaries/{customerId}")
-//	List<Beneficiary> getAllBenificiaries(@PathVariable Long customerId){
-//		System.out.println("in get all beinifiaries by customer id in customer controller");
-//		return beneficiaryService.getAllBenificiariesDetails(customerId);
-//	}
-//	
-	//Get Beneficiary
+
+	//Get All Beneficiaries
+	@GetMapping("/FundTransfer/ViewAllBeneficiaries/{customerId}")
+	List<Beneficiary> getAllBenificiaries(@PathVariable Long customerId){
+		System.out.println("in get all beinifiaries by customer id in customer controller");
+		return beneficiaryService.getAllBenificiariesDetails(customerId);
+	}
+	
+//	Get Beneficiary
 //	@GetMapping("/FundTransfer/ViewBeneficiaryDetails/{benId}")
 
 

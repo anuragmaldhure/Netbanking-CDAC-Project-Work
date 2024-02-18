@@ -136,4 +136,17 @@ public class Beneficiary {
 	public void setCustomer(CustomerDetails customer) {
 		this.customerId = customer;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Beneficiary [beneficiaryId=").append(beneficiaryId).append(", beneficiaryNickname=")
+				.append(beneficiaryNickname).append(", beneficiaryFirstName=").append(beneficiaryFirstName)
+				.append(", beneficiaryLastName=").append(beneficiaryLastName).append(", beneficiaryAccountNumber=")
+				.append(beneficiaryAccountNumber).append(", beneficiaryEmail=").append(beneficiaryEmail)
+				.append(", beneficiaryTimestamp=").append(beneficiaryTimestamp).append(", customerId=")
+				.append(customerId).append("]");
+		return builder.toString();
+	}
+	
 }

@@ -15,7 +15,12 @@ public interface AccountTransactionsDao extends JpaRepository<AccountTransaction
 	@Query(value = "SELECT * FROM account_transactions WHERE Customer_ID IN (SELECT Customer_ID FROM Customer_Details WHERE Customer_ID = ?1)", nativeQuery = true)
     List<AccountTransactions> findAllTransactionsWithCustomerIdInCustomerDetails(Long customerId);
 	
-	@Query(value = "SELECT * FROM account_transactions WHERE Customer_ID IN (SELECT Customer_ID FROM Customer_Details WHERE Customer_ID = ?1)", nativeQuery = true)
+	//Ascending
+//	@Query(value = "SELECT * FROM account_transactions WHERE Customer_ID IN (SELECT Customer_ID FROM Customer_Details WHERE Customer_ID = ?1)", nativeQuery = true)
+//    Page<AccountTransactions> findAllTransactionsWithCustomerIdInCustomerDetailsPagable(Long customerId, Pageable pageable);
+	
+	//Descending
+	@Query(value = "SELECT * FROM account_transactions WHERE Customer_ID IN (SELECT Customer_ID FROM Customer_Details WHERE Customer_ID = ?1) ORDER BY transaction_timestamp DESC", nativeQuery = true)
     Page<AccountTransactions> findAllTransactionsWithCustomerIdInCustomerDetailsPagable(Long customerId, Pageable pageable);
 	
 }

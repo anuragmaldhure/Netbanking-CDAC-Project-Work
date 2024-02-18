@@ -23,9 +23,7 @@ public class BeneficiaryServiceImpl implements BeneficiaryService {
 	
 	@Autowired
 	private CustomerDao customerDao;
-	
-	@Autowired
-	private EmailService emailService;
+
 
 	@Override
 	public Beneficiary addBeneficiaryDetails(AddBeneficiaryDTO beneficiaryDTO, Long customerId) {
@@ -53,12 +51,11 @@ public class BeneficiaryServiceImpl implements BeneficiaryService {
 		return beneficiaryDao.save(beneficiary);
 	}
 
-//	@Override
-//	public List<Beneficiary> getAllBenificiariesDetails(Long customerId) {
-//		Optional<CustomerDetails> customer = customerDao.findByCustomerId(customerId);
-//		CustomerDetails customerDetails = customer.get();
-//		return beneficiaryDao.findByCustomer(customerDetails);
-//	}
+	@Override
+	public List<Beneficiary> getAllBenificiariesDetails(Long customerId) {
+//		Optional<CustomerDetails> customer = customerDao.findByCustomerId(customerId).
+		return beneficiaryDao.findByCustomerId(customerId);
+	}
 
 	@Override
 	public String deleteBenificiary(Long benId) {

@@ -8,7 +8,7 @@ import com.app.entities.Beneficiary;
 
 public interface BeneficiaryService {
 
-//	List<Beneficiary> getAllBenificiariesDetails(Long customerId);
+	List<Beneficiary> getAllBenificiariesDetails(Long customerId);
 
 	String deleteBenificiary(Long benId);
 	

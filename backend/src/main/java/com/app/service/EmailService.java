@@ -132,32 +132,7 @@ public class EmailService {
         }
         return null;
     }
-    
-//	public String withdrawMoneyMail(String emailId, String FirstName, String LastName,
-//			Double amountToWithdraw) {
-//		 try {
-//	            MimeMessage message = javaMailSender.createMimeMessage();
-//	            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-//
-//	            helper.setTo(emailId);
-//	            helper.setSubject("Aarna Bank : ₹ "+ amountToWithdraw +" withdrawn from your bank account!");
-//	            String messageString = "Dear "+ FirstName + " "+ LastName +", You have successfully withdrawn  ₹"+ amountToWithdraw +" from your bank account!"
-//	            		+ " In case of any suspicious activity, contact us."
-//	            		+"\n"
-//	            		+"\nAlso checkout our latest offers crafted just for for you in Offers Section."
-//	            		+"\n"
-//	            		+"\nHappy Banking :)"
-//	            		+"\n"+ "© Aarna Bank ";
-//	            helper.setText(messageString);
-//
-//	            javaMailSender.send(message);
-//	            return messageString;
-//	        } catch (MessagingException e) {
-//	            e.printStackTrace();
-//	        }
-//	        return null;
-//	}
-    
+      
     public String withdrawMoneyMail(String emailId, String firstName, String lastName, Double amountToWithdraw) {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
@@ -183,35 +158,6 @@ public class EmailService {
         }
         return null;
     }
-
-
-
-//	public String sendMoneyMail(String emailId, String accountHolderFirstName, String accountHolderLastName,
-//			String beneficiaryFirstName, String beneficiaryLastName, CustomerDetails beneficiaryAccountNumber) {
-//		 try {
-//	            MimeMessage message = javaMailSender.createMimeMessage();
-//	            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-//
-//	            helper.setTo(emailId);
-//	            helper.setSubject("Aarna Bank : New beneficiary your bank account!");
-//	            String messageString = "Dear "+ accountHolderFirstName + " "+ accountHolderLastName +", You have successfully added "
-//	            		+ "new beneficiary with account no. "+ beneficiaryAccountNumber.getAccountNumber() +" to your bank account!"
-//	            		+ " As per our bank records, this account belongs to " + beneficiaryFirstName + " " + beneficiaryLastName
-//	            		+ " You can delete beneficiary anytime through our netbanking portal. In case of any suspicious activity, contact us."
-//	            		+"\nAlso checkout our latest offers crafted just for for you in Offers Section."
-//	            		+"\n"
-//	            		+"\nHappy Banking :)"
-//	            		+"\n"+ "© Aarna Bank ";
-//	            helper.setText(messageString);
-//
-//	            javaMailSender.send(message);
-//	            return messageString;
-//	        } catch (MessagingException e) {
-//	            e.printStackTrace();
-//	            // Handle exception
-//	        }
-//	        return null;
-//	}
 
 	public String sendMoneyMail(String emailId, String accountHolderFirstName, String accountHolderLastName,
             String beneficiaryFirstName, String beneficiaryLastName, CustomerDetails beneficiaryAccountNumber) {
