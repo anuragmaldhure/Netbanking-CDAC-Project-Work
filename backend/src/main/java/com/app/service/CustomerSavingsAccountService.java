@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 public interface CustomerSavingsAccountService {
 	
-	BigDecimal getAccountBalanceByCustomerId(Long customerId);
+	Object [] getAccountBalanceAndAccountNumberByCustomerId(Long customerId);
+	
+	//	BigDecimal getAccountBalanceByCustomerId(Long customerId);
 
 }

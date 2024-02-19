@@ -11,11 +11,14 @@ import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
+import com.app.dao.CustomerDao;
 import com.app.dto.AccountTransactionsDTO;
 import com.app.dto.AddBeneficiaryDTO;
+import com.app.dto.customer.CreateNewCustomerDTO;
+import com.app.dto.customer.CustomerDetailsDTO;
 import com.app.entities.*;
 import com.app.service.AccountTransactionsService;
-import com.app.service.BeneficiaryService;
+//import com.app.service.BeneficiaryService;
 import com.app.service.CustomerSavingsAccountService;
 import com.app.service.CustomerService;
 import com.app.service.EmailService;
@@ -52,47 +55,44 @@ public class CustomerController {
 	@Autowired
 	private AccountTransactionsService accountTransactionsService;
 	
-	@Autowired
-	private EmailService emailService;
-	
-	@Autowired
-	private OffersService offersService;
-	
-	@Autowired 
-	private BeneficiaryService beneficiaryService;
+//	@Autowired
+//	private EmailService emailService;
+//	
+//	@Autowired
+//	private OffersService offersService;
+//	
+//	@Autowired 
+//	private BeneficiaryService beneficiaryService;
 	
 	@Autowired 
 	private CustomerSavingsAccountService customerSavingsAccountService;
-	
-	@Autowired
-	@Qualifier("image_db")
-	private ImageHandlingService imgService;
+//	
+//	@Autowired
+//	@Qualifier("image_db")
+//	private ImageHandlingService imgService;
 	
 	public CustomerController() {
 		System.out.println("in ctor of " + getClass());
 	}
 	
-//  Page 1 => /public 
-//	Page 2 => /login 
-	
-//  Page 3 => /register
+//  register a new customer
 	@PostMapping("/CreateNewAccount")
-	public CustomerDetails registerNewCustomer(@RequestBody CustomerDetails customer) {
-		System.out.println("in add new customer " + customer);
-		return customerService.registerNewCustomer(customer);
+	public CustomerDetails registerNewCustomer(@RequestBody CreateNewCustomerDTO customerDTO) {
+		System.out.println("in register new customer " + customerDTO);
+		return customerService.registerNewCustomer(customerDTO);
 	}
 	
 //	Page 4 => /registerSuccess
 
 //	Get all transactions of a customer
-	@GetMapping("/Account/{customerId}")
+	@GetMapping("/Account/getAllTransactions/{customerId}")
 	List<AccountTransactionsDTO> getAllTransaction(@PathVariable Long customerId){
 		System.out.println("in get all transaction by customer id in customer controller");
 		return accountTransactionsService.getAllTransactionDetails(customerId);
 	}
 	
 //	Pagination to get last 3 transactions set - INTERNAL SERVER ERROR 500
-	@GetMapping("/Account/paginate/{customerId}")
+	@GetMapping("/Account/getPaginated&SortedAllTransactions/{customerId}")
 	public ResponseEntity<?> getAllEmpsPaginated(@PathVariable Long customerId,  @RequestParam(defaultValue = "0", required = false) int pageNumber,
 			@RequestParam(defaultValue = "3", required = false) int pageSize) {
 		System.out.println("in get paged transactions of employee id " + customerId + " " + pageNumber + " " + pageSize);
@@ -103,240 +103,247 @@ public class CustomerController {
 		return ResponseEntity.ok(list);
 	}
 
-	//Get account balance
-	@GetMapping("/Account/balance/{customerId}")
-	public BigDecimal getAccountBalance(@PathVariable Long customerId){
-		System.out.println("in get account balance of customer id "+customerId);
-		return customerSavingsAccountService.getAccountBalanceByCustomerId(customerId);
+	//Get account balance and account number
+	@GetMapping("/Account/balanceAndAccountNumber/{customerId}")
+	public Object[] getAccountBalance(@PathVariable Long customerId){
+		System.out.println("in get account balance and account number of customer id "+customerId);
+		return customerSavingsAccountService.getAccountBalanceAndAccountNumberByCustomerId(customerId);
 	}
-	
-	
-	
-//	@GetMapping("/FundTransfer/WithdrawMoney6")
 
-	
-	//To get OTP on mobile/email and verify it
-	//Deposit transaction after getting amount and remarks from request
-	@PostMapping("/FundTransfer/WithdrawMoney7/{customerId}")
-	public ResponseEntity<String> withdrawMoneyByCustomer (@PathVariable Long customerId,
-				@RequestBody Double amountToWithdraw, String remarks) {
-		try {
-			Optional<CustomerDetails> customer = customerService.getCustomerDetailsByCustomerId(customerId);
-				
-			accountTransactionsService.withdrawMoney(amountToWithdraw, customerId, remarks);
-				
-			emailService.withdrawMoneyMail(customer.get().getEmailId(), 
-						customer.get().getAccountHolderFirstName(),
-						customer.get().getAccountHolderLastName(),
-						amountToWithdraw
-					);
-				
-			return ResponseEntity.ok("Successfully withdrawn " + amountToWithdraw + " from account of customer id : "+ customerId);
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (RuntimeException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in withdrawing money...");
-		}
+	//Get customer details from table customer_details
+	@GetMapping("/Account/{customerId}")
+	public Optional<CustomerDetailsDTO> getCustomerDetails(@PathVariable Long customerId){
+		System.out.println("in get customer details with customer id "+customerId);
+		return customerService.getCustomerDetailsByCustomerId(customerId);
 	}
 
 	
-	//Withdraw transaction after getting amount and remarks from request
-//	@GetMapping("/FundTransfer/WithdrawMoney8")
-//	public Optional<CustomerDetails> (@PathVariable Long customerId) {
-
-//	}
-	
-	//Get Account statement period details
-//	@PostMapping("/Account/AccountStatement9")
-
-	
-	//Post Account statement period details
-//	@PostMapping("/Account/AccountStatement9")
-
-	
-	//Get all transaction details of given period
-//	@GetMapping("/Account/GenerateAccountStatement10")
-
-	//Get all transaction details of given period
-//	@GetMapping("/Account/KYC11")
-	
-	//Get String response of pending KYC if KYC status = 0
-//	@GetMapping("/Account/KYCPending12")
-
-	//Get String response of pending KYC if KYC status = 0
-//	@PostMapping("/FundTransfer/TransferWithinBank20")
-	
-	//KYC
-//  upload image from clnt n saving it either on db or in server side folder
-	// http://host:port/customer/documents/photo/{customerId} ,
-	// method=POST , req param :
-	// multipart file(image data)
-	@PostMapping(value = "/documents/photo/{customerId}", consumes = "multipart/form-data")
-	public ResponseEntity<?> uploadCustomerPhoto(@PathVariable Long customerId, @RequestParam MultipartFile imageFile)
-			throws IOException, RuntimeException {
-		System.out.println("in upload customer photo " + customerId);
-		return ResponseEntity.status(HttpStatus.CREATED).body(imgService.uploadCustomerPhoto(customerId, imageFile));
-	}
-
-	// serve(download image) of specific customer
-	// http://host:port/employees/images/{empId} , method=GET
-	@GetMapping(value =  "/documents/photo/{customerId}", produces = { IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE })
-	public ResponseEntity<?> serveCustomerPhoto(@PathVariable Long customerId) throws IOException {
-		System.out.println("in download customer photo " + customerId);
-		return ResponseEntity.ok(imgService.downloadCustomerPhoto(customerId));
-	}
-	
-	@PostMapping(value = "/documents/pan/{customerId}", consumes = "multipart/form-data")
-	public ResponseEntity<?> uploadCustomerPAN(@PathVariable Long customerId, @RequestParam MultipartFile imageFile)
-			throws IOException, RuntimeException {
-		System.out.println("in upload customer pan " + customerId);
-		return ResponseEntity.status(HttpStatus.CREATED).body(imgService.uploadCustomerPAN(customerId, imageFile));
-	}
-
-	// serve(download image) of specific customer
-	// http://host:port/employees/images/{empId} , method=GET
-	@GetMapping(value =  "/documents/pan/{customerId}", produces = { IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE })
-	public ResponseEntity<?> serveCustomerPAN(@PathVariable Long customerId) throws IOException {
-		System.out.println("in download customer pan " + customerId);
-		return ResponseEntity.ok(imgService.downloadCustomerPAN(customerId));
-	}
-	
-	@PostMapping(value = "/documents/aadhar/{customerId}", consumes = "multipart/form-data")
-	public ResponseEntity<?> uploadCustomerAadhaar(@PathVariable Long customerId, @RequestParam MultipartFile imageFile)
-			throws IOException, RuntimeException {
-		System.out.println("in upload customer aadhar " + customerId);
-		return ResponseEntity.status(HttpStatus.CREATED).body(imgService.uploadCustomerAadhar(customerId, imageFile));
-	}
-
-	// serve(download image) of specific customer
-	// http://host:port/employees/images/{empId} , method=GET
-	@GetMapping(value =  "/documents/aadhar/{customerId}", produces = { IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE })
-	public ResponseEntity<?> serveCustomerAadhar(@PathVariable Long customerId) throws IOException {
-		System.out.println("in download customer aadhar " + customerId);
-		return ResponseEntity.ok(imgService.downloadCustomerAadhar(customerId));
-	}
-	
-	//Get account balance
-	@GetMapping("/FundTransfer/SendMoney21/{customerId}")
-	public ResponseEntity<String> sendOtpToCustomer(@PathVariable Long customerId) {
-        Optional<CustomerDetails> customerDetails = customerService.getCustomerDetailsByCustomerId(customerId);
-        if(!customerDetails.isEmpty()){
-        	String email = customerDetails.get().getEmailId();
-            System.out.println("Sending OTP as email to "+email);
-            String otpSentToCustomer = emailService.sendOtp(email); 		//OTP generated : otpSentToCustomer 
-            System.out.println("OTP sent to customer : "+ otpSentToCustomer);
-            return ResponseEntity.ok("OTP sent successfully to " + email);
-        }
-        return ResponseEntity.ok("Customer not found!");
-	}
-	
-	//To get OTP on mobile/email and verify it
-//	@PostMapping("/FundTransfer/SendMoney22")
-
-	
-	//send money after getting amount and remarks from request
-	//by to
-	@PostMapping("/FundTransfer/SendMoney23/{customerId}/{beneficairyId}")
-	public ResponseEntity<String> sendMoneyToBeneficiary(@PathVariable Long customerId, String benificiaryAccountNo,
-				@RequestBody Double amountToSend, String remarks) {
-		try {
-			Optional<CustomerDetails> customer = customerService.getCustomerDetailsByCustomerId(customerId);
-			
-			Optional<Beneficiary> beneficiary =  beneficiaryService.getBenificiaryDetailsByAccountNumber(benificiaryAccountNo);
-				
-			accountTransactionsService.sendMoney(amountToSend, customer, beneficiary, remarks);
-				
-//			emailService.sendMoneyMail(customer.get().getEmailId(), 
+//	
+////	@GetMapping("/FundTransfer/WithdrawMoney6")
+//
+//	
+//	//To get OTP on mobile/email and verify it
+//	//Deposit transaction after getting amount and remarks from request
+//	@PostMapping("/FundTransfer/WithdrawMoney7/{customerId}")
+//	public ResponseEntity<String> withdrawMoneyByCustomer (@PathVariable Long customerId,
+//				@RequestBody Double amountToWithdraw, String remarks) {
+//		try {
+//			Optional<CustomerDetails> customer = customerService.getCustomerDetailsByCustomerId(customerId);
+//				
+//			accountTransactionsService.withdrawMoney(amountToWithdraw, customerId, remarks);
+//				
+//			emailService.withdrawMoneyMail(customer.get().getEmailId(), 
 //						customer.get().getAccountHolderFirstName(),
 //						customer.get().getAccountHolderLastName(),
-//						amountToSend,
-//						beneficiary.get().getBeneficiaryAccountNumber(),
-//						beneficiary.get().getBeneficiaryFirstName(),
-//						beneficiary.get().getBeneficiaryLastName()
+//						amountToWithdraw
 //					);
-				
-			return ResponseEntity.ok("Successfully sent " + amountToSend + " from account of customer id : "+ customerId +
-					" to beneficiary with id :" + beneficiary.get().getBeneficiaryId());
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (RuntimeException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in sending money...");
-		}
-	}
-
-	//Add Beneficiary
-	@PostMapping("/FundTransfer/AddBenificiary24/{customerId}")
-	public ResponseEntity<String> addEmpDetails(@RequestBody AddBeneficiaryDTO beneficiaryDTO, Long customerId) {
-		System.out.println("in add beneficiary customer controller : " + beneficiaryDTO +" for customer id :"+ customerId);
-		try {
-			Beneficiary beneficiary =  beneficiaryService.addBeneficiaryDetails(beneficiaryDTO,customerId);
-			Optional<CustomerDetails> customer = customerService.getCustomerDetailsByCustomerId(customerId);
-			
-			
-			emailService.sendMoneyMail(customer.get().getEmailId(), 
-					customer.get().getAccountHolderFirstName(),
-					customer.get().getAccountHolderLastName(),
-					beneficiary.getBeneficiaryFirstName(),
-					beneficiary.getBeneficiaryLastName(),
-					beneficiary.getBeneficiaryAccountNumber()
-			);
-			return ResponseEntity.ok("Successfully added " + beneficiary + " to account of customer id : "+ customerId);
-		}
-		catch (RuntimeException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in adding beneficiary...");
-		}
-	}
-
-	//Get All Beneficiaries
-	@GetMapping("/FundTransfer/ViewAllBeneficiaries/{customerId}")
-	List<Beneficiary> getAllBenificiaries(@PathVariable Long customerId){
-		System.out.println("in get all beinifiaries by customer id in customer controller");
-		return beneficiaryService.getAllBenificiariesDetails(customerId);
-	}
-	
-//	Get Beneficiary
-//	@GetMapping("/FundTransfer/ViewBeneficiaryDetails/{benId}")
-
-
-	//Delete Beneficiary
-	@DeleteMapping("/FundTransfer/DeleteBeneficiary/{benId}")
-	public String deleteBenDetails(@PathVariable Long benId)
-	{
-		System.out.println("in del beneficiary "+benId);
-		return beneficiaryService.deleteBenificiary(benId);
-	}
-
-//Page 29 =>  Customer/OtherServices/MessageAndEmailAlerts29 -> NEED TO IMPLEMENT AND REFACTOR DB
-	
-	//Change Password
-	@PutMapping("/OtherServices/ChangePassword30/{customerId}")
-    public ResponseEntity<String> changePassword(@PathVariable Long customerId,
-    											@RequestParam String currentPassword,
-    											@RequestParam String newPassword) {
-        try {
-        	customerService.changePassword(customerId, currentPassword, newPassword);
-            return ResponseEntity.ok("Password changed successfully.");
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error changing password.");
-        }
-	}
-	
-	//Get All available offers
-	@GetMapping("/OtherServices/OffersAvailableForMe31/{customerId}")
-	List<Offers> getAllOffersAvailableForMe(@PathVariable Long customerId){
-		System.out.println("in get all offers for customer " + customerId);
-		return offersService.getAllOffersAvailableForMe(customerId);
-	}
+//				
+//			return ResponseEntity.ok("Successfully withdrawn " + amountToWithdraw + " from account of customer id : "+ customerId);
+//		} catch (EntityNotFoundException e) {
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+//		} catch (RuntimeException e) {
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+//		} catch (Exception e) {
+//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in withdrawing money...");
+//		}
+//	}
+//
+//	
+//	//Withdraw transaction after getting amount and remarks from request
+////	@GetMapping("/FundTransfer/WithdrawMoney8")
+////	public Optional<CustomerDetails> (@PathVariable Long customerId) {
+//
+////	}
+//	
+//	//Get Account statement period details
+////	@PostMapping("/Account/AccountStatement9")
+//
+//	
+//	//Post Account statement period details
+////	@PostMapping("/Account/AccountStatement9")
+//
+//	
+//	//Get all transaction details of given period
+////	@GetMapping("/Account/GenerateAccountStatement10")
+//
+//	//Get all transaction details of given period
+////	@GetMapping("/Account/KYC11")
+//	
+//	//Get String response of pending KYC if KYC status = 0
+////	@GetMapping("/Account/KYCPending12")
+//
+//	//Get String response of pending KYC if KYC status = 0
+////	@PostMapping("/FundTransfer/TransferWithinBank20")
+//	
+//	//KYC
+////  upload image from clnt n saving it either on db or in server side folder
+//	// http://host:port/customer/documents/photo/{customerId} ,
+//	// method=POST , req param :
+//	// multipart file(image data)
+//	@PostMapping(value = "/documents/photo/{customerId}", consumes = "multipart/form-data")
+//	public ResponseEntity<?> uploadCustomerPhoto(@PathVariable Long customerId, @RequestParam MultipartFile imageFile)
+//			throws IOException, RuntimeException {
+//		System.out.println("in upload customer photo " + customerId);
+//		return ResponseEntity.status(HttpStatus.CREATED).body(imgService.uploadCustomerPhoto(customerId, imageFile));
+//	}
+//
+//	// serve(download image) of specific customer
+//	// http://host:port/employees/images/{empId} , method=GET
+//	@GetMapping(value =  "/documents/photo/{customerId}", produces = { IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE })
+//	public ResponseEntity<?> serveCustomerPhoto(@PathVariable Long customerId) throws IOException {
+//		System.out.println("in download customer photo " + customerId);
+//		return ResponseEntity.ok(imgService.downloadCustomerPhoto(customerId));
+//	}
+//	
+//	@PostMapping(value = "/documents/pan/{customerId}", consumes = "multipart/form-data")
+//	public ResponseEntity<?> uploadCustomerPAN(@PathVariable Long customerId, @RequestParam MultipartFile imageFile)
+//			throws IOException, RuntimeException {
+//		System.out.println("in upload customer pan " + customerId);
+//		return ResponseEntity.status(HttpStatus.CREATED).body(imgService.uploadCustomerPAN(customerId, imageFile));
+//	}
+//
+//	// serve(download image) of specific customer
+//	// http://host:port/employees/images/{empId} , method=GET
+//	@GetMapping(value =  "/documents/pan/{customerId}", produces = { IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE })
+//	public ResponseEntity<?> serveCustomerPAN(@PathVariable Long customerId) throws IOException {
+//		System.out.println("in download customer pan " + customerId);
+//		return ResponseEntity.ok(imgService.downloadCustomerPAN(customerId));
+//	}
+//	
+//	@PostMapping(value = "/documents/aadhar/{customerId}", consumes = "multipart/form-data")
+//	public ResponseEntity<?> uploadCustomerAadhaar(@PathVariable Long customerId, @RequestParam MultipartFile imageFile)
+//			throws IOException, RuntimeException {
+//		System.out.println("in upload customer aadhar " + customerId);
+//		return ResponseEntity.status(HttpStatus.CREATED).body(imgService.uploadCustomerAadhar(customerId, imageFile));
+//	}
+//
+//	// serve(download image) of specific customer
+//	// http://host:port/employees/images/{empId} , method=GET
+//	@GetMapping(value =  "/documents/aadhar/{customerId}", produces = { IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE })
+//	public ResponseEntity<?> serveCustomerAadhar(@PathVariable Long customerId) throws IOException {
+//		System.out.println("in download customer aadhar " + customerId);
+//		return ResponseEntity.ok(imgService.downloadCustomerAadhar(customerId));
+//	}
+//	
+//	//Get account balance
+//	@GetMapping("/FundTransfer/SendMoney21/{customerId}")
+//	public ResponseEntity<String> sendOtpToCustomer(@PathVariable Long customerId) {
+//        Optional<CustomerDetails> customerDetails = customerService.getCustomerDetailsByCustomerId(customerId);
+//        if(!customerDetails.isEmpty()){
+//        	String email = customerDetails.get().getEmailId();
+//            System.out.println("Sending OTP as email to "+email);
+//            String otpSentToCustomer = emailService.sendOtp(email); 		//OTP generated : otpSentToCustomer 
+//            System.out.println("OTP sent to customer : "+ otpSentToCustomer);
+//            return ResponseEntity.ok("OTP sent successfully to " + email);
+//        }
+//        return ResponseEntity.ok("Customer not found!");
+//	}
+//	
+//	//To get OTP on mobile/email and verify it
+////	@PostMapping("/FundTransfer/SendMoney22")
+//
+//	
+//	//send money after getting amount and remarks from request
+//	//by to
+//	@PostMapping("/FundTransfer/SendMoney23/{customerId}/{beneficairyId}")
+//	public ResponseEntity<String> sendMoneyToBeneficiary(@PathVariable Long customerId, String benificiaryAccountNo,
+//				@RequestBody Double amountToSend, String remarks) {
+//		try {
+//			Optional<CustomerDetails> customer = customerService.getCustomerDetailsByCustomerId(customerId);
+//			
+//			Optional<Beneficiary> beneficiary =  beneficiaryService.getBenificiaryDetailsByAccountNumber(benificiaryAccountNo);
+//				
+//			accountTransactionsService.sendMoney(amountToSend, customer, beneficiary, remarks);
+//				
+////			emailService.sendMoneyMail(customer.get().getEmailId(), 
+////						customer.get().getAccountHolderFirstName(),
+////						customer.get().getAccountHolderLastName(),
+////						amountToSend,
+////						beneficiary.get().getBeneficiaryAccountNumber(),
+////						beneficiary.get().getBeneficiaryFirstName(),
+////						beneficiary.get().getBeneficiaryLastName()
+////					);
+//				
+//			return ResponseEntity.ok("Successfully sent " + amountToSend + " from account of customer id : "+ customerId +
+//					" to beneficiary with id :" + beneficiary.get().getBeneficiaryId());
+//		} catch (EntityNotFoundException e) {
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+//		} catch (RuntimeException e) {
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+//		} catch (Exception e) {
+//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in sending money...");
+//		}
+//	}
+//
+//	//Add Beneficiary
+//	@PostMapping("/FundTransfer/AddBenificiary24/{customerId}")
+//	public ResponseEntity<String> addEmpDetails(@RequestBody AddBeneficiaryDTO beneficiaryDTO, Long customerId) {
+//		System.out.println("in add beneficiary customer controller : " + beneficiaryDTO +" for customer id :"+ customerId);
+//		try {
+//			Beneficiary beneficiary =  beneficiaryService.addBeneficiaryDetails(beneficiaryDTO,customerId);
+//			Optional<CustomerDetails> customer = customerService.getCustomerDetailsByCustomerId(customerId);
+//			
+//			
+//			emailService.sendMoneyMail(customer.get().getEmailId(), 
+//					customer.get().getAccountHolderFirstName(),
+//					customer.get().getAccountHolderLastName(),
+//					beneficiary.getBeneficiaryFirstName(),
+//					beneficiary.getBeneficiaryLastName(),
+//					beneficiary.getBeneficiaryAccountNumber()
+//			);
+//			return ResponseEntity.ok("Successfully added " + beneficiary + " to account of customer id : "+ customerId);
+//		}
+//		catch (RuntimeException e) {
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+//		} catch (Exception e) {
+//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in adding beneficiary...");
+//		}
+//	}
+//
+//	//Get All Beneficiaries
+//	@GetMapping("/FundTransfer/ViewAllBeneficiaries/{customerId}")
+//	List<Beneficiary> getAllBenificiaries(@PathVariable Long customerId){
+//		System.out.println("in get all beinifiaries by customer id in customer controller");
+//		return beneficiaryService.getAllBenificiariesDetails(customerId);
+//	}
+//	
+////	Get Beneficiary
+////	@GetMapping("/FundTransfer/ViewBeneficiaryDetails/{benId}")
+//
+//
+//	//Delete Beneficiary
+//	@DeleteMapping("/FundTransfer/DeleteBeneficiary/{benId}")
+//	public String deleteBenDetails(@PathVariable Long benId)
+//	{
+//		System.out.println("in del beneficiary "+benId);
+//		return beneficiaryService.deleteBenificiary(benId);
+//	}
+//
+////Page 29 =>  Customer/OtherServices/MessageAndEmailAlerts29 -> NEED TO IMPLEMENT AND REFACTOR DB
+//	
+//	//Change Password
+//	@PutMapping("/OtherServices/ChangePassword30/{customerId}")
+//    public ResponseEntity<String> changePassword(@PathVariable Long customerId,
+//    											@RequestParam String currentPassword,
+//    											@RequestParam String newPassword) {
+//        try {
+//        	customerService.changePassword(customerId, currentPassword, newPassword);
+//            return ResponseEntity.ok("Password changed successfully.");
+//        } catch (EntityNotFoundException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+//        } catch (RuntimeException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error changing password.");
+//        }
+//	}
+//	
+//	//Get All available offers
+//	@GetMapping("/OtherServices/OffersAvailableForMe31/{customerId}")
+//	List<Offers> getAllOffersAvailableForMe(@PathVariable Long customerId){
+//		System.out.println("in get all offers for customer " + customerId);
+//		return offersService.getAllOffersAvailableForMe(customerId);
+//	}
 
 	//Get Contact Details 
 //	@GetMapping("/OtherServices/ContactUs37")  -> NEED TO IMPLEMENT AND REFACTOR DB

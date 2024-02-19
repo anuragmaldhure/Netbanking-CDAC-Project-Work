@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +21,11 @@ public class BankEmployeeDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Employee_ID")
     private Long employeeId;
+    
+    //Role_ENUM
+	@Enumerated(EnumType.STRING) // varchar
+	@Column(length = 20)
+	private Role role;
 
     @Column(name = "Employee_First_Name", nullable = false)
     private String employeeFirstName;
@@ -49,8 +56,32 @@ public class BankEmployeeDetails {
     @Column(name = "Joining_Timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date joiningTimestamp;
+    
+    
+    public BankEmployeeDetails(Long employeeId, Role role, String employeeFirstName, String employeeLastName,
+			String mobileNumber, String emailId, String username, Date lastLogin, String password, Date dateOfBirth,
+			Date joiningTimestamp) {
+		super();
+		System.out.println("Inside parameterized ctor of BankEmployeeDetails entity");
+		this.employeeId = employeeId;
+		this.role = role;
+		this.employeeFirstName = employeeFirstName;
+		this.employeeLastName = employeeLastName;
+		this.mobileNumber = mobileNumber;
+		this.emailId = emailId;
+		this.username = username;
+		this.lastLogin = lastLogin;
+		this.password = password;
+		this.dateOfBirth = dateOfBirth;
+		this.joiningTimestamp = joiningTimestamp;
+	}
+    
+    public BankEmployeeDetails() {
+		super();
+		System.out.println("Inside parameterless ctor of BankEmployeeDetails entity");
+	}
 
-    // Add getters and setters here
+	// Add getters and setters here
 
     public Long getEmployeeId() {
         return employeeId;
@@ -124,7 +155,15 @@ public class BankEmployeeDetails {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Date getJoiningTimestamp() {
+    public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public Date getJoiningTimestamp() {
         return joiningTimestamp;
     }
 
@@ -132,5 +171,15 @@ public class BankEmployeeDetails {
         this.joiningTimestamp = joiningTimestamp;
     }
 
-   
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("BankEmployeeDetails [employeeId=").append(employeeId).append(", role=").append(role)
+				.append(", employeeFirstName=").append(employeeFirstName).append(", employeeLastName=")
+				.append(employeeLastName).append(", mobileNumber=").append(mobileNumber).append(", emailId=")
+				.append(emailId).append(", username=").append(username).append(", lastLogin=").append(lastLogin)
+				.append(", password=").append(password).append(", dateOfBirth=").append(dateOfBirth)
+				.append(", joiningTimestamp=").append(joiningTimestamp).append("]");
+		return builder.toString();
+	}
 }

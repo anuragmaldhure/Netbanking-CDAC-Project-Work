@@ -22,15 +22,46 @@ public class Offers {
     @Column(name = "Offer_Details", nullable = false)
     private String offerDetails;
 
-    @Column(name = "Offer_Availability", nullable = false)
-    private boolean offerAvailability;
+    @Column(name = "Offer_Availability", columnDefinition = "BOOLEAN DEFAULT true")
+    private Boolean offerAvailability;
 
     @Column(name = "Offer_Minimum_Balance", nullable = false)
     private Double offerMinimumBalance;
 
+    
+    
     // Add getters and setters here
 
-    public Long getOfferId() {
+    public Offers(Long offerId, String offerTitle, String offerDetails, Boolean offerAvailability,
+			Double offerMinimumBalance) {
+		super();
+		System.out.println("Inside parameterized ctor of Offers entity");
+		this.offerId = offerId;
+		this.offerTitle = offerTitle;
+		this.offerDetails = offerDetails;
+		this.offerAvailability = offerAvailability;
+		this.offerMinimumBalance = offerMinimumBalance;
+	}
+    
+    public Offers() {
+		super();
+		System.out.println("Inside parameterless ctor of Offers entity");
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Offers [offerId=").append(offerId).append(", offerTitle=").append(offerTitle)
+				.append(", offerDetails=").append(offerDetails).append(", offerAvailability=").append(offerAvailability)
+				.append(", offerMinimumBalance=").append(offerMinimumBalance).append("]");
+		return builder.toString();
+	}
+
+	public Boolean getOfferAvailability() {
+		return offerAvailability;
+	}
+
+	public Long getOfferId() {
         return offerId;
     }
 
@@ -58,7 +89,7 @@ public class Offers {
         return offerAvailability;
     }
 
-    public void setOfferAvailability(boolean offerAvailability) {
+    public void setOfferAvailability(Boolean offerAvailability) {
         this.offerAvailability = offerAvailability;
     }
 
@@ -70,5 +101,4 @@ public class Offers {
         this.offerMinimumBalance = offerMinimumBalance;
     }
 
-    // You can also add any necessary constructors or other methods as needed
 }

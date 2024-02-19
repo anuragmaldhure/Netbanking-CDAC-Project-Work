@@ -1,394 +1,409 @@
 package com.app.entities;
 
-import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "Customer_Details")
+@Table(name = "customer_details")
 public class CustomerDetails {
 
-    @Id
+    //primary key
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Customer_ID")
+    @Column(name = "customer_id")
     private Long customerId;
 
-    @Column(name = "Username", unique = true, nullable = false)
-    private String username;
+	//foreign keys references
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<AccountTransactions> transactions;
     
-	@Column(name = "Password", nullable = false)
-    private String password;
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    private CustomerSavingAccounts savingAccountDetails;
+    
+    @OneToOne(mappedBy = "customerDetails", cascade = CascadeType.ALL)
+    private CustomerDocuments customerDocuments;
+    
+    @OneToOne(mappedBy = "customerDetails", cascade = CascadeType.ALL)
+    private CustomerAddress customerAddresses;
 
-    @Column(name = "Account_Holder_First_Name", nullable = false)
+    // Other fields
+    @Column(name = "account_holder_first_name")
     private String accountHolderFirstName;
 
-    @Column(name = "Account_Holder_Last_Name", nullable = false)
+    @Column(name = "account_holder_last_name")
     private String accountHolderLastName;
+    
+    //Role_ENUM
+	@Enumerated(EnumType.STRING) // varchar
+	@Column(length = 20)
+	private Role role;
 
-    @Column(name = "Mobile_Number", nullable = false)
-    private String mobileNumber;
+    @Column(name = "account_number", unique = true, length = 8, nullable = true)
+//    @Column(name = "account_number", unique = true, length = 8, nullable = false)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_number_sequence")
+//    @SequenceGenerator(name = "account_number_sequence", sequenceName = "account_number_sequence", allocationSize = 1)
+    private String accountNumber;
 
-    @Column(name = "Email_ID", unique = true, nullable = false)
-    private String emailId;
+    @Column(name = "annual_income")
+    private Double annualIncome;
 
-    @Column(name = "Last_Login")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastLogin;
-
-    @Column(name = "PAN_Number", unique = true, nullable = false)
-    private String panNumber;
-
-    @Column(name = "Adhaar_Number", unique = true, nullable = false)
-    private String adhaarNumber;
-
-    @Column(name = "Occupation")
-    private String occupation;
-
-    @Column(name = "Annual_Income")
-    private BigDecimal annualIncome;
-
-    @Column(name = "Address")
-    private String address;
-
-    @Column(name = "City")
-    private String city;
-
-    @Column(name = "State")
-    private String state;
-
-    @Column(name = "Pin_Code")
-    private String pinCode;
-
-    @Column(name = "Nationality")
-    private String nationality;
-
-    @Column(name = "Gender")
-    private String gender;
-
-    @Column(name = "Signup_Timestamp")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date signupTimestamp;
-
-    @Column(name = "KYC_Submission_Timestamp")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date kycSubmissionTimestamp;
-
-    @Column(name = "KYC_Verified_Timestamp")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date kycVerifiedTimestamp;
-
-    @Column(name = "KYC_Rejected_Timestamp")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date kycRejectedTimestamp;
-
-    @Column(name = "Date_of_Birth")
+    @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
-    @Column(name = "KYC_Status")
-    private Boolean kycStatus; 
+	@Column(name = "gender")
+    private String gender;
 
-    @Column(name = "Message_Email_Alerts_Status")
-    private String messageEmailAlertsStatus;
+    @Column(name = "email_id", nullable = false)
+    private String emailId;
 
-    @Column(name = "Offers")
-    private String offers;
+    @Column(name = "username", unique = true)
+    private String username;
 
-    @Column(name = "Account_Number")
-    private String accountNumber;
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "mobile_number")
+    private String mobileNumber;
+
+    @Column(name = "occupation")
+    private String occupation;
+
+    @Column(name = "adhaar_number", unique = true)
+    private String adhaarNumber;
+
+    @Column(name = "pan_number", unique = true)
+    private String panNumber;
+
+    @Column(name = "kyc_status", columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean kycStatus;
+
+    @Column(name = "account_active_status", columnDefinition = "BOOLEAN DEFAULT true")
+    private Boolean accountActiveStatus;
+
+    @Column(name = "last_login_timestamp")
+    private Date lastLoginTimestamp;
     
-    //Documents Images
-	@Lob
-	private byte[] customerPhoto;	//for storing image in blob format in db
-	private String customerPhotoImagePath;// This will be used for storing n restoring images in server side folder
-	
-	@Lob
-	private byte[] panCardPhoto;
-	private String panCardPhotoImagePath;
-	
-	@Lob
-	private byte[] aadharCardPhoto;
-	private String aadharCardPhotoImagePath;
+    // Generate default account number before entity is persisted
+    @PrePersist
+    public void generateAccountNumber() {
+        if (accountNumber == null) {
+            accountNumber = generateCustomAccountNumber();
+        }
+    }
 
-	public byte[] getCustomerPhoto() {
-		return customerPhoto;
+    
+ // Generate custom account number
+    private String generateCustomAccountNumber() {
+        StringBuilder accountNumberBuilder = new StringBuilder();
+        Random random = new Random();
+
+        // Generate 4 random alphabetic characters
+        for (int i = 0; i < 4; i++) {
+            char randomChar = (char) (random.nextInt(26) + 'A'); // Generate a random uppercase letter
+            accountNumberBuilder.append(randomChar);
+        }
+
+        // Generate 8 random numeric characters
+        for (int i = 0; i < 4; i++) {
+            int randomDigit = random.nextInt(10); // Generate a random digit (0-9)
+            accountNumberBuilder.append(randomDigit);
+        }
+
+        return accountNumberBuilder.toString();
+    }
+    
+    //Constructors
+
+    public CustomerDetails(Long customerId, List<AccountTransactions> transactions,
+			CustomerSavingAccounts savingAccountDetails, CustomerDocuments customerDocuments,
+			CustomerAddress customerAddresses, String accountHolderFirstName, String accountHolderLastName,
+			Role role, String accountNumber, Double annualIncome, Date dateOfBirth, String gender, String emailId,
+			String username, String password, String mobileNumber, String occupation, String adhaarNumber,
+			String panNumber, Boolean kycStatus, Boolean accountActiveStatus, Date lastLoginTimestamp) {
+		super();
+		System.out.println("Inside parameterized ctor of customerDetails entity");
+		this.customerId = customerId;
+		this.transactions = transactions;
+		this.savingAccountDetails = savingAccountDetails;
+		this.customerDocuments = customerDocuments;
+		this.customerAddresses = customerAddresses;
+		this.accountHolderFirstName = accountHolderFirstName;
+		this.accountHolderLastName = accountHolderLastName;
+		this.role = role;
+		this.accountNumber = accountNumber;
+		this.annualIncome = annualIncome;
+		this.dateOfBirth = dateOfBirth;
+		this.gender = gender;
+		this.emailId = emailId;
+		this.username = username;
+		this.password = password;
+		this.mobileNumber = mobileNumber;
+		this.occupation = occupation;
+		this.adhaarNumber = adhaarNumber;
+		this.panNumber = panNumber;
+		this.kycStatus = kycStatus;
+		this.accountActiveStatus = accountActiveStatus;
+		this.lastLoginTimestamp = lastLoginTimestamp;
+	}
+    
+    public CustomerDetails() {
+    	System.out.println("Inside paramaeterless ctor of customerDetails entity");
 	}
 
-	public void setCustomerPhoto(byte[] customerPhoto) {
-		this.customerPhoto = customerPhoto;
-	}
 
-	public String getCustomerPhotoImagePath() {
-		return customerPhotoImagePath;
-	}
-
-	public void setCustomerPhotoImagePath(String customerPhotoImagePath) {
-		this.customerPhotoImagePath = customerPhotoImagePath;
-	}
-
-	public byte[] getPanCardPhoto() {
-		return panCardPhoto;
-	}
-
-	public void setPanCardPhoto(byte[] panCardPhoto) {
-		this.panCardPhoto = panCardPhoto;
-	}
-
-	public String getPanCardPhotoImagePath() {
-		return panCardPhotoImagePath;
-	}
-
-	public void setPanCardPhotoImagePath(String panCardPhotoImagePath) {
-		this.panCardPhotoImagePath = panCardPhotoImagePath;
-	}
-
-	public byte[] getAadharCardPhoto() {
-		return aadharCardPhoto;
-	}
-
-	public void setAadharCardPhoto(byte[] aadharCardPhoto) {
-		this.aadharCardPhoto = aadharCardPhoto;
-	}
-
-	public String getAadharCardPhotoImagePath() {
-		return aadharCardPhotoImagePath;
-	}
-
-	public void setAadharCardPhotoImagePath(String aadharCardPhotoImagePath) {
-		this.aadharCardPhotoImagePath = aadharCardPhotoImagePath;
-	}
-
+    // Getters and Setters
+    
 	public Long getCustomerId() {
 		return customerId;
 	}
+
 
 	public void setCustomerId(Long customerId) {
 		this.customerId = customerId;
 	}
 
-	public String getUsername() {
-		return username;
+
+	public List<AccountTransactions> getTransactions() {
+		return transactions;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+
+	public void setTransactions(List<AccountTransactions> transactions) {
+		this.transactions = transactions;
 	}
 
-	public String getPassword() {
-		return password;
+
+	public CustomerSavingAccounts getSavingAccountDetails() {
+		return savingAccountDetails;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+
+	public void setSavingAccountDetails(CustomerSavingAccounts savingAccountDetails) {
+		this.savingAccountDetails = savingAccountDetails;
 	}
+
+
+	public CustomerDocuments getCustomerDocuments() {
+		return customerDocuments;
+	}
+
+
+	public void setCustomerDocuments(CustomerDocuments customerDocuments) {
+		this.customerDocuments = customerDocuments;
+	}
+
+
+	public CustomerAddress getCustomerAddresses() {
+		return customerAddresses;
+	}
+
+
+	public void setCustomerAddresses(CustomerAddress customerAddresses) {
+		this.customerAddresses = customerAddresses;
+	}
+
 
 	public String getAccountHolderFirstName() {
 		return accountHolderFirstName;
 	}
 
+
 	public void setAccountHolderFirstName(String accountHolderFirstName) {
 		this.accountHolderFirstName = accountHolderFirstName;
 	}
+
 
 	public String getAccountHolderLastName() {
 		return accountHolderLastName;
 	}
 
+
 	public void setAccountHolderLastName(String accountHolderLastName) {
 		this.accountHolderLastName = accountHolderLastName;
 	}
 
-	public String getMobileNumber() {
-		return mobileNumber;
+
+	public Role getRole() {
+		return role;
 	}
 
-	public void setMobileNumber(String mobileNumber) {
-		this.mobileNumber = mobileNumber;
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
-	public String getEmailId() {
-		return emailId;
-	}
-
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
-	}
-
-	public Date getLastLogin() {
-		return lastLogin;
-	}
-
-	public void setLastLogin(Date lastLogin) {
-		this.lastLogin = lastLogin;
-	}
-
-	public String getPanNumber() {
-		return panNumber;
-	}
-
-	public void setPanNumber(String panNumber) {
-		this.panNumber = panNumber;
-	}
-
-	public String getAdhaarNumber() {
-		return adhaarNumber;
-	}
-
-	public void setAdhaarNumber(String adhaarNumber) {
-		this.adhaarNumber = adhaarNumber;
-	}
-
-	public String getOccupation() {
-		return occupation;
-	}
-
-	public void setOccupation(String occupation) {
-		this.occupation = occupation;
-	}
-
-	public BigDecimal getAnnualIncome() {
-		return annualIncome;
-	}
-
-	public void setAnnualIncome(BigDecimal annualIncome) {
-		this.annualIncome = annualIncome;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public String getPinCode() {
-		return pinCode;
-	}
-
-	public void setPinCode(String pinCode) {
-		this.pinCode = pinCode;
-	}
-
-	public String getNationality() {
-		return nationality;
-	}
-
-	public void setNationality(String nationality) {
-		this.nationality = nationality;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	public Date getSignupTimestamp() {
-		return signupTimestamp;
-	}
-
-	public void setSignupTimestamp(Date signupTimestamp) {
-		this.signupTimestamp = signupTimestamp;
-	}
-
-	public Date getKycSubmissionTimestamp() {
-		return kycSubmissionTimestamp;
-	}
-
-	public void setKycSubmissionTimestamp(Date kycSubmissionTimestamp) {
-		this.kycSubmissionTimestamp = kycSubmissionTimestamp;
-	}
-
-	public Date getKycVerifiedTimestamp() {
-		return kycVerifiedTimestamp;
-	}
-
-	public void setKycVerifiedTimestamp(Date kycVerifiedTimestamp) {
-		this.kycVerifiedTimestamp = kycVerifiedTimestamp;
-	}
-
-	public Date getKycRejectedTimestamp() {
-		return kycRejectedTimestamp;
-	}
-
-	public void setKycRejectedTimestamp(Date kycRejectedTimestamp) {
-		this.kycRejectedTimestamp = kycRejectedTimestamp;
-	}
-
-	public Date getDateOfBirth() {
-		return dateOfBirth;
-	}
-
-	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
-
-	public Boolean getKycStatus() {
-		return kycStatus;
-	}
-
-	public void setKycStatus(Boolean kycStatus) {
-		this.kycStatus = kycStatus;
-	}
-
-	public String getMessageEmailAlertsStatus() {
-		return messageEmailAlertsStatus;
-	}
-
-	public void setMessageEmailAlertsStatus(String messageEmailAlertsStatus) {
-		this.messageEmailAlertsStatus = messageEmailAlertsStatus;
-	}
-
-	public String getOffers() {
-		return offers;
-	}
-
-	public void setOffers(String offers) {
-		this.offers = offers;
-	}
 
 	public String getAccountNumber() {
 		return accountNumber;
 	}
 
+
 	public void setAccountNumber(String accountNumber) {
 		this.accountNumber = accountNumber;
 	}
-	
-//    public Beneficiary getCustomerByUsername() {
-//		return customerByUsername;
-//	}
-//
-//	public void setCustomerByUsername(Beneficiary customerByUsername) {
-//		this.customerByUsername = customerByUsername;
-//	}
 
+
+	public Double getAnnualIncome() {
+		return annualIncome;
+	}
+
+
+	public void setAnnualIncome(Double annualIncome) {
+		this.annualIncome = annualIncome;
+	}
+
+
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+
+	public String getGender() {
+		return gender;
+	}
+
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+
+	public String getEmailId() {
+		return emailId;
+	}
+
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
+
+
+	public String getUsername() {
+		return username;
+	}
+
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+
+	public String getPassword() {
+		return password;
+	}
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
+
+
+	public String getOccupation() {
+		return occupation;
+	}
+
+
+	public void setOccupation(String occupation) {
+		this.occupation = occupation;
+	}
+
+
+	public String getAdhaarNumber() {
+		return adhaarNumber;
+	}
+
+
+	public void setAdhaarNumber(String adhaarNumber) {
+		this.adhaarNumber = adhaarNumber;
+	}
+
+
+	public String getPanNumber() {
+		return panNumber;
+	}
+
+
+	public void setPanNumber(String panNumber) {
+		this.panNumber = panNumber;
+	}
+
+
+	public Boolean getKycStatus() {
+		return kycStatus;
+	}
+
+
+	public void setKycStatus(Boolean kycStatus) {
+		this.kycStatus = kycStatus;
+	}
+
+
+	public Boolean getAccountActiveStatus() {
+		return accountActiveStatus;
+	}
+
+
+	public void setAccountActiveStatus(Boolean accountActiveStatus) {
+		this.accountActiveStatus = accountActiveStatus;
+	}
+
+
+	public Date getLastLoginTimestamp() {
+		return lastLoginTimestamp;
+	}
+
+
+	public void setLastLoginTimestamp(Date lastLoginTimestamp) {
+		this.lastLoginTimestamp = lastLoginTimestamp;
+	}
+
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("CustomerDetails [customerId=").append(customerId).append(", transactions=").append(transactions)
+				.append(", savingAccountDetails=").append(savingAccountDetails).append(", customerDocuments=")
+				.append(customerDocuments).append(", customerAddresses=").append(customerAddresses)
+				.append(", accountHolderFirstName=").append(accountHolderFirstName).append(", accountHolderLastName=")
+				.append(accountHolderLastName).append(", role=").append(role).append(", accountNumber=")
+				.append(accountNumber).append(", annualIncome=").append(annualIncome).append(", dateOfBirth=")
+				.append(dateOfBirth).append(", gender=").append(gender).append(", emailId=").append(emailId)
+				.append(", username=").append(username).append(", password=").append(password).append(", mobileNumber=")
+				.append(mobileNumber).append(", occupation=").append(occupation).append(", adhaarNumber=")
+				.append(adhaarNumber).append(", panNumber=").append(panNumber).append(", kycStatus=").append(kycStatus)
+				.append(", accountActiveStatus=").append(accountActiveStatus).append(", lastLoginTimestamp=")
+				.append(lastLoginTimestamp).append("]");
+		return builder.toString();
+	}	
+    
 }

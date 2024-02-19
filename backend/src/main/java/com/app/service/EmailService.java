@@ -10,6 +10,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Random;
 
 @Service
@@ -22,6 +23,45 @@ public class EmailService {
     public EmailService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
+    
+	public String aacountOpenMail(String emailId, String accountHolderFirstName, String accountHolderLastName, String accountNumber,
+			Double balance, Date date, String username, String password) {
+			try {
+			MimeMessage message = javaMailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, true);
+			
+			helper.setTo(emailId);
+			helper.setSubject("Aarna Bank: Opened new account : "+ accountNumber);
+			
+			String messageString = "Dear "+ accountHolderFirstName + " "+ accountHolderLastName +",\n\n" +
+				"Thank you for choosing our bank and trusting us for your financial needs. " +
+				"We are pleased to inform you that you have succeessfully opened account at our bank!\n" +
+				"Account details for your reference : \n\n" +
+			    "Account Number ------------> "+ accountNumber +"\n" +
+			    "Account Holder Name -------> "+ accountHolderFirstName + " "+ accountHolderLastName + "\n" +
+			    "Account Opening Balance ---> "+ 0 +"\n" +
+			    "Account Opening Date ------> "+ date + "\n"+
+			    "Confidential Login Credentials (Do not share with anyone) => \n" +
+			    "Account Username : 	"+ username +"\n" +
+			    "Account Password : 	"+ password +"\n\n" +
+			    "Please complete your KYC at earliest to carry out transactions (Withdraw/ Depoit/ Send Money) by logging in to your account. "+
+			    "Please refer netbanking tutorials and FAQs in Other Service sections if you are new to our netbanking portal and need a quick walkthrough the features. "+
+			    "Should you notice any suspicious activity, please do not hesitate to contact us via contact details given in Other Services / Contact Us.\n\n" +
+			    "We also invite you to explore our latest offers, exclusively designed for you, in the Offers Section.\n\n" +
+			    "Happy Banking! 😊\n\n" +
+			    "Best Regards,\n\n" +
+			    "Aarna Bank";
+			
+			helper.setText(messageString);
+			
+			javaMailSender.send(message);
+			return messageString;
+			} catch (MessagingException e) {
+			e.printStackTrace();
+			// Handle exception
+			}
+			return null;
+		}
 
     public String sendOtp(String userEmail) {
         setOtp(generateOtp());
