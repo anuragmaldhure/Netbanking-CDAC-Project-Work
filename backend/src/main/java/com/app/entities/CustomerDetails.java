@@ -1,394 +1,240 @@
 package com.app.entities;
 
-import java.math.BigDecimal;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "Customer_Details")
-public class CustomerDetails {
+@Table(name = "customer_details")
+public class CustomerDetails implements Serializable {
 
-    @Id
+    private static final long serialVersionUID = 4974227050528078629L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Customer_ID")
+    @Column(name = "customer_id")
     private Long customerId;
 
-    @Column(name = "Username", unique = true, nullable = false)
-    private String username;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<AccountTransactions> transactions;
     
-	@Column(name = "Password", nullable = false)
-    private String password;
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    private CustomerSavingAccounts savingAccountDetails;
+    
+    @OneToOne(mappedBy = "customerDetails", cascade = CascadeType.ALL)
+    private CustomerDocuments customerDocuments;
+    
+    @OneToOne(mappedBy = "customerDetails", cascade = CascadeType.ALL)
+    private CustomerAddress customerAddresses;
 
-    @Column(name = "Account_Holder_First_Name", nullable = false)
+
+    // Other fields
+    @Column(name = "account_holder_first_name")
     private String accountHolderFirstName;
 
-    @Column(name = "Account_Holder_Last_Name", nullable = false)
+    @Column(name = "account_holder_last_name")
     private String accountHolderLastName;
 
-    @Column(name = "Mobile_Number", nullable = false)
-    private String mobileNumber;
+    @Column(name = "account_number")
+    private String accountNumber;
 
-    @Column(name = "Email_ID", unique = true, nullable = false)
-    private String emailId;
+    @Column(name = "annual_income")
+    private Double annualIncome;
 
-    @Column(name = "Last_Login")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastLogin;
-
-    @Column(name = "PAN_Number", unique = true, nullable = false)
-    private String panNumber;
-
-    @Column(name = "Adhaar_Number", unique = true, nullable = false)
-    private String adhaarNumber;
-
-    @Column(name = "Occupation")
-    private String occupation;
-
-    @Column(name = "Annual_Income")
-    private BigDecimal annualIncome;
-
-    @Column(name = "Address")
-    private String address;
-
-    @Column(name = "City")
-    private String city;
-
-    @Column(name = "State")
-    private String state;
-
-    @Column(name = "Pin_Code")
-    private String pinCode;
-
-    @Column(name = "Nationality")
-    private String nationality;
-
-    @Column(name = "Gender")
-    private String gender;
-
-    @Column(name = "Signup_Timestamp")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date signupTimestamp;
-
-    @Column(name = "KYC_Submission_Timestamp")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date kycSubmissionTimestamp;
-
-    @Column(name = "KYC_Verified_Timestamp")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date kycVerifiedTimestamp;
-
-    @Column(name = "KYC_Rejected_Timestamp")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date kycRejectedTimestamp;
-
-    @Column(name = "Date_of_Birth")
+    @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
-    @Column(name = "KYC_Status")
-    private Boolean kycStatus; 
-
-    @Column(name = "Message_Email_Alerts_Status")
-    private String messageEmailAlertsStatus;
-
-    @Column(name = "Offers")
-    private String offers;
-
-    @Column(name = "Account_Number")
-    private String accountNumber;
-    
-    //Documents Images
-	@Lob
-	private byte[] customerPhoto;	//for storing image in blob format in db
-	private String customerPhotoImagePath;// This will be used for storing n restoring images in server side folder
-	
-	@Lob
-	private byte[] panCardPhoto;
-	private String panCardPhotoImagePath;
-	
-	@Lob
-	private byte[] aadharCardPhoto;
-	private String aadharCardPhotoImagePath;
-
-	public byte[] getCustomerPhoto() {
-		return customerPhoto;
-	}
-
-	public void setCustomerPhoto(byte[] customerPhoto) {
-		this.customerPhoto = customerPhoto;
-	}
-
-	public String getCustomerPhotoImagePath() {
-		return customerPhotoImagePath;
-	}
-
-	public void setCustomerPhotoImagePath(String customerPhotoImagePath) {
-		this.customerPhotoImagePath = customerPhotoImagePath;
-	}
-
-	public byte[] getPanCardPhoto() {
-		return panCardPhoto;
-	}
-
-	public void setPanCardPhoto(byte[] panCardPhoto) {
-		this.panCardPhoto = panCardPhoto;
-	}
-
-	public String getPanCardPhotoImagePath() {
-		return panCardPhotoImagePath;
-	}
-
-	public void setPanCardPhotoImagePath(String panCardPhotoImagePath) {
-		this.panCardPhotoImagePath = panCardPhotoImagePath;
-	}
-
-	public byte[] getAadharCardPhoto() {
-		return aadharCardPhoto;
-	}
-
-	public void setAadharCardPhoto(byte[] aadharCardPhoto) {
-		this.aadharCardPhoto = aadharCardPhoto;
-	}
-
-	public String getAadharCardPhotoImagePath() {
-		return aadharCardPhotoImagePath;
-	}
-
-	public void setAadharCardPhotoImagePath(String aadharCardPhotoImagePath) {
-		this.aadharCardPhotoImagePath = aadharCardPhotoImagePath;
-	}
-
-	public Long getCustomerId() {
-		return customerId;
-	}
-
-	public void setCustomerId(Long customerId) {
-		this.customerId = customerId;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getAccountHolderFirstName() {
-		return accountHolderFirstName;
-	}
-
-	public void setAccountHolderFirstName(String accountHolderFirstName) {
-		this.accountHolderFirstName = accountHolderFirstName;
-	}
+    @Column(name = "gender")
+    private String gender;
 
-	public String getAccountHolderLastName() {
-		return accountHolderLastName;
-	}
+    @Column(name = "email_id")
+    private String emailId;
 
-	public void setAccountHolderLastName(String accountHolderLastName) {
-		this.accountHolderLastName = accountHolderLastName;
-	}
+    @Column(name = "username")
+    private String username;
 
-	public String getMobileNumber() {
-		return mobileNumber;
-	}
+    @Column(name = "password")
+    private String password;
 
-	public void setMobileNumber(String mobileNumber) {
-		this.mobileNumber = mobileNumber;
-	}
+    @Column(name = "mobile_number")
+    private String mobileNumber;
 
-	public String getEmailId() {
-		return emailId;
-	}
+    @Column(name = "occupation")
+    private String occupation;
 
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
-	}
+    @Column(name = "adhaar_number")
+    private String adhaarNumber;
 
-	public Date getLastLogin() {
-		return lastLogin;
-	}
+    @Column(name = "pan_number")
+    private String panNumber;
 
-	public void setLastLogin(Date lastLogin) {
-		this.lastLogin = lastLogin;
-	}
+    @Column(name = "kyc_status")
+    private Boolean kycStatus;
 
-	public String getPanNumber() {
-		return panNumber;
-	}
+    @Column(name = "account_active_status")
+    private Boolean accountActiveStatus;
 
-	public void setPanNumber(String panNumber) {
-		this.panNumber = panNumber;
-	}
+    @Column(name = "last_login_timestamp")
+    private Date lastLoginTimestamp;
 
-	public String getAdhaarNumber() {
-		return adhaarNumber;
-	}
+    // Getters and Setters
 
-	public void setAdhaarNumber(String adhaarNumber) {
-		this.adhaarNumber = adhaarNumber;
-	}
+    public Long getCustomerId() {
+        return customerId;
+    }
 
-	public String getOccupation() {
-		return occupation;
-	}
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
 
-	public void setOccupation(String occupation) {
-		this.occupation = occupation;
-	}
+    // Getter and Setter for transactions
+    public List<AccountTransactions> getTransactions() {
+        return transactions;
+    }
 
-	public BigDecimal getAnnualIncome() {
-		return annualIncome;
-	}
+    public void setTransactions(List<AccountTransactions> transactions) {
+        this.transactions = transactions;
+    }
 
-	public void setAnnualIncome(BigDecimal annualIncome) {
-		this.annualIncome = annualIncome;
-	}
+    // Getters and Setters for other fields (accountHolderFirstName, accountHolderLastName, etc.)
+    // Getters
+    public String getAccountHolderFirstName() {
+        return accountHolderFirstName;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public String getAccountHolderLastName() {
+        return accountHolderLastName;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public String getAccountNumber() {
+        return accountNumber;
+    }
 
-	public String getCity() {
-		return city;
-	}
+    public Double getAnnualIncome() {
+        return annualIncome;
+    }
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
 
-	public String getState() {
-		return state;
-	}
+    public String getGender() {
+        return gender;
+    }
 
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public String getPinCode() {
-		return pinCode;
-	}
-
-	public void setPinCode(String pinCode) {
-		this.pinCode = pinCode;
-	}
-
-	public String getNationality() {
-		return nationality;
-	}
-
-	public void setNationality(String nationality) {
-		this.nationality = nationality;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	public Date getSignupTimestamp() {
-		return signupTimestamp;
-	}
-
-	public void setSignupTimestamp(Date signupTimestamp) {
-		this.signupTimestamp = signupTimestamp;
-	}
-
-	public Date getKycSubmissionTimestamp() {
-		return kycSubmissionTimestamp;
-	}
-
-	public void setKycSubmissionTimestamp(Date kycSubmissionTimestamp) {
-		this.kycSubmissionTimestamp = kycSubmissionTimestamp;
-	}
-
-	public Date getKycVerifiedTimestamp() {
-		return kycVerifiedTimestamp;
-	}
-
-	public void setKycVerifiedTimestamp(Date kycVerifiedTimestamp) {
-		this.kycVerifiedTimestamp = kycVerifiedTimestamp;
-	}
-
-	public Date getKycRejectedTimestamp() {
-		return kycRejectedTimestamp;
-	}
-
-	public void setKycRejectedTimestamp(Date kycRejectedTimestamp) {
-		this.kycRejectedTimestamp = kycRejectedTimestamp;
-	}
-
-	public Date getDateOfBirth() {
-		return dateOfBirth;
-	}
-
-	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
-
-	public Boolean getKycStatus() {
-		return kycStatus;
-	}
-
-	public void setKycStatus(Boolean kycStatus) {
-		this.kycStatus = kycStatus;
-	}
-
-	public String getMessageEmailAlertsStatus() {
-		return messageEmailAlertsStatus;
-	}
-
-	public void setMessageEmailAlertsStatus(String messageEmailAlertsStatus) {
-		this.messageEmailAlertsStatus = messageEmailAlertsStatus;
-	}
-
-	public String getOffers() {
-		return offers;
-	}
-
-	public void setOffers(String offers) {
-		this.offers = offers;
-	}
-
-	public String getAccountNumber() {
-		return accountNumber;
-	}
-
-	public void setAccountNumber(String accountNumber) {
-		this.accountNumber = accountNumber;
-	}
-	
-//    public Beneficiary getCustomerByUsername() {
-//		return customerByUsername;
-//	}
-//
-//	public void setCustomerByUsername(Beneficiary customerByUsername) {
-//		this.customerByUsername = customerByUsername;
-//	}
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public String getAdhaarNumber() {
+        return adhaarNumber;
+    }
+
+    public String getPanNumber() {
+        return panNumber;
+    }
+
+    public Boolean getKycStatus() {
+        return kycStatus;
+    }
+
+    public Boolean getAccountActiveStatus() {
+        return accountActiveStatus;
+    }
+
+    public Date getLastLoginTimestamp() {
+        return lastLoginTimestamp;
+    }
+
+    // Setters
+    public void setAccountHolderFirstName(String accountHolderFirstName) {
+        this.accountHolderFirstName = accountHolderFirstName;
+    }
+
+    public void setAccountHolderLastName(String accountHolderLastName) {
+        this.accountHolderLastName = accountHolderLastName;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public void setAnnualIncome(Double annualIncome) {
+        this.annualIncome = annualIncome;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public void setAdhaarNumber(String adhaarNumber) {
+        this.adhaarNumber = adhaarNumber;
+    }
+
+    public void setPanNumber(String panNumber) {
+        this.panNumber = panNumber;
+    }
+
+    public void setKycStatus(Boolean kycStatus) {
+        this.kycStatus = kycStatus;
+    }
+
+    public void setAccountActiveStatus(Boolean accountActiveStatus) {
+        this.accountActiveStatus = accountActiveStatus;
+    }
+
+    public void setLastLoginTimestamp(Date lastLoginTimestamp) {
+        this.lastLoginTimestamp = lastLoginTimestamp;
+    }
 
 }

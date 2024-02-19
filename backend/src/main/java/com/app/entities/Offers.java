@@ -23,7 +23,7 @@ public class Offers {
     private String offerDetails;
 
     @Column(name = "Offer_Availability", nullable = false)
-    private boolean offerAvailability;
+    private Boolean offerAvailability;
 
     @Column(name = "Offer_Minimum_Balance", nullable = false)
     private Double offerMinimumBalance;
@@ -58,7 +58,7 @@ public class Offers {
         return offerAvailability;
     }
 
-    public void setOfferAvailability(boolean offerAvailability) {
+    public void setOfferAvailability(Boolean offerAvailability) {
         this.offerAvailability = offerAvailability;
     }
 
@@ -70,5 +70,4 @@ public class Offers {
         this.offerMinimumBalance = offerMinimumBalance;
     }
 
-    // You can also add any necessary constructors or other methods as needed
 }

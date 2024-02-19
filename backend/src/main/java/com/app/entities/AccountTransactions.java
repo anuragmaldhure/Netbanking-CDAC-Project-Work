@@ -1,5 +1,6 @@
 package com.app.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -10,42 +11,43 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "Account_Transactions")
-public class AccountTransactions {
+@Table(name = "account_transactions")
+public class AccountTransactions implements Serializable {
 
-    @Id
+	private static final long serialVersionUID = 2964585480928004360L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Transaction_ID")
+    @Column(name = "transaction_id")
     private Long transactionId;
 
     @ManyToOne
-    @JoinColumn(name = "Customer_ID", nullable = false)
-    private CustomerDetails customerID;
+    @JoinColumn(name = "customer_id")
+    private CustomerDetails customer;
 
-    @Column(name = "Transaction_Amount", nullable = false)
-    private Double transactionAmount;
-
-    @Column(name = "Transaction_Type", nullable = false) //Either '-' for Debit or '+' for Credit
-    private String transactionType;
-
-    @Column(name = "Transaction_Timestamp", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date transactionTimestamp;
-
-    @Column(name = "Recipient_ID")
+    // Other fields
+    @Column(name = "recipient_id")
     private Long recipientId;
 
-    @Column(name = "Transaction_Remarks")
-    private String transactionRemarks;
+    @Column(name = "transaction_amount")
+    private Double transactionAmount;
 
-    @Column(name = "Transaction_By_ID", nullable = false)
+    @Column(name = "transaction_by_id")
     private Long transactionById;
 
-    // Add getters and setters here
+    @Column(name = "transaction_remarks")
+    private String transactionRemarks;
+
+    @Column(name = "transaction_timestamp")
+    private Date transactionTimestamp;
+
+    @Column(name = "transaction_type")
+    private String transactionType;
+
+    @Column(name = "current_balance")
+    private Double currentBalance;
 
     public Long getTransactionId() {
         return transactionId;
@@ -55,36 +57,12 @@ public class AccountTransactions {
         this.transactionId = transactionId;
     }
 
-    public CustomerDetails getCustomerID() {
-        return customerID;
+    public CustomerDetails getCustomer() {
+        return customer;
     }
 
-    public void setCustomer(CustomerDetails customerID) {
-        this.customerID = customerID;
-    }
-
-    public Double getTransactionAmount() {
-        return transactionAmount;
-    }
-
-    public void setTransactionAmount(Double transactionAmount) {
-        this.transactionAmount = transactionAmount;
-    }
-
-    public String getTransactionType() {
-        return transactionType;
-    }
-
-    public void setTransactionType(String transactionType) {
-        this.transactionType = transactionType;
-    }
-
-    public Date getTransactionTimestamp() {
-        return transactionTimestamp;
-    }
-
-    public void setTransactionTimestamp(Date transactionTimestamp) {
-        this.transactionTimestamp = transactionTimestamp;
+    public void setCustomer(CustomerDetails customer) {
+        this.customer = customer;
     }
 
     public Long getRecipientId() {
@@ -95,12 +73,12 @@ public class AccountTransactions {
         this.recipientId = recipientId;
     }
 
-    public String getTransactionRemarks() {
-        return transactionRemarks;
+    public Double getTransactionAmount() {
+        return transactionAmount;
     }
 
-    public void setTransactionRemarks(String transactionRemarks) {
-        this.transactionRemarks = transactionRemarks;
+    public void setTransactionAmount(Double transactionAmount) {
+        this.transactionAmount = transactionAmount;
     }
 
     public Long getTransactionById() {
@@ -110,6 +88,36 @@ public class AccountTransactions {
     public void setTransactionById(Long transactionById) {
         this.transactionById = transactionById;
     }
-    
 
+    public String getTransactionRemarks() {
+        return transactionRemarks;
+    }
+
+    public void setTransactionRemarks(String transactionRemarks) {
+        this.transactionRemarks = transactionRemarks;
+    }
+
+    public Date getTransactionTimestamp() {
+        return transactionTimestamp;
+    }
+
+    public void setTransactionTimestamp(Date transactionTimestamp) {
+        this.transactionTimestamp = transactionTimestamp;
+    }
+
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
+    }
+
+    public Double getCurrentBalance() {
+        return currentBalance;
+    }
+
+    public void setCurrentBalance(Double currentBalance) {
+        this.currentBalance = currentBalance;
+    }    
 }

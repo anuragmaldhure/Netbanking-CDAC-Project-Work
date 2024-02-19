@@ -11,8 +11,18 @@ public class AccountTransactionsDTO {
     private Long recipientId;
     private String transactionRemarks;
     private Long transactionById;
+    private Long currentBalance;
     
-    public Long getTransactionId() {
+    
+    public Long getCurrentBalance() {
+		return currentBalance;
+	}
+
+	public void setCurrentBalance(Long currentBalance) {
+		this.currentBalance = currentBalance;
+	}
+
+	public Long getTransactionId() {
 		return transactionId;
 	}
 
