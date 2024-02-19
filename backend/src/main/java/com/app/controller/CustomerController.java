@@ -176,7 +176,7 @@ public class CustomerController {
 	// http://host:port/customer/documents/photo/{customerId} ,
 	// method=POST , req param :
 	// multipart file(image data)
-	@PostMapping(value = "/documents/photo/{customerId}", consumes = "multipart/form-data")
+	@PutMapping(value = "/documents/photo/{customerId}", consumes = "multipart/form-data")
 	public ResponseEntity<?> uploadCustomerPhoto(@PathVariable Long customerId, @RequestParam MultipartFile imageFile)
 			throws IOException, RuntimeException {
 		System.out.println("in upload customer photo " + customerId);
@@ -190,7 +190,7 @@ public class CustomerController {
 		return ResponseEntity.ok(imgService.downloadCustomerPhoto(customerId));
 	}
 	
-	@PostMapping(value = "/documents/pan/{customerId}", consumes = "multipart/form-data")
+	@PutMapping(value = "/documents/pan/{customerId}", consumes = "multipart/form-data")
 	public ResponseEntity<?> uploadCustomerPAN(@PathVariable Long customerId, @RequestParam MultipartFile imageFile)
 			throws IOException, RuntimeException {
 		System.out.println("in upload customer pan " + customerId);
@@ -204,7 +204,7 @@ public class CustomerController {
 		return ResponseEntity.ok(imgService.downloadCustomerPAN(customerId));
 	}
 	
-	@PostMapping(value = "/documents/aadhar/{customerId}", consumes = "multipart/form-data")
+	@PutMapping(value = "/documents/aadhar/{customerId}", consumes = "multipart/form-data")
 	public ResponseEntity<?> uploadCustomerAadhaar(@PathVariable Long customerId, @RequestParam MultipartFile imageFile)
 			throws IOException, RuntimeException {
 		System.out.println("in upload customer aadhar " + customerId);

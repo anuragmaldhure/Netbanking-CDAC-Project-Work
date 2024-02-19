@@ -50,6 +50,7 @@ public class EmployeeController {
 		System.out.println("in ctor of " + getClass());
 	}
 	
+	//SEARCH FUNCTIONALITIES
 	//For getting customer details by account number
 	@GetMapping("/Accounts/ViewCustomerDetails48/{accountNumber}")
 	public Optional<CustomerDetailsDTO> getCustomerDetailsByAccountNumber(@PathVariable String accountNumber) {
@@ -67,6 +68,14 @@ public class EmployeeController {
 	public List<CustomerDetailsDTO> getCustomerDetailsByLastName(@PathVariable String lname) {
 		System.out.println("in get Customer Details by lname in Employee");
 		return customerService.getCustomerDetailsByLastName(lname);
+	}
+	
+	
+	//get all customer details details
+	@GetMapping("/Accounts/GetAllCustomerDetails")
+	public List<CustomerDetailsDTO> getAllCustomerDetails() {
+		System.out.println("in get all customers details by c id in Employee");
+		return customerService.getAllCustomerDetails();
 	}
 	
 	//Reject KYC
@@ -141,7 +150,6 @@ public class EmployeeController {
 		System.out.println("in get Customer saving account details by c id in Employee");
 		return customerSavingsAccountService.getCustomerAccountDetails(customerId);
 	}
-
 	
 //	@PostMapping("/FundTransfer/DepositMoney44")
 //	public Optional<CustomerDetails> (@PathVariable Long customerId) {

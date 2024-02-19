@@ -3,14 +3,9 @@ package com.app.dao;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Service;
-
-import com.app.dto.customer.CustomerDetailsDTO;
 import com.app.entities.CustomerDetails;
 
 public interface CustomerDao extends JpaRepository<CustomerDetails, Long>{
@@ -23,5 +18,8 @@ public interface CustomerDao extends JpaRepository<CustomerDetails, Long>{
 	    List<CustomerDetails> findByAccountHolderFirstName(@Param("firstName") String firstName);
 
 		@Query("SELECT c FROM CustomerDetails c WHERE c.accountHolderLastName = :lastName")
-	    List<CustomerDetails> findByAccountHolderLastName(@Param("lastName") String lastName);		
+	    List<CustomerDetails> findByAccountHolderLastName(@Param("lastName") String lastName);
+
+		@Query(value = "SELECT * FROM customer_details", nativeQuery = true)
+		List<CustomerDetails> getAllCustomerDetails();		
 }

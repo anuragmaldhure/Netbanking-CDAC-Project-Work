@@ -23,4 +23,6 @@ public interface CustomerService {
 	void changeKYCstatusReject(Long customerId);
 
 	void changeKYCstatusApproved(Long customerId);
+
+	List<CustomerDetailsDTO> getAllCustomerDetails();
 }

@@ -176,4 +176,13 @@ public class CustomerServiceImpl implements CustomerService{
         }
 	}
 
+
+	@Override
+	public List<CustomerDetailsDTO> getAllCustomerDetails() {
+		return customerDao.getAllCustomerDetails()
+		            .stream()
+		            .map(customer -> mapper.map(customer, CustomerDetailsDTO.class))
+		            .collect(Collectors.toList());
+	}
+
 }

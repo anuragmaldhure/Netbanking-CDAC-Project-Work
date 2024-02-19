@@ -1,5 +1,6 @@
 package com.app.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.app.dao.CustomerSavingsAccountDao;
+import com.app.dto.customer.CustomerDetailsDTO;
 import com.app.dto.customer.CustomerSavingAccountsDTO;
 import com.app.entities.CustomerSavingAccounts;
 
@@ -54,5 +56,4 @@ public class CustomerSavingAccountsServiceImpl implements CustomerSavingsAccount
 		        throw new EntityNotFoundException("Customer account not found with customer id: " + customerId);
 		    }
 	}
-	
 }
