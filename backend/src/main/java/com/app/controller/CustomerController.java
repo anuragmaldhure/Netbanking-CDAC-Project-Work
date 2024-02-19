@@ -5,7 +5,6 @@ import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,9 +22,6 @@ import com.app.service.CustomerSavingsAccountService;
 import com.app.service.CustomerService;
 import com.app.service.EmailService;
 import com.app.service.ImageHandlingService;
-import com.app.service.OffersService;
-
-import net.bytebuddy.asm.Advice.Return;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -66,10 +62,10 @@ public class CustomerController {
 	
 	@Autowired 
 	private CustomerSavingsAccountService customerSavingsAccountService;
-//	
-//	@Autowired
-//	@Qualifier("image_db")
-//	private ImageHandlingService imgService;
+	
+	@Autowired
+	@Qualifier("image_db")
+	private ImageHandlingService imgService;
 	
 	public CustomerController() {
 		System.out.println("in ctor of " + getClass());
@@ -175,55 +171,52 @@ public class CustomerController {
 //	//Get String response of pending KYC if KYC status = 0
 ////	@PostMapping("/FundTransfer/TransferWithinBank20")
 //	
-//	//KYC
-////  upload image from clnt n saving it either on db or in server side folder
-//	// http://host:port/customer/documents/photo/{customerId} ,
-//	// method=POST , req param :
-//	// multipart file(image data)
-//	@PostMapping(value = "/documents/photo/{customerId}", consumes = "multipart/form-data")
-//	public ResponseEntity<?> uploadCustomerPhoto(@PathVariable Long customerId, @RequestParam MultipartFile imageFile)
-//			throws IOException, RuntimeException {
-//		System.out.println("in upload customer photo " + customerId);
-//		return ResponseEntity.status(HttpStatus.CREATED).body(imgService.uploadCustomerPhoto(customerId, imageFile));
-//	}
-//
-//	// serve(download image) of specific customer
-//	// http://host:port/employees/images/{empId} , method=GET
-//	@GetMapping(value =  "/documents/photo/{customerId}", produces = { IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE })
-//	public ResponseEntity<?> serveCustomerPhoto(@PathVariable Long customerId) throws IOException {
-//		System.out.println("in download customer photo " + customerId);
-//		return ResponseEntity.ok(imgService.downloadCustomerPhoto(customerId));
-//	}
-//	
-//	@PostMapping(value = "/documents/pan/{customerId}", consumes = "multipart/form-data")
-//	public ResponseEntity<?> uploadCustomerPAN(@PathVariable Long customerId, @RequestParam MultipartFile imageFile)
-//			throws IOException, RuntimeException {
-//		System.out.println("in upload customer pan " + customerId);
-//		return ResponseEntity.status(HttpStatus.CREATED).body(imgService.uploadCustomerPAN(customerId, imageFile));
-//	}
-//
-//	// serve(download image) of specific customer
-//	// http://host:port/employees/images/{empId} , method=GET
-//	@GetMapping(value =  "/documents/pan/{customerId}", produces = { IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE })
-//	public ResponseEntity<?> serveCustomerPAN(@PathVariable Long customerId) throws IOException {
-//		System.out.println("in download customer pan " + customerId);
-//		return ResponseEntity.ok(imgService.downloadCustomerPAN(customerId));
-//	}
-//	
-//	@PostMapping(value = "/documents/aadhar/{customerId}", consumes = "multipart/form-data")
-//	public ResponseEntity<?> uploadCustomerAadhaar(@PathVariable Long customerId, @RequestParam MultipartFile imageFile)
-//			throws IOException, RuntimeException {
-//		System.out.println("in upload customer aadhar " + customerId);
-//		return ResponseEntity.status(HttpStatus.CREATED).body(imgService.uploadCustomerAadhar(customerId, imageFile));
-//	}
-//
-//	// serve(download image) of specific customer
-//	// http://host:port/employees/images/{empId} , method=GET
-//	@GetMapping(value =  "/documents/aadhar/{customerId}", produces = { IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE })
-//	public ResponseEntity<?> serveCustomerAadhar(@PathVariable Long customerId) throws IOException {
-//		System.out.println("in download customer aadhar " + customerId);
-//		return ResponseEntity.ok(imgService.downloadCustomerAadhar(customerId));
-//	}
+	//KYC
+//  upload image from clnt n saving it either on db or in server side folder
+	// http://host:port/customer/documents/photo/{customerId} ,
+	// method=POST , req param :
+	// multipart file(image data)
+	@PostMapping(value = "/documents/photo/{customerId}", consumes = "multipart/form-data")
+	public ResponseEntity<?> uploadCustomerPhoto(@PathVariable Long customerId, @RequestParam MultipartFile imageFile)
+			throws IOException, RuntimeException {
+		System.out.println("in upload customer photo " + customerId);
+		return ResponseEntity.status(HttpStatus.CREATED).body(imgService.uploadCustomerPhoto(customerId, imageFile));
+	}
+
+	// serve(download image) of specific customer
+	@GetMapping(value =  "/documents/photo/{customerId}", produces = { IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE })
+	public ResponseEntity<?> serveCustomerPhoto(@PathVariable Long customerId) throws IOException {
+		System.out.println("in download customer photo " + customerId);
+		return ResponseEntity.ok(imgService.downloadCustomerPhoto(customerId));
+	}
+	
+	@PostMapping(value = "/documents/pan/{customerId}", consumes = "multipart/form-data")
+	public ResponseEntity<?> uploadCustomerPAN(@PathVariable Long customerId, @RequestParam MultipartFile imageFile)
+			throws IOException, RuntimeException {
+		System.out.println("in upload customer pan " + customerId);
+		return ResponseEntity.status(HttpStatus.CREATED).body(imgService.uploadCustomerPAN(customerId, imageFile));
+	}
+
+	// serve(download image) of specific customer
+	@GetMapping(value =  "/documents/pan/{customerId}", produces = { IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE })
+	public ResponseEntity<?> serveCustomerPAN(@PathVariable Long customerId) throws IOException {
+		System.out.println("in download customer pan " + customerId);
+		return ResponseEntity.ok(imgService.downloadCustomerPAN(customerId));
+	}
+	
+	@PostMapping(value = "/documents/aadhar/{customerId}", consumes = "multipart/form-data")
+	public ResponseEntity<?> uploadCustomerAadhaar(@PathVariable Long customerId, @RequestParam MultipartFile imageFile)
+			throws IOException, RuntimeException {
+		System.out.println("in upload customer aadhar " + customerId);
+		return ResponseEntity.status(HttpStatus.CREATED).body(imgService.uploadCustomerAadhar(customerId, imageFile));
+	}
+
+	// serve(download image) of specific customer
+	@GetMapping(value =  "/documents/aadhar/{customerId}", produces = { IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE })
+	public ResponseEntity<?> serveCustomerAadhar(@PathVariable Long customerId) throws IOException {
+		System.out.println("in download customer aadhar " + customerId);
+		return ResponseEntity.ok(imgService.downloadCustomerAadhar(customerId));
+	}
 //	
 //	//Get account balance
 //	@GetMapping("/FundTransfer/SendMoney21/{customerId}")

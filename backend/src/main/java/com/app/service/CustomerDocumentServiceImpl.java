@@ -26,7 +26,7 @@ public class CustomerDocumentServiceImpl implements CustomerDocumentsService{
 
 	@Override
 	public Optional<CustomerDocumentsDTO> getDocumentsAadhaarAndPan(Long customerId) {
-	    CustomerDocuments documents = customerDocumentsDao.findByCustomer(customerId);
+	    CustomerDocuments documents = customerDocumentsDao.findByCustomerId(customerId);
 	    
 	    // Check if address is not null before mapping
 	    if (documents != null) {
@@ -41,7 +41,7 @@ public class CustomerDocumentServiceImpl implements CustomerDocumentsService{
 
 	@Override
 	public Optional<CustomerPhotoDTO> getCustomerPhoto(Long customerId) {
-	    CustomerDocuments documents = customerDocumentsDao.findByCustomer(customerId);
+	    CustomerDocuments documents = customerDocumentsDao.findByCustomerId(customerId);
 	    
 	    // Check if address is not null before mapping
 	    if (documents != null) {

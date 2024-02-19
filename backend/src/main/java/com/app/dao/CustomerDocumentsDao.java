@@ -8,6 +8,5 @@ import com.app.entities.CustomerDocuments;
 public interface CustomerDocumentsDao extends JpaRepository<CustomerDocuments, Long>{
 
 	@Query(value = "SELECT * FROM customer_documents cd WHERE cd.customer_id = ?1", nativeQuery = true)
-	CustomerDocuments findByCustomer(Long customerId);
-
+	CustomerDocuments findByCustomerId(Long customerId);
 }

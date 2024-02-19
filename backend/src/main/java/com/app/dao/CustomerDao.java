@@ -15,8 +15,8 @@ import com.app.entities.CustomerDetails;
 
 public interface CustomerDao extends JpaRepository<CustomerDetails, Long>{
 	// add a finder : JPQL : select e from Employee e where e.dept.id=:id
-//		Optional<CustomerDetails> findByCustomerId(Long customerId);
-//		
+		Optional<CustomerDetails> findByCustomerId(Long customerId);
+		
 		Optional<CustomerDetails> findByAccountNumber(String accountNumber);
 
 		@Query("SELECT c FROM CustomerDetails c WHERE c.accountHolderFirstName = :firstName")
