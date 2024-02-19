@@ -117,5 +117,4 @@ public class CustomerAddress {
 				.append(pinCode).append("]");
 		return builder.toString();
 	}
-
 }

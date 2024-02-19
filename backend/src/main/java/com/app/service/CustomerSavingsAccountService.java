@@ -1,11 +1,14 @@
 package com.app.service;
 
-import java.math.BigDecimal;
+import java.util.Optional;
+
+import com.app.dto.customer.CustomerSavingAccountsDTO;
+
 
 public interface CustomerSavingsAccountService {
 	
 	Object [] getAccountBalanceAndAccountNumberByCustomerId(Long customerId);
-	
-	//	BigDecimal getAccountBalanceByCustomerId(Long customerId);
 
+	Optional<CustomerSavingAccountsDTO> getCustomerAccountDetails(Long customerId);
+	
 }

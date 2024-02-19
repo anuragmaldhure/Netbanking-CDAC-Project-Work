@@ -12,6 +12,7 @@ public class CustomerDetailsDTO {
     private String accountNumber;
     private Double annualIncome;
     private Date dateOfBirth;
+    private String emailId;
     private String username;
     private String password;
     private String mobileNumber;
@@ -117,21 +118,27 @@ public class CustomerDetailsDTO {
 	public void setLastLoginTimestamp(Date lastLoginTimestamp) {
 		this.lastLoginTimestamp = lastLoginTimestamp;
 	}
+	public String getEmailId() {
+		return emailId;
+	}
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("CustomerDetails [customerId=").append(customerId).append(", accountHolderFirstName=")
+		builder.append("CustomerDetailsDTO [customerId=").append(customerId).append(", accountHolderFirstName=")
 				.append(accountHolderFirstName).append(", accountHolderLastName=").append(accountHolderLastName)
 				.append(", role=").append(role).append(", accountNumber=").append(accountNumber)
 				.append(", annualIncome=").append(annualIncome).append(", dateOfBirth=").append(dateOfBirth)
-				.append(", username=").append(username).append(", password=").append(password).append(", mobileNumber=")
-				.append(mobileNumber).append(", occupation=").append(occupation).append(", adhaarNumber=")
-				.append(adhaarNumber).append(", panNumber=").append(panNumber).append(", kycStatus=").append(kycStatus)
-				.append(", accountActiveStatus=").append(accountActiveStatus).append(", lastLoginTimestamp=")
-				.append(lastLoginTimestamp).append("]");
+				.append(", emailId=").append(emailId).append(", username=").append(username).append(", password=")
+				.append(password).append(", mobileNumber=").append(mobileNumber).append(", occupation=")
+				.append(occupation).append(", adhaarNumber=").append(adhaarNumber).append(", panNumber=")
+				.append(panNumber).append(", kycStatus=").append(kycStatus).append(", accountActiveStatus=")
+				.append(accountActiveStatus).append(", lastLoginTimestamp=").append(lastLoginTimestamp).append("]");
 		return builder.toString();
 	}
-    
+	
     
 }
 

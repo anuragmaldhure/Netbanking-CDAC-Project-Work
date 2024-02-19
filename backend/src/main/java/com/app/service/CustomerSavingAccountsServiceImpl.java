@@ -1,9 +1,16 @@
 package com.app.service;
 
+import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.app.dao.CustomerSavingsAccountDao;
+import com.app.dto.customer.CustomerSavingAccountsDTO;
 import com.app.entities.CustomerSavingAccounts;
 
 @Service
@@ -17,6 +24,9 @@ public class CustomerSavingAccountsServiceImpl implements CustomerSavingsAccount
     public CustomerSavingAccountsServiceImpl(CustomerSavingsAccountDao customerSavingsAccountDao) {
         this.customerSavingsAccountDao = customerSavingsAccountDao;
     }
+    
+	@Autowired
+    private ModelMapper mapper;
 
 	@Override
 	public Object[] getAccountBalanceAndAccountNumberByCustomerId(Long customerId) {
@@ -30,6 +40,19 @@ public class CustomerSavingAccountsServiceImpl implements CustomerSavingsAccount
             // Handle the case where the account is not found
             throw new RuntimeException("Account not found with customer id: " + customerId);
         }
+	}
+
+	@Override
+	public Optional<CustomerSavingAccountsDTO> getCustomerAccountDetails(Long customerId) {
+		 CustomerSavingAccounts accountDetails = customerSavingsAccountDao.findByCustomer(customerId);
+		    
+		    if (accountDetails != null) {
+		        // Map entity to DTO
+		    	CustomerSavingAccountsDTO customerSavingAccount = mapper.map(accountDetails, CustomerSavingAccountsDTO.class);
+		        return Optional.of(customerSavingAccount);
+		    } else {
+		        throw new EntityNotFoundException("Customer account not found with customer id: " + customerId);
+		    }
 	}
 	
 }

@@ -1,38 +1,26 @@
 package com.app.service;
 
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.web.util.ThrowableCauseExtractor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.app.dao.AccountTransactionsDao;
-import com.app.dao.CustomerDao;
 //import com.app.dao.EmployeeDao;
 import com.app.dto.AccountTransactionsDTO;
 import com.app.entities.AccountTransactions;
-import com.app.entities.BankEmployeeDetails;
 //import com.app.entities.Beneficiary;
-import com.app.entities.CustomerDetails;
-
-import org.apache.catalina.mapper.Mapper;
 import org.modelmapper.ModelMapper;
 
 @Service
 @Transactional
 public class AccountTransactionsServiceImpl implements AccountTransactionsService {
-
-	@Autowired
-	private CustomerDao customerDao;
 	
 	@Autowired 
 	private AccountTransactionsDao accountTransactionsDao;

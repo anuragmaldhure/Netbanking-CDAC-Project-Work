@@ -7,17 +7,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
-import javax.validation.constraints.Null;
-
-import org.modelmapper.internal.bytebuddy.implementation.MethodDelegation.WithCustomProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.modelmapper.ModelMapper;
 
+import com.app.dao.CustomerAddressDao;
 import com.app.dao.CustomerDao;
 import com.app.dao.CustomerSavingsAccountDao;
-import com.app.dto.AccountTransactionsDTO;
 import com.app.dto.customer.CreateNewCustomerDTO;
 import com.app.dto.customer.CustomerDetailsDTO;
 import com.app.entities.CustomerDetails;
@@ -38,81 +35,11 @@ public class CustomerServiceImpl implements CustomerService{
 	CustomerSavingsAccountDao customerSavingsAccountDao;
 	
 	@Autowired
+	CustomerAddressDao customerAddressDao;
+	
+	@Autowired
 	EmailService emailService;
 	
-	
-	
-	@Override
-	public Optional<CustomerDetailsDTO> getCustomerDetailsByCustomerId(Long customerId) {
-		CustomerDetails customer = customerDao.findById(customerId)
-                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
-
-        // Map CustomerDetails entity to CustomerDetailsDTO
-        CustomerDetailsDTO customerDTO = mapper.map(customer, CustomerDetailsDTO.class);
-
-        return Optional.ofNullable(customerDTO);
-	}
-
-//	@Override
-//    public void changePassword(Long customerId, String currentPassword, String newPassword) {
-//        CustomerDetails customer = customerDao.findById(customerId)
-//                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
-//
-//        // Perform any necessary validations or checks before updating the password
-//        // Check if the old password matches the user's current password
-//        if (!customer.getPassword().equals(currentPassword)) {
-//            throw new RuntimeException("Your current password does not match!");
-//        }
-//
-//        // Update the password
-//        customer.setPassword(newPassword);
-//
-//        // Save the updated customer
-//        customerDao.save(customer);
-//    }
-//
-//
-//	@Override
-//	public void changeKYCstatusReject(Long customerId) {
-//		CustomerDetails customer = customerDao.findById(customerId)
-//                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
-//		
-////		System.out.println("*1**");
-//	
-//        if (customer.getKycStatus()== null || customer.getKycStatus()== true) {
-////    		System.out.println("2***");
-//            // Update the kyc status
-//            customer.setKycStatus(false);
-////    		System.out.println("3***");
-//
-//            // Save the updated customer
-//            customerDao.save(customer);	       
-//        }
-//    	//Check if already rejected
-//        else if(customer.getKycStatus()==false) {
-//        	 throw new RuntimeException("KYC is already rejected! Please ask customer to reapply for KYC verification!");
-//        }	
-//	}
-//
-//
-//	@Override
-//	public void changeKYCstatusApproved(Long customerId) {
-//		CustomerDetails customer = customerDao.findById(customerId)
-//                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
-//		
-//		if(customer.getKycStatus()== null || customer.getKycStatus()== false) {
-//	        // Update the kyc status
-//	        customer.setKycStatus(true);
-//
-//	        // Save the updated customer
-//	        customerDao.save(customer);	
-//		}
-//		//Check if already approved
-//		else if (customer.getKycStatus()==true) {
-//            throw new RuntimeException("KYC is already approved! Cannot process your request");
-//        }
-//	}
-
 	@Override
 	public CustomerDetails registerNewCustomer(CreateNewCustomerDTO customerDTO) {
 		CustomerDetails customer = new CustomerDetails();
@@ -143,4 +70,110 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		return customer;
 	}
+
+	
+	@Override
+	public Optional<CustomerDetailsDTO> getCustomerDetailsByCustomerId(Long customerId) {
+		CustomerDetails customer = customerDao.findById(customerId)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
+
+        // Map CustomerDetails entity to CustomerDetailsDTO
+        CustomerDetailsDTO customerDTO = mapper.map(customer, CustomerDetailsDTO.class);
+
+        return Optional.ofNullable(customerDTO);
+	}
+	
+	@Override
+	public Optional<CustomerDetailsDTO> getCustomerDetailsByAccountNumber(String accountNumber) {
+		CustomerDetails customer = customerDao.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with account number: " + accountNumber));
+
+        // Map CustomerDetails entity to CustomerDetailsDTO
+        CustomerDetailsDTO customerDTO = mapper.map(customer, CustomerDetailsDTO.class);
+
+        return Optional.ofNullable(customerDTO);
+	}
+	
+	@Override
+	public List<CustomerDetailsDTO> getCustomerDetailsByFirstName(String fname) {
+		
+	    List<CustomerDetailsDTO> list = customerDao.findByAccountHolderFirstName(fname)
+	            .stream()
+	            .map(customer -> mapper.map(customer, CustomerDetailsDTO.class))
+	            .collect(Collectors.toList());
+
+	    return list;
+	}
+
+	@Override
+	public List<CustomerDetailsDTO> getCustomerDetailsByLastName(String lname) {
+	    List<CustomerDetailsDTO> list = customerDao.findByAccountHolderLastName(lname)
+	            .stream()
+	            .map(customer -> mapper.map(customer, CustomerDetailsDTO.class))
+	            .collect(Collectors.toList());
+
+	    return list;
+	}
+
+
+//	@Override
+//    public void changePassword(Long customerId, String currentPassword, String newPassword) {
+//        CustomerDetails customer = customerDao.findById(customerId)
+//                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
+//
+//        // Perform any necessary validations or checks before updating the password
+//        // Check if the old password matches the user's current password
+//        if (!customer.getPassword().equals(currentPassword)) {
+//            throw new RuntimeException("Your current password does not match!");
+//        }
+//
+//        // Update the password
+//        customer.setPassword(newPassword);
+//
+//        // Save the updated customer
+//        customerDao.save(customer);
+//    }
+//
+//
+	@Override
+	public void changeKYCstatusReject(Long customerId) {
+		CustomerDetails customer = customerDao.findById(customerId)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
+		
+//		System.out.println("*1**");
+	
+        if (customer.getKycStatus()== null || customer.getKycStatus()== true) {
+//    		System.out.println("2***");
+            // Update the kyc status
+            customer.setKycStatus(false);
+//    		System.out.println("3***");
+
+            // Save the updated customer
+            customerDao.save(customer);	       
+        }
+    	//Check if already rejected
+        else if(customer.getKycStatus()==false) {
+        	 throw new RuntimeException("KYC is already rejected! Please ask customer to reapply for KYC verification!");
+        }	
+	}
+
+
+	@Override
+	public void changeKYCstatusApproved(Long customerId) {
+		CustomerDetails customer = customerDao.findById(customerId)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
+		
+		if(customer.getKycStatus()== null || customer.getKycStatus()== false) {
+	        // Update the kyc status
+	        customer.setKycStatus(true);
+
+	        // Save the updated customer
+	        customerDao.save(customer);	
+		}
+		//Check if already approved
+		else if (customer.getKycStatus()==true) {
+            throw new RuntimeException("KYC is already approved! Cannot process your request");
+        }
+	}
+
 }
