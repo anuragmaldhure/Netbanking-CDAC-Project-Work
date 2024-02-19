@@ -1,267 +1,199 @@
-import React, { useState, useEffect } from "react";
-import {
-  TextField,
-  Button,
-  Grid,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Typography,
-  Paper,
-} from "@mui/material";
-import { useLocation } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import CancelIcon from "@mui/icons-material/Cancel";
-import TransferWithinAStationIcon from "@mui/icons-material/TransferWithinAStation";
-
+import React, { useEffect, useState } from "react";
+import { Box, useTheme } from "@mui/material";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { tokens } from "./theme";
+import axios from "axios";
+import { Helmet } from "react-helmet";
 import CustomerSideNavigationMenu from "../../components/CustomerSideNavigationMenu";
 import CustomerTopNavigationBar from "../../components/CustomerTopNavigationBar";
+import Header from "./Header";
 
-const TransferWithinBank21 = () => {
-  const location = useLocation();
-  const selectedData = location.state?.selectedData || null;
+// Define render functions before they are used
+const renderCenteredBoldCell = (params) => (
+  <div style={{ textAlign: "center", fontWeight: "bold" }}>{params.value}</div>
+);
 
-  const [accountNumber, setAccountNumber] = useState(
-    selectedData ? selectedData[0] : ""
+const renderTypeCell = (params) => {
+  const type = params.value;
+  const displayValue = type === "+" ? "Cr" : type === "-" ? "Db" : type;
+  const color = type === "+" ? "green" : type === "-" ? "red" : "black";
+
+  return (
+    <div style={{ color, textAlign: "center", fontWeight: "bold" }}>
+      {displayValue}
+    </div>
   );
-  const [confirmAccountNumber, setConfirmAccountNumber] = useState(
-    selectedData ? selectedData[1] : ""
-  );
-  const [amount, setAmount] = useState(selectedData ? selectedData[2] : "");
-  const [confirmAmount, setConfirmAmount] = useState(
-    selectedData ? selectedData[3] : ""
-  );
-  const [remarks, setRemarks] = useState(selectedData ? selectedData[4] : "");
+};
 
-  const [isTransferLocked, setTransferLocked] = useState(false);
+const ViewAccountStatement9 = () => {
+  const theme = useTheme();
+  const [rows, setRows] = useState([]);
 
-  const handleTransferConfirmation = () => {
-    if (validateFields()) {
-      setOpenDialog(true);
+  const colors = tokens(theme.palette.mode);
+
+  const columns = [
+    {
+      field: "transaction_id",
+      headerName: "Transaction ID",
+      flex: 0.8,
+      renderCell: renderCenteredBoldCell,
+    },
+    {
+      field: "current_balance",
+      headerName: "Balance",
+      type: "number",
+      flex: 0.8,
+      renderCell: renderCenteredBoldCell,
+    },
+    {
+      field: "recipient_id",
+      headerName: "Recipient ID",
+      flex: 0.8,
+      renderCell: renderCenteredBoldCell,
+    },
+    {
+      field: "transaction_amount",
+      headerName: "Amount",
+      type: "number",
+      flex: 1,
+      renderCell: renderCenteredBoldCell,
+    },
+    {
+      field: "transaction_by_id",
+      headerName: "ID",
+      flex: 0.8,
+      renderCell: renderCenteredBoldCell,
+    },
+    {
+      field: "transaction_remarks",
+      headerName: "Remarks",
+      flex: 1.5,
+      renderCell: renderCenteredBoldCell,
+    },
+    {
+      field: "transaction_timestamp",
+      headerName: "Timestamp",
+      flex: 1.5,
+      renderCell: renderCenteredBoldCell,
+    },
+    {
+      field: "transaction_type",
+      headerName: "Type",
+      flex: 0.8,
+      renderCell: renderTypeCell,
+    },
+  ];
+
+  const fetchDataFromDatabase = async () => {
+    try {
+      const customerId = 1;
+      const response = await axios.get(
+        `http://localhost:8080/Customer/Account/getAllTransactions/${customerId}`
+      );
+
+      // Map over the response data and use 'transactionId' as the unique 'id' property for each row
+      const data = response.data.map((row) => ({
+        id: row.transactionId,
+        transaction_id: row.transactionId,
+        current_balance: row.currentBalance,
+        recipient_id: row.recipientId,
+        transaction_amount: row.transactionAmount,
+        transaction_by_id: row.transactionById,
+        transaction_remarks: row.transactionRemarks,
+        transaction_timestamp: row.transactionTimestamp,
+        transaction_type: row.transactionType,
+      }));
+
+      // Log the fetched data to the console
+      console.log("Fetched data:", data);
+
+      return data;
+    } catch (error) {
+      console.error("Error fetching data from database:", error);
+      return [];
     }
   };
 
   useEffect(() => {
-    const transferLockTimer = setTimeout(() => {
-      setTransferLocked(false);
-    }, 30000);
+    let isMounted = true;
 
-    return () => {
-      if (transferLockTimer) {
-        clearTimeout(transferLockTimer);
+    const fetchAndSetData = async () => {
+      try {
+        const data = await fetchDataFromDatabase();
+        if (isMounted) {
+          setRows(data);
+        }
+      } catch (error) {
+        console.error("Error fetching data from database:", error);
+        if (isMounted) {
+          setRows([]);
+        }
       }
     };
-  }, [isTransferLocked]);
 
-  const handleConfirmTransfer = () => {
-    setOpenDialog(false);
+    fetchAndSetData();
 
-    // Simulating a successful transfer
-    toast.success("Transfer successful!");
-
-    // Lock the transfer button for 10 seconds
-    setTransferLocked(true);
-    setTimeout(() => {
-      setTransferLocked(false);
-    }, 10000);
-  };
-
-  const validateFields = () => {
-    const accountNumberRegex = /^\d{1,12}$/;
-    const amountRegex = /^\d{1,7}$/;
-
-    if (!accountNumberRegex.test(accountNumber)) {
-      toast.error("Account number should be numeric and up to 12 digits.");
-      return false;
-    }
-
-    if (!amountRegex.test(amount)) {
-      toast.error("Amount should be numeric and up to 7 digits.");
-      return false;
-    }
-
-    if (accountNumber !== confirmAccountNumber) {
-      toast.error("Account numbers do not match.");
-      return false;
-    }
-
-    if (amount !== confirmAmount) {
-      toast.error("Amounts do not match.");
-      return false;
-    }
-
-    return true;
-  };
-
-  const [openDialog, setOpenDialog] = useState(false);
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <div>
       <CustomerTopNavigationBar />
       <div style={{ display: "flex" }}>
         <CustomerSideNavigationMenu />
-        <div style={{ marginLeft: "20px", marginTop: "20px", width: "80%" }}>
-          <h2>Details for Transfer</h2>
-          <form>
-            <Grid
-              container
-              spacing={2}
-              sx={{ padding: "10px", margin: "10px" }}
-            >
-              <Grid item xs={12} md={6}>
-                <TextField
-                  label="Account Number"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  value={accountNumber}
-                  onChange={(e) => setAccountNumber(e.target.value)}
-                  inputProps={{ maxLength: 12 }}
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  label="Confirm Account Number"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  value={confirmAccountNumber}
-                  onChange={(e) => setConfirmAccountNumber(e.target.value)}
-                  inputProps={{ maxLength: 12 }}
-                  error={
-                    confirmAccountNumber !== "" &&
-                    accountNumber !== confirmAccountNumber
-                  }
-                  helperText={
-                    confirmAccountNumber !== "" &&
-                    accountNumber !== confirmAccountNumber
-                      ? "Account numbers do not match"
-                      : ""
-                  }
-                  InputProps={{
-                    endAdornment:
-                      confirmAccountNumber !== "" ? (
-                        accountNumber === confirmAccountNumber ? (
-                          <CheckCircleOutlineIcon sx={{ color: "green" }} />
-                        ) : (
-                          <CancelIcon sx={{ color: "red" }} />
-                        )
-                      ) : null,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  label="Amount"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  inputProps={{ maxLength: 7 }}
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  label="Confirm Amount"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  value={confirmAmount}
-                  onChange={(e) => setConfirmAmount(e.target.value)}
-                  inputProps={{ maxLength: 7 }}
-                  error={confirmAmount !== "" && amount !== confirmAmount}
-                  helperText={
-                    confirmAmount !== "" && amount !== confirmAmount
-                      ? "Amounts do not match"
-                      : ""
-                  }
-                  InputProps={{
-                    endAdornment:
-                      confirmAmount !== "" ? (
-                        amount === confirmAmount ? (
-                          <CheckCircleOutlineIcon sx={{ color: "green" }} />
-                        ) : (
-                          <CancelIcon sx={{ color: "red" }} />
-                        )
-                      ) : null,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Remarks"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  value={remarks}
-                  onChange={(e) => setRemarks(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleTransferConfirmation}
-                  startIcon={<TransferWithinAStationIcon />}
-                  sx={{ width: "50%", mt: 2 }}
-                  disabled={isTransferLocked}
-                >
-                  {isTransferLocked ? "Transfer Locked" : "Transfer"}
-                </Button>
-              </Grid>
-            </Grid>
-          </form>
-        </div>
+        <Box m="15px">
+          <Helmet>
+            <title>Account Statement</title>
+          </Helmet>
+          <Header
+            title="Account Statement"
+            subtitle="List of Transactions for Reference"
+          />
+          <Box
+            m="30px 0 0 0"
+            height="65vh"
+            width="85vw"
+            sx={{
+              "& .MuiDataGrid-root": {
+                border: "none",
+              },
+              "& .MuiDataGrid-cell": {
+                borderBottom: "none",
+              },
+              "& .name-column--cell": {
+                color: colors.greenAccent[300],
+              },
+              "& .MuiDataGrid-columnHeaders": {
+                backgroundColor: colors.blueAccent[700],
+                borderBottom: "none",
+              },
+              "& .MuiDataGrid-virtualScroller": {
+                backgroundColor: colors.primary[400],
+              },
+              "& .MuiDataGrid-footerContainer": {
+                borderTop: "none",
+                backgroundColor: colors.blueAccent[700],
+              },
+              "& .MuiCheckbox-root": {
+                color: `${colors.greenAccent[200]} !important`,
+              },
+              "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+                color: `${colors.grey[100]} !important`,
+              },
+            }}
+          >
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              components={{ Toolbar: GridToolbar }}
+            />
+          </Box>
+        </Box>
       </div>
-
-      <Dialog
-        open={openDialog}
-        onClose={() => setOpenDialog(false)}
-        PaperComponent={Paper}
-        sx={{
-          width: "400px",
-          borderRadius: "15px",
-          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <DialogTitle sx={{ textAlign: "center", paddingBottom: 0 }}>
-          <Typography variant="h6">Confirm Transfer</Typography>
-        </DialogTitle>
-        <DialogContent>
-          <Typography>
-            <strong>Account Number:</strong> {accountNumber}
-          </Typography>
-          <Typography>
-            <strong>Amount:</strong> {amount}
-          </Typography>
-        </DialogContent>
-        <DialogActions sx={{ justifyContent: "center", paddingTop: 0 }}>
-          <Button
-            onClick={() => setOpenDialog(false)}
-            color="secondary"
-            startIcon={<CancelIcon />}
-            sx={{ textTransform: "none" }}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={handleConfirmTransfer}
-            color="primary"
-            startIcon={<CheckCircleOutlineIcon />}
-            sx={{ textTransform: "none" }}
-          >
-            Confirm Transfer
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <ToastContainer />
     </div>
   );
 };
 
-export default TransferWithinBank21;
+export default ViewAccountStatement9;
