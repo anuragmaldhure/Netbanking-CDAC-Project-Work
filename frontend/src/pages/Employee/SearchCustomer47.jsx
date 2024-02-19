@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { FaSearch, FaFileExport, FaPrint } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
-import "./SearchCustomer48.css";
+import "./SearchCustomer47.css";
 
 import {
   Navbar,
@@ -397,6 +397,7 @@ function SearchCustomer47() {
                     value={searchQuery}
                     onChange={handleSearch}
                   />
+                  
                 </Form>
               </Col>
               <Col>

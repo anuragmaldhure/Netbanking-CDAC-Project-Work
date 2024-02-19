@@ -4,6 +4,8 @@ import { FaSearch, FaFileExport, FaPrint } from "react-icons/fa";
 import { Modal, Button } from "react-bootstrap";
 import EmployeeTopNavigationBar from "../../components/EmployeeTopNavigationBar";
 import EmployeeSideNavigationMenu from "../../components/EmployeeSideNavigationMenu";
+import styles from  "./SearchCustomer48.module.css";
+
 
 const SearchCustomer48 = () => {
   // Use the useParams hook to get the customer ID from the URL parameter
@@ -330,12 +332,13 @@ const SearchCustomer48 = () => {
     }
   };
   return (
-    <div>
-      <EmployeeTopNavigationBar />
-      <div className="d-flex">
-        <EmployeeSideNavigationMenu />
-        <div className="customer-details-container mt-4 ml-4 p-4">
-          <h2 className="mb-3">Customer Details</h2>
+   <div>
+    <EmployeeTopNavigationBar />
+    <div className="d-flex">
+      <EmployeeSideNavigationMenu />
+      
+        <div className={`${styles.customerDetailsContainer} mt-4 ml-4 p-4`}>
+          <h2 className={`mb-3 ${styles.heading}`}>Customer Details</h2>
 
           <div className="row">
             <div className="col-md-6">
@@ -357,9 +360,9 @@ const SearchCustomer48 = () => {
               <div className="mb-3">
                 <strong>Annual Income :</strong> {customerDetails.annualIncome}
               </div>
-            </div>
+              </div>
 
-            <div className="col-md-6">
+<div className="col-md-6">
               <div className="mb-3">
                 <strong>Gender :</strong> {customerDetails.gender}
               </div>
@@ -387,31 +390,31 @@ const SearchCustomer48 = () => {
               <div className="mb-3">
                 <strong>Nationality :</strong> {customerDetails.nationality}
               </div>
+              </div>
             </div>
-          </div>
 
-          <h3 className="mt-4 mb-3">Uploaded Documents</h3>
-          <ul className="list-group">
-            {uploadedDocuments.map((document) => (
-              <li
-                key={document.id}
-                className="list-group-item d-flex justify-content-between align-items-center"
-              >
-                <span>{document.name}</span>
-                <div>
-                  <button
-                    className="btn btn-primary btn-sm mr-2"
-                    onClick={() => handleDocumentClick(document)}
-                  >
-                    View Document
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
+            <h3 className="mt-4 mb-3">Uploaded Documents</h3>
+            <ul className={`list-group ${styles.listGroup}`}>
+              {uploadedDocuments.map((document) => (
+                <li
+                  key={document.id}
+                  className={`${styles.listGroupItem} list-group-item d-flex justify-content-between align-items-center`}
+                >
+                  <span>{document.name}</span>
+                  <div>
+                    <button
+                      className={`btn btn-primary btn-sm mr-2 ${styles.btnPrimary}`}
+                      onClick={() => handleDocumentClick(document)}
+                    >
+                      View Document
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
 
-          {/* Document Modal */}
-          <Modal show={showModal} onHide={handleCloseModal}>
+            {/* Document Modal */}
+            <Modal show={showModal} onHide={handleCloseModal}>
             <Modal.Header closeButton>
               <Modal.Title>
                 {selectedDocument && selectedDocument.name}
@@ -431,20 +434,20 @@ const SearchCustomer48 = () => {
               </Button>
             </Modal.Footer> 
             </Modal>
+
             <div>
-              <button className="btn btn-success mr-3" onClick={handleExport}>
+              <button className={`btn btn-success mr-3 ${styles.exportButton}`} onClick={handleExport}>
                 <FaFileExport />
                 Export as CSV
               </button>
-              <button className="btn btn-info ml-3" onClick={handleDownload}>
+              <button className={`btn btn-info ml-3 ${styles.downloadButton}`} onClick={handleDownload}>
                 <FaPrint />
                 Download Page
               </button>
             </div>
-         
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 

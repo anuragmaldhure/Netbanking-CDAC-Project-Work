@@ -1,7 +1,7 @@
-/* SearchCustomer48.css */
+/* SearchCustomer48.module.css */
 
 /* Add some overall styling to improve readability and appearance */
-.customer-details-container {
+.customerDetailsContainer {
   width: 90vw;
   height: 55vw;
   padding: 20px;
@@ -12,33 +12,33 @@
   background-color: #fff; /* Add a white background */
 }
 
-.customer-details-container h2,
-.customer-details-container h3 {
+.customerDetailsContainer h2,
+.customerDetailsContainer h3 {
   color: #007bff; /* Set heading colors to blue */
   margin-bottom: 20px; /* Add space below headings */
 }
 
-.customer-details-container strong {
+.customerDetailsContainer strong {
   color: #28a745; /* Set strong text color to green */
 }
 
-.customer-details-container ul {
+.customerDetailsContainer ul {
   padding: 0;
 }
 
-.customer-details-container li {
+.customerDetailsContainer li {
   list-style: none;
   margin-bottom: 10px; /* Add space between list items */
 }
 
-.customer-details-container .list-group-item {
+.customerDetailsContainer .list-group-item {
   border: 1px solid #ddd;
   border-radius: 5px;
   margin-bottom: 10px; /* Add space between list items */
   padding: 10px; /* Add padding for a cleaner look */
 }
 
-.customer-details-container .btn-primary {
+.customerDetailsContainer .btn-primary {
   background-color: #007bff;
   border: 1px solid #007bff;
   padding: 10px 15px; /* Add padding to the button */
@@ -55,19 +55,19 @@
   align-items: center;
 }
 
-.export-button,
-.download-button {
+.exportButton,
+.downloadButton {
   margin-top: 10px;
   margin-right: 5px; /* Add margin-right for space between buttons */
 }
 
-.export-button:hover,
-.download-button:hover {
+.exportButton:hover,
+.downloadButton:hover {
   background-color: #0056b3;
 }
 
-.export-button:active,
-.download-button:active {
+.exportButton:active,
+.downloadButton:active {
   transform: translateY(2px);
 }
 

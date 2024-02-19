@@ -128,11 +128,11 @@ function App() {
           element={<SearchCustomer48 />}
         />
         <Route
-          path="/Employee/Accounts/VerifyApproveKYC50"
+          path="/Employee/Accounts/VerifyApproveKYC50/"
           element={<VerifyApproveKYC50 />}
         />
         <Route
-          path="/Employee/Accounts/VerifyApproveKYC51"
+          path="/Employee/Accounts/VerifyApproveKYC51/:customerId"
           element={<VerifyApproveKYC51 />}
         />
         <Route

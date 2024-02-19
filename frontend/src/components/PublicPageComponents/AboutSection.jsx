@@ -1,13 +1,10 @@
 import React, { useEffect } from "react";
-import styles from "./AboutSection.module.css";
+import styles from "./AboutSection.css"; // Import the new CSS file
 import { Link as ScrollLink } from "react-scroll";
-
-import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
-import '../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const AboutSection = () => {
   useEffect(() => {
-    const aboutText = document.querySelector(`.${styles.text}`);
+    const aboutText = document.querySelector(".text");
     aboutText.classList.add("show");
   }, []);
 
@@ -39,7 +36,7 @@ const AboutSection = () => {
         <div className={`img col-lg-6 col-md-6 col-12 pt-5 pb-5 ${styles.img}`}>
           <img
             className="img-fluid"
-            src="../../assets/images/1.svg"
+            src="./src/assets/images/1.svg"
             alt="About Section"
           />
         </div>

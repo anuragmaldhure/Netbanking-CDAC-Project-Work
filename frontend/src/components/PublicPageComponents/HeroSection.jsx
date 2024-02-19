@@ -1,7 +1,6 @@
 import React from "react";
+import styles from "./HeroSection.css";
 import { Link as ScrollLink } from "react-scroll";
-
-import styles from "./HeroSection.module.css";
 
 const HeroSection = () => {
   return (
@@ -9,7 +8,7 @@ const HeroSection = () => {
       <video autoPlay muted loop>
         <source
           className={styles.embedResponsive}
-          src="../../assets/videos/6.mp4"
+          src="./src/assets/videos/6.mp4"
           type="video/mp4"
         />
       </video>

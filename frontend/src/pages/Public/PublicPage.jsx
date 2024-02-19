@@ -11,13 +11,14 @@ import SignUpSection from "../../components/PublicPageComponents/SignUpSection";
 import Footer from "../../components/PublicPageComponents/Footer";
 // import "./App.css";
 import Cursor from "../../components/PublicPageComponents/Cursor";
+import AboutSection from "../../components/PublicPageComponents/AboutSection";
 
 function App() {
   return (
     <div>
       <Navbar />
       <HeroSection />
-      {/* <AboutSection /> */}
+      <AboutSection />
       <DiscoverSection />
       <ServiceSection />
       <SignUpSection />
