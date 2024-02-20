@@ -4,7 +4,6 @@ import {
   Paper,
   Grid,
   TextField,
-  Button,
   IconButton,
   InputAdornment,
   Dialog,
@@ -17,7 +16,7 @@ import {
   ArrowBack as ArrowBackIcon,
   CheckCircleOutline as CheckCircleOutlineIcon,
 } from "@mui/icons-material";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -33,29 +32,59 @@ const TransferWithinBank22 = () => {
   const [showDialog, setShowDialog] = useState(false);
 
   const transferredData = location.state?.transferredData || null;
-
-  const handleOtpValidation = () => {
+  const customerId = 1; // Define customer id as 1
+  const receiverAccountNumber = transferredData.accountNumber;
+  const handleOtpValidation = async () => {
     const expectedOtp = "112"; // Static OTP for demonstration
 
     if (otp === expectedOtp) {
       setIsOtpValid(true);
-      setShowDialog(true);
-
+    
       const transferData = {
         accountNumber: transferredData.accountNumber,
         amount: transferredData.amount,
         remarks: transferredData.remarks,
       };
-
-      // Use navigate to pass data to the next page through the URL
-      navigate("/Customer/FundTransfer/TransferWithinBank23", {
-        state: { transferData },
-      });
+    
+      // Log the data before making the fetch request
+      console.log("Data to be sent to the server:", transferData);
+      console.log("Receiver Account Number:", receiverAccountNumber);
+    
+      try {
+        const response = await fetch(
+          `http://localhost:8080/Customer/FundTransfer/SendMoney/${customerId}/${receiverAccountNumber}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              remarks: transferData.remarks,
+              amountToSend: transferData.amount,
+            }),
+          }
+        );
+    
+        if (response.ok) {
+          setShowDialog(true);
+    
+          // Use navigate to pass data to the next page through the URL
+          navigate("/Customer/FundTransfer/TransferWithinBank23", {
+            state: { transferData },
+          });
+        } else {
+          // Handle error response from the server
+          console.error("Failed to send money:", response.statusText);
+        }
+      } catch (error) {
+        // Handle network or other errors
+        console.error("Error while sending money:", error.message);
+      }
     } else {
       setIsOtpValid(false);
       setShowDialog(false);
     }
-  };
+  };    
 
   const handleBack = () => {
     navigate(-1);

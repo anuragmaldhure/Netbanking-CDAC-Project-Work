@@ -63,7 +63,7 @@ const TransferWithinBank21 = () => {
   };
 
   const validateFields = () => {
-    const accountNumberRegex = /^\d{1,12}$/;
+    const accountNumberRegex = /^[a-zA-Z0-9]{1,12}$/;
     const amountRegex = /^\d{1,7}$/;
 
     if (!accountNumberRegex.test(accountNumber)) {
@@ -219,15 +219,15 @@ const TransferWithinBank21 = () => {
           <Typography>
             <strong>Account Number:</strong> {accountNumber}
           </Typography>
-          <Typography>
+          {/* <Typography>
             <strong>Confirm Account Number:</strong> {confirmAccountNumber}
-          </Typography>
+          </Typography> */}
           <Typography>
             <strong>Amount:</strong> {amount}
           </Typography>
-          <Typography>
+          {/* <Typography>
             <strong>Confirm Amount:</strong> {confirmAmount}
-          </Typography>
+          </Typography> */}
           <Typography>
             <strong>Remarks:</strong> {remarks}
           </Typography>

@@ -33,9 +33,9 @@ const KYCDetails12 = () => {
     emailId: null,
     address: null,
     city: null,
-    state:null,
-    pincode:null,
-    nationality:null,
+    state: null,
+    pincode: null,
+    nationality: null,
     gender: "Male",
     aadharCard: null,
     panCard: null,
@@ -86,137 +86,149 @@ const KYCDetails12 = () => {
                     <TextField
                       label="First Name"
                       fullWidth
-                      value={formData.firstName}
+                      value={formData.firstName || ""}
                       onChange={(e) =>
-                        handleInputChange("name", e.target.value)
+                        handleInputChange("firstName", e.target.value)
                       }
                       disabled={!isEditing}
                       variant="outlined"
                       margin="normal"
                     />
+
                     <TextField
                       label="Last Name"
                       fullWidth
-                      value={formData.lastName}
+                      value={formData.lastName || ""}
                       onChange={(e) =>
-                        handleInputChange("name", e.target.value)
+                        handleInputChange("lastName", e.target.value)
                       }
                       disabled={!isEditing}
                       variant="outlined"
                       margin="normal"
                     />
+                    
+
                     <TextField
                       label="Occupation"
                       fullWidth
-                      value={formData.occupation}
+                      value={formData.occupation || ""}
                       onChange={(e) =>
-                        handleInputChange("name", e.target.value)
+                        handleInputChange("occupation", e.target.value)
                       }
                       disabled={!isEditing}
                       variant="outlined"
                       margin="normal"
                     />
+
                     <TextField
                       label="Annual Income"
                       fullWidth
-                      value={formData.annualIncome}
+                      value={formData.annualIncome || ""}
                       onChange={(e) =>
-                        handleInputChange("name", e.target.value)
+                        handleInputChange("annualIncome", e.target.value)
                       }
                       disabled={!isEditing}
                       variant="outlined"
                       margin="normal"
                     />
+
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
                         label="Birthdate"
-                        value={formData.birthDate}
+                        value={formData.birthdate}
                         onChange={(date) =>
                           handleInputChange("birthdate", date)
                         }
-                        renderInput={(params) => (
+                        TextFieldComponent={(props) => (
                           <TextField
+                            {...props}
                             fullWidth
                             variant="outlined"
                             margin="normal"
-                            {...params}
                           />
                         )}
                         disabled={!isEditing}
                       />
                     </LocalizationProvider>
+
                     <TextField
                       label="Mobile Number"
                       fullWidth
-                      value={formData.mobileNumber}
+                      value={formData.mobileNumber || ""}
                       onChange={(e) =>
-                        handleInputChange("name", e.target.value)
+                        handleInputChange("mobileNumber", e.target.value)
                       }
                       disabled={!isEditing}
                       variant="outlined"
                       margin="normal"
                     />
+
                     <TextField
                       label="Email ID"
                       fullWidth
-                      value={formData.emailId}
+                      value={formData.emailId || ""}
                       onChange={(e) =>
-                        handleInputChange("name", e.target.value)
+                        handleInputChange("emailId", e.target.value)
                       }
                       disabled={!isEditing}
                       variant="outlined"
                       margin="normal"
                     />
+
                     <TextField
                       label="Address"
                       fullWidth
-                      value={formData.address}
+                      value={formData.address || ""}
                       onChange={(e) =>
-                        handleInputChange("name", e.target.value)
+                        handleInputChange("address", e.target.value)
                       }
                       disabled={!isEditing}
                       variant="outlined"
                       margin="normal"
                     />
+
                     <TextField
                       label="City"
                       fullWidth
-                      value={formData.city}
+                      value={formData.city || ""}
                       onChange={(e) =>
-                        handleInputChange("name", e.target.value)
+                        handleInputChange("city", e.target.value)
                       }
                       disabled={!isEditing}
                       variant="outlined"
                       margin="normal"
                     />
+
                     <TextField
                       label="State"
                       fullWidth
-                      value={formData.state}
+                      value={formData.state || ""}
                       onChange={(e) =>
-                        handleInputChange("name", e.target.value)
+                        handleInputChange("state", e.target.value)
                       }
                       disabled={!isEditing}
                       variant="outlined"
                       margin="normal"
                     />
+
                     <TextField
                       label="Pincode"
                       fullWidth
-                      value={formData.pincode}
+                      value={formData.pincode || ""}
                       onChange={(e) =>
-                        handleInputChange("name", e.target.value)
+                        handleInputChange("pincode", e.target.value)
                       }
                       disabled={!isEditing}
                       variant="outlined"
                       margin="normal"
                     />
+
                     <TextField
                       label="Nationality"
                       fullWidth
-                      value={formData.nationality}
+                      value={formData.nationality || ""}
                       onChange={(e) =>
-                        handleInputChange("name", e.target.value)
+                        handleInputChange("nationality", e.target.value)
                       }
                       disabled={!isEditing}
                       variant="outlined"
