@@ -37,10 +37,10 @@ public class EmailService {
 				"Thank you for choosing our bank and trusting us for your financial needs. " +
 				"We are pleased to inform you that you have succeessfully opened account at our bank!\n" +
 				"Account details for your reference : \n\n" +
-			    "Account Number ------------> "+ accountNumber +"\n" +
-			    "Account Holder Name -------> "+ accountHolderFirstName + " "+ accountHolderLastName + "\n" +
-			    "Account Opening Balance ---> "+ 0 +"\n" +
-			    "Account Opening Date ------> "+ date + "\n"+
+			    "Account Number : "+ accountNumber +"\n" +
+			    "Account Holder Name : "+ accountHolderFirstName + " "+ accountHolderLastName + "\n" +
+			    "Account Opening Balance : "+ 0 +"\n" +
+			    "Account Opening Date : "+ date + "\n"+
 			    "Confidential Login Credentials (Do not share with anyone) => \n" +
 			    "Account Username : 	"+ username +"\n" +
 			    "Account Password : 	"+ password +"\n\n" +
@@ -199,36 +199,103 @@ public class EmailService {
         return null;
     }
 
-	public String sendMoneyMail(String emailId, String accountHolderFirstName, String accountHolderLastName,
-            String beneficiaryFirstName, String beneficiaryLastName, CustomerDetails beneficiaryAccountNumber) {
-			try {
-			MimeMessage message = javaMailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(message, true);
-			
-			helper.setTo(emailId);
-			helper.setSubject("Aarna Bank: New Beneficiary Added to Your Bank Account");
-			
-			String messageString = "Dear "+ accountHolderFirstName + " "+ accountHolderLastName +",\n\n" +
-				"We are pleased to inform you that a new beneficiary has been successfully added to your bank account!\n\n" +
-			    "Beneficiary Account Number: "+ beneficiaryAccountNumber.getAccountNumber() +"\n\n" +
-			    "As per our records, this account belongs to " + beneficiaryFirstName + " " + beneficiaryLastName + ".\n\n" +
-			    "You have the flexibility to delete this beneficiary at any time through our net banking portal.\n\n" +
-			    "Should you notice any suspicious activity, please do not hesitate to contact us.\n\n" +
-			    "We also invite you to explore our latest offers, exclusively designed for you, in the Offers Section.\n\n" +
-			    "Happy Banking! 😊\n\n" +
-			    "Best Regards,\n\n" +
-			    "Aarna Bank";
-			
-			helper.setText(messageString);
-			
-			javaMailSender.send(message);
-			return messageString;
-			} catch (MessagingException e) {
-			e.printStackTrace();
-			// Handle exception
-			}
-			return null;
-		}
+	public String moneySentMail(String emailId, String accountHolderFirstName, String accountHolderLastName,
+			Double amountToSend, String accountNumber, String accountHolderFirstName2, String accountHolderLastName2,
+			String remarks, Date transactionTimestamp, Long transactionId) {
+		 try {
+	            MimeMessage message = javaMailSender.createMimeMessage();
+	            MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-      
+	            helper.setTo(emailId);
+	            helper.setSubject("Aarna Bank : ₹ "+ amountToSend +" sent to account number "+accountNumber);
+	            String messageString = "Dear "+ accountHolderFirstName + " "+ accountHolderLastName +", You have successfully sent ₹" + amountToSend + " "
+	            		+ "to account number : "+ accountNumber +
+	    				"Third party Transaction details for your reference : \n\n" +
+	    			    "Receiver Account Number : "+ accountNumber +"\n" +
+	    			    "Receiver Account Holder Name : "+ accountHolderFirstName2 + " "+ accountHolderLastName2 + "\n" +
+	    			    "Transaction Id : "+ transactionId +"\n" +
+	    			    "Transaction amount : ₹ "+ amountToSend +"\n" +
+	    			    "Remarks : ₹ "+ remarks +"\n" +
+	    			    "Timestamp : "+ transactionTimestamp + "\n\n"+
+	    			    "Should you notice any suspicious activity, please do not hesitate to contact us via contact details given in Other Services / Contact Us.\n\n" +
+	    			    "We also invite you to explore our latest offers, exclusively designed for you, in the Offers Section.\n\n" +
+	    			    "Happy Banking! 😊\n\n" +
+	    			    "Best Regards,\n\n" +
+	    			    "Aarna Bank";
+	            helper.setText(messageString);
+
+	            javaMailSender.send(message);
+	            return messageString;
+	        } catch (MessagingException e) {
+	            e.printStackTrace();
+	            // Handle exception
+	        }
+	        return null;	
+	}
+
+	public String moneyReceivedMail(String emailId, String accountHolderFirstName, String accountHolderLastName,
+			Double amountToSend, String accountNumber, String accountHolderFirstName2, String accountHolderLastName2,
+			String remarks, Date transactionTimestamp, Long transactionId) {
+		 try {
+	            MimeMessage message = javaMailSender.createMimeMessage();
+	            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+	            helper.setTo(emailId);
+	            helper.setSubject("Aarna Bank : ₹ "+ amountToSend +" deposited by account number "+accountNumber);
+	            String messageString = "Dear "+ accountHolderFirstName + " "+ accountHolderLastName +", You have successfully sent ₹" + amountToSend + " "
+	            		+ "to account number : "+ accountNumber +
+	    				"Third party Transaction details for your reference : \n\n" +
+	    			    "Sender Account Number : "+ accountNumber +"\n" +
+	    			    "Sender Account Holder Name : "+ accountHolderFirstName2 + " "+ accountHolderLastName2 + "\n" +
+	    			    "Transaction Id : "+ transactionId +"\n" +
+	    			    "Transaction amount : ₹ "+ amountToSend +"\n" +
+	    			    "Remarks : ₹ "+ remarks +"\n" +
+	    			    "Timestamp : "+ transactionTimestamp + "\n\n"+
+	    			    "Should you notice any suspicious activity, please do not hesitate to contact us via contact details given in Other Services / Contact Us.\n\n" +
+	    			    "We also invite you to explore our latest offers, exclusively designed for you, in the Offers Section.\n\n" +
+	    			    "Happy Banking! 😊\n\n" +
+	    			    "Best Regards,\n\n" +
+	    			    "Aarna Bank";
+	            helper.setText(messageString);
+
+	            javaMailSender.send(message);
+	            return messageString;
+	        } catch (MessagingException e) {
+	            e.printStackTrace();
+	            // Handle exception
+	        }
+	        return null;	
+	}
+
+
+//	public String sendMoneyMail(String emailId, String accountHolderFirstName, String accountHolderLastName,
+//            String beneficiaryFirstName, String beneficiaryLastName, CustomerDetails beneficiaryAccountNumber) {
+//			try {
+//			MimeMessage message = javaMailSender.createMimeMessage();
+//			MimeMessageHelper helper = new MimeMessageHelper(message, true);
+//			
+//			helper.setTo(emailId);
+//			helper.setSubject("Aarna Bank: New Beneficiary Added to Your Bank Account");
+//			
+//			String messageString = "Dear "+ accountHolderFirstName + " "+ accountHolderLastName +",\n\n" +
+//				"We are pleased to inform you that a new beneficiary has been successfully added to your bank account!\n\n" +
+//			    "Beneficiary Account Number: "+ beneficiaryAccountNumber.getAccountNumber() +"\n\n" +
+//			    "As per our records, this account belongs to " + beneficiaryFirstName + " " + beneficiaryLastName + ".\n\n" +
+//			    "You have the flexibility to delete this beneficiary at any time through our net banking portal.\n\n" +
+//			    "Should you notice any suspicious activity, please do not hesitate to contact us.\n\n" +
+//			    "We also invite you to explore our latest offers, exclusively designed for you, in the Offers Section.\n\n" +
+//			    "Happy Banking! 😊\n\n" +
+//			    "Best Regards,\n\n" +
+//			    "Aarna Bank";
+//			
+//			helper.setText(messageString);
+//			
+//			javaMailSender.send(message);
+//			return messageString;
+//			} catch (MessagingException e) {
+//			e.printStackTrace();
+//			// Handle exception
+//			}
+//			return null;
+//		}     
 }

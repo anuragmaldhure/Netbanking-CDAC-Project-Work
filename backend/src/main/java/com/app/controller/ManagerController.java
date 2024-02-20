@@ -39,7 +39,7 @@ public class ManagerController {
 		System.out.println("in ctor of " + getClass());
 	}
 	
-	@GetMapping("/SearchEmployee67/{empId}")
+	@GetMapping("/SearchEmployee/{empId}")
 	public Optional<BankEmployeeDetails> getEmployeeDetails(@PathVariable Long empId) {
 		System.out.println("in get Employee Details by Manager");
 		return employeeService.getEmpDetails(empId);
@@ -75,7 +75,7 @@ public class ManagerController {
 	// URL : http://localhost:8080/Manager/Employees/AddNewEmployee68
 	// Method : POST
 	// Payload : emp details
-	@PostMapping("/Employees/AddNewEmployee68")
+	@PostMapping("/Employees/AddNewEmployee")
 	public ResponseEntity<?> addEmpDetails(@RequestBody BankEmployeeDTO empDetails) {
     try {
         System.out.println("Adding new employee: " + empDetails);
@@ -92,14 +92,14 @@ public class ManagerController {
 
 	// URL : http://host:port/employees/{empId}, method : DELETE
 	// delete emp details by id
-	@DeleteMapping("/Employees/RemoveEmployee69/{empID}")
+	@DeleteMapping("/Employees/RemoveEmployee/{empID}")
 	public ResponseEntity<?> deleteEmp(@PathVariable Long empID) {
 	    System.out.println("in delete emp " + empID + " by manager");
 	    // Call the delete method from employeeService and get the header value
 	    String headerValue = employeeService.deleteEmp(empID);
 	    //Sending complete response packet containing response status code and body
 	    return ResponseEntity.status(HttpStatus.OK)
-//	            .header("Custom-Header", headerValue)
+	            .header("Custom-Header", headerValue)
 	            .body("Employee deleted successfully");
 	}
 }

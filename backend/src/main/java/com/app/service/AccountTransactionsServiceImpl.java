@@ -2,7 +2,6 @@ package com.app.service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
@@ -16,13 +15,13 @@ import org.springframework.stereotype.Service;
 
 import com.app.dao.AccountTransactionsDao;
 import com.app.dao.CustomerDao;
+import com.app.dao.CustomerSavingsAccountDao;
 import com.app.dao.EmployeeDao;
 //import com.app.dao.EmployeeDao;
 import com.app.dto.AccountTransactionsDTO;
-import com.app.dto.BankEmployeeDTO;
-import com.app.dto.customer.CustomerDetailsDTO;
+import com.app.dto.customer.CustomerAddressDTO;
+import com.app.dto.customer.CustomerSavingAccountsDTO;
 import com.app.entities.AccountTransactions;
-import com.app.entities.BankEmployeeDetails;
 import com.app.entities.CustomerDetails;
 
 //import com.app.entities.Beneficiary;
@@ -33,13 +32,13 @@ import org.modelmapper.ModelMapper;
 public class AccountTransactionsServiceImpl implements AccountTransactionsService {
 	
 	@Autowired
-	private CustomerService customerService;
-	
-	@Autowired
 	private CustomerDao customerDao;
 	
 	@Autowired 
 	private AccountTransactionsDao accountTransactionsDao;
+	
+	@Autowired
+	private CustomerSavingsAccountDao customerSavingsAccountDao;
 	
 	@Autowired
 	private EmployeeDao bankEmployeeDao;
@@ -88,7 +87,7 @@ public class AccountTransactionsServiceImpl implements AccountTransactionsServic
 		CustomerDetails customer = customerDao.findByAccountNumber(accountNumber)
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found with account number: " + accountNumber));
 		
-		BankEmployeeDetails bankEmployee = bankEmployeeDao.findById(employeeId)
+		bankEmployeeDao.findById(employeeId)
                 .orElseThrow(() -> new EntityNotFoundException("Employee not found with ID: " + employeeId));
 		
 		if(customer.getKycStatus()== null) {
@@ -134,6 +133,8 @@ public class AccountTransactionsServiceImpl implements AccountTransactionsServic
 		CustomerDetails customer = customerDao.findById(customerId)
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
 		
+		CustomerSavingAccountsDTO savingaccountdetail =  mapper.map(customerSavingsAccountDao.findByCustomer(customerId), CustomerSavingAccountsDTO.class);
+		
 		if(customer.getKycStatus()== null) {
 	        // KYC error
 	        throw new RuntimeException("Customer KYC error! Please get your KYC verified for activating transactions...");
@@ -146,6 +147,9 @@ public class AccountTransactionsServiceImpl implements AccountTransactionsServic
 		else if (customer.getKycStatus()== false) {
             throw new RuntimeException("KYC is already rejected by bank! Please reapply for KYC verification...");
         }
+		else if(savingaccountdetail.getBalance()<0 || (savingaccountdetail.getBalance()-amountToWithdraw <0)) {
+			throw new RuntimeException("Insufficient Balance in your account! Cannot complete transaction...");
+		}
 		//if KYC is already approved
 		else {
 			AccountTransactions transaction = new AccountTransactions();
@@ -166,50 +170,93 @@ public class AccountTransactionsServiceImpl implements AccountTransactionsServic
 
 		}
 	}
-//
-//	@Override
-//	public void sendMoney(Double amountToSend, Optional<CustomerDetails> customer, Optional<Beneficiary> beneficiary,
-//			String remarks) {
-//		if(customer.isEmpty()) {
-//			throw new EntityNotFoundException("Customer not found");
-//		}
-//		else if(beneficiary.isEmpty()) {
-//			throw new EntityNotFoundException("Beneficiary not found");
-//		}
-//		else {
-//			if(customer.get().getKycStatus()== null) {
-//		        // KYC error
-//		        throw new RuntimeException("Customer KYC error! Please get your KYC verified for activating transactions...");
-//			}
-//			 // KYC error
-//			else if (customer.get().getKycStatus()== false) {
-//	            throw new RuntimeException("KYC is already rejected by bank! Please reapply for KYC verification...");
-//	        }
-//			//if KYC is already approved
-//			else {
-//				AccountTransactions transaction1 = new AccountTransactions();
-//				transaction1.setCustomer(customer.get());
-//				transaction1.setRecipientId(beneficiary.get().getBeneficiaryId());
-//				transaction1.setTransactionAmount(amountToSend);
-//				transaction1.setTransactionById(customer.get().getCustomerId());
-//				transaction1.setTransactionRemarks(remarks);
-//				transaction1.setTransactionTimestamp(new Timestamp(System.currentTimeMillis()));
-//				transaction1.setTransactionType("-");
-//				accountTransactionsDao.save(transaction1);
-//				
-//				
-//				
-////				AccountTransactions transaction2 = new AccountTransactions();
-////				transaction2.setCustomer();
-////				transaction2.setRecipientId(beneficiary.get().getBeneficiaryId());
-////				transaction2.setTransactionAmount(amountToSend);
-////				transaction2.setTransactionById(customer.get().getCustomerId());
-////				transaction2.setTransactionRemarks(remarks);
-////				transaction2.setTransactionTimestamp(new Timestamp(System.currentTimeMillis()));
-////				transaction2.setTransactionType("+");
-////				accountTransactionsDao.save(transaction2);
-//			}
-//		}
-//	}
-
+	
+	@Override
+	public void sendMoney(Long customerId, String receiverAccountNumber, Double amountToSend, String remarks) {
+		CustomerDetails customer = customerDao.findById(customerId)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
+		
+		CustomerDetails receiver = customerDao.findByAccountNumber(receiverAccountNumber)
+                .orElseThrow(() -> new EntityNotFoundException("Customer with account number " + receiverAccountNumber +
+                		" doesn't have acoount in our bank!"));
+		
+		CustomerSavingAccountsDTO savingaccountdetail =  mapper.map(customerSavingsAccountDao.findByCustomer(customerId), CustomerSavingAccountsDTO.class);
+		
+		if(customer.getKycStatus()== null) {
+			// KYC error
+	        throw new RuntimeException("Customer KYC error! Please get your KYC verified for activating transactions...");
+		}
+		else if(!customer.getAccountActiveStatus()) {
+			// Account freezed error
+	        throw new RuntimeException("Account is freezed! Please contact bank employee to reactivate the account for transactions...");
+		}
+		else if(receiver.getKycStatus()== null) {
+			// KYC error
+	        throw new RuntimeException("Receiver KYC error! Please ask customer who is receiver to get KYC verified for activating transactions for his account...");
+		}
+		else if(!receiver.getAccountActiveStatus()) {
+			// Account freezed error
+	        throw new RuntimeException("Receiver account is freezed! Please ask receiver to contact bank employee to reactivate his/her account for transactions...");
+		}
+		else if(receiver.getKycStatus()== false) {
+			throw new RuntimeException("Receiver KYC is already rejected by bank! Please ask receiver to reapply for KYC verification...");
+		}	
+		else {
+			// KYC error
+			if (customer.getKycStatus()== false) {
+	            throw new RuntimeException("KYC is already rejected by bank! Please reapply for KYC verification...");
+	        }
+			else if(savingaccountdetail.getBalance()<0 || (savingaccountdetail.getBalance()-amountToSend <0)) {
+				throw new RuntimeException("Insufficient Balance in your account! Cannot complete transaction...");
+			}
+			//if KYC is already approved
+			else {
+				AccountTransactions transaction1 = new AccountTransactions();
+				transaction1.setCustomer(customer);
+				transaction1.setRecipientId(receiver.getCustomerId());
+				transaction1.setTransactionAmount(amountToSend);
+				transaction1.setTransactionById(customer.getCustomerId());
+				transaction1.setTransactionRemarks(remarks);
+				transaction1.setTransactionTimestamp(new Date(System.currentTimeMillis()));
+				transaction1.setTransactionType("-");
+				accountTransactionsDao.save(transaction1);
+				
+				
+				
+				AccountTransactions transaction2 = new AccountTransactions();
+				transaction2.setCustomer(receiver);
+				transaction2.setRecipientId(receiver.getCustomerId());
+				transaction2.setTransactionAmount(amountToSend);
+				transaction2.setTransactionById(customer.getCustomerId());
+				transaction2.setTransactionRemarks(remarks);
+				transaction2.setTransactionTimestamp(new Date(System.currentTimeMillis()));
+				transaction2.setTransactionType("+");
+				accountTransactionsDao.save(transaction2);
+				
+				emailService.moneySentMail(customer.getEmailId(), 
+					customer.getAccountHolderFirstName(),
+					customer.getAccountHolderLastName(),
+					amountToSend,
+					receiver.getAccountNumber(),
+					receiver.getAccountHolderFirstName(),
+					receiver.getAccountHolderLastName(),
+					remarks,
+					transaction1.getTransactionTimestamp(),
+					transaction1.getTransactionId()
+				);
+				
+				emailService.moneyReceivedMail(receiver.getEmailId(), 
+					receiver.getAccountHolderFirstName(),
+					receiver.getAccountHolderLastName(),
+					amountToSend,
+					customer.getAccountNumber(),
+					customer.getAccountHolderFirstName(),
+					customer.getAccountHolderLastName(),
+					remarks,
+					transaction2.getTransactionTimestamp(),
+					transaction2.getTransactionId()
+				);
+			}
+		}	
+	}
 }

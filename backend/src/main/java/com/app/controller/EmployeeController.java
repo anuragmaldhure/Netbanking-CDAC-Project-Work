@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
-import org.apache.logging.log4j.util.StringBuilderFormattable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,7 +58,7 @@ public class EmployeeController {
 	
 	//SEARCH FUNCTIONALITIES
 	//For getting customer details by account number
-	@GetMapping("/Accounts/ViewCustomerDetails48/{accountNumber}")
+	@GetMapping("/Accounts/ViewCustomerDetails/{accountNumber}")
 	public Optional<CustomerDetailsDTO> getCustomerDetailsByAccountNumber(@PathVariable String accountNumber) {
 		System.out.println("in get Customer Details by account number in Employee");
 		return customerService.getCustomerDetailsByAccountNumber(accountNumber);

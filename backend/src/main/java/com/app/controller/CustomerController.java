@@ -18,15 +18,14 @@ import com.app.service.AccountTransactionsService;
 //import com.app.service.BeneficiaryService;
 import com.app.service.CustomerSavingsAccountService;
 import com.app.service.CustomerService;
-import com.app.service.EmailService;
 import com.app.service.ImageHandlingService;
+import com.app.service.OffersService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,11 +47,8 @@ public class CustomerController {
 	@Autowired
 	private AccountTransactionsService accountTransactionsService;
 	
-//	@Autowired
-//	private EmailService emailService;
-//	
-//	@Autowired
-//	private OffersService offersService;
+	@Autowired
+	private OffersService offersService;
 //	
 //	@Autowired 
 //	private BeneficiaryService beneficiaryService;
@@ -129,35 +125,8 @@ public class CustomerController {
 		}
 	}
 
-
-//	//Withdraw transaction after getting amount and remarks from request
-////	@GetMapping("/FundTransfer/WithdrawMoney8")
-////	public Optional<CustomerDetails> (@PathVariable Long customerId) {
-//
-////	}
-//	
-//	//Get Account statement period details
-////	@PostMapping("/Account/AccountStatement9")
-//
-//	
-//	//Post Account statement period details
-////	@PostMapping("/Account/AccountStatement9")
-//
-//	
-//	//Get all transaction details of given period
-////	@GetMapping("/Account/GenerateAccountStatement10")
-//
-//	//Get all transaction details of given period
-////	@GetMapping("/Account/KYC11")
-//	
-//	//Get String response of pending KYC if KYC status = 0
-////	@GetMapping("/Account/KYCPending12")
-//
-//	//Get String response of pending KYC if KYC status = 0
-////	@PostMapping("/FundTransfer/TransferWithinBank20")
-//	
 	//KYC
-//  upload image from clnt n saving it either on db or in server side folder
+	//upload image from clnt n saving it either on db or in server side folder
 	// http://host:port/customer/documents/photo/{customerId} ,
 	// method=POST , req param :
 	// multipart file(image data)
@@ -219,13 +188,33 @@ public class CustomerController {
         }
 	}
 	
-//	//Get All available offers
-//	@GetMapping("/OtherServices/OffersAvailableForMe31/{customerId}")
-//	List<Offers> getAllOffersAvailableForMe(@PathVariable Long customerId){
-//		System.out.println("in get all offers for customer " + customerId);
-//		return offersService.getAllOffersAvailableForMe(customerId);
-//	}
-//	
+	//send money after getting amount and remarks from request
+	//by to
+	@PostMapping("/FundTransfer/SendMoney/{customerId}/{receiverAccountNumber}")
+	public ResponseEntity<String> sendMoneyToBeneficiary(@PathVariable Long customerId, String receiverAccountNumber,
+			@RequestBody String remarks, Double amountToSend) {
+		try {
+					
+			accountTransactionsService.sendMoney(customerId, receiverAccountNumber, amountToSend, remarks);
+					
+			return ResponseEntity.ok("Successfully sent " + amountToSend + " from account of customer id : "+ customerId +
+					" to another person with account number :" + receiverAccountNumber);
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in sending money...");
+		}
+	}
+	
+	//Get All available offers
+	@GetMapping("/OtherServices/OffersAvailableForMe31/{customerId}")
+	List<Offers> getAllOffersAvailableForMe(@PathVariable Long customerId){
+		System.out.println("in get all offers for customer " + customerId);
+		return offersService.getAllOffersAvailableForMe(customerId);
+	}
+	
 //	//Get account balance
 //	@GetMapping("/FundTransfer/SendMoney21/{customerId}")
 //	public ResponseEntity<String> sendOtpToCustomer(@PathVariable Long customerId) {
@@ -244,38 +233,7 @@ public class CustomerController {
 ////	@PostMapping("/FundTransfer/SendMoney22")
 //
 //	
-//	//send money after getting amount and remarks from request
-//	//by to
-//	@PostMapping("/FundTransfer/SendMoney23/{customerId}/{beneficairyId}")
-//	public ResponseEntity<String> sendMoneyToBeneficiary(@PathVariable Long customerId, String benificiaryAccountNo,
-//				@RequestBody Double amountToSend, String remarks) {
-//		try {
-//			Optional<CustomerDetails> customer = customerService.getCustomerDetailsByCustomerId(customerId);
-//			
-//			Optional<Beneficiary> beneficiary =  beneficiaryService.getBenificiaryDetailsByAccountNumber(benificiaryAccountNo);
-//				
-//			accountTransactionsService.sendMoney(amountToSend, customer, beneficiary, remarks);
-//				
-////			emailService.sendMoneyMail(customer.get().getEmailId(), 
-////						customer.get().getAccountHolderFirstName(),
-////						customer.get().getAccountHolderLastName(),
-////						amountToSend,
-////						beneficiary.get().getBeneficiaryAccountNumber(),
-////						beneficiary.get().getBeneficiaryFirstName(),
-////						beneficiary.get().getBeneficiaryLastName()
-////					);
-//				
-//			return ResponseEntity.ok("Successfully sent " + amountToSend + " from account of customer id : "+ customerId +
-//					" to beneficiary with id :" + beneficiary.get().getBeneficiaryId());
-//		} catch (EntityNotFoundException e) {
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//		} catch (RuntimeException e) {
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//		} catch (Exception e) {
-//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in sending money...");
-//		}
-//	}
-//
+
 //	//Add Beneficiary
 //	@PostMapping("/FundTransfer/AddBenificiary24/{customerId}")
 //	public ResponseEntity<String> addEmpDetails(@RequestBody AddBeneficiaryDTO beneficiaryDTO, Long customerId) {
