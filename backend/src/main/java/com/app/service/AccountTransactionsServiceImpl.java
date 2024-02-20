@@ -150,6 +150,9 @@ public class AccountTransactionsServiceImpl implements AccountTransactionsServic
 		else if(savingaccountdetail.getBalance()<0 || (savingaccountdetail.getBalance()-amountToWithdraw <0)) {
 			throw new RuntimeException("Insufficient Balance in your account! Cannot complete transaction...");
 		}
+		else if(amountToWithdraw<=0) {
+			throw new RuntimeException("Not a valid amount... Please try again");
+		}
 		//if KYC is already approved
 		else {
 			AccountTransactions transaction = new AccountTransactions();
@@ -208,6 +211,9 @@ public class AccountTransactionsServiceImpl implements AccountTransactionsServic
 	        }
 			else if(savingaccountdetail.getBalance()<0 || (savingaccountdetail.getBalance()-amountToSend <0)) {
 				throw new RuntimeException("Insufficient Balance in your account! Cannot complete transaction...");
+			}
+			else if(amountToSend<=0) {
+				throw new RuntimeException("Not a valid amount... Please try again");
 			}
 			//if KYC is already approved
 			else {
