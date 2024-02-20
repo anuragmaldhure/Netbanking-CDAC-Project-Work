@@ -38,6 +38,7 @@ import VerifyApproveKYC50 from "./pages/Employee/VerifyApproveKYC50";
 import VerifyApproveKYC51 from "./pages/Employee/VerifyApproveKYC51";
 import SearchCustomer48 from "./pages/Employee/SearchCustomer48";
 import SignUpForm from "./components/PublicPageComponents/SignUpForm";
+import TransferWithinBank23 from "./pages/Customer/TransferWithinBank23";
 
 function App() {
   return (
@@ -48,11 +49,7 @@ function App() {
         <Route path="/register" element={<Register />} />
 
         {/* Public Page Routes */}
-        <Route
-          path="/Signup"
-          element={<SignUpForm />}
-        />
-
+        <Route path="/Signup" element={<SignUpForm />} />
 
         {/* customer account section */}
         <Route
@@ -86,7 +83,7 @@ function App() {
         />
         <Route
           path="/Customer/FundTransfer/TransferWithinBank23"
-          element={<AddBeneficiary24 />}
+          element={<TransferWithinBank23 />}
         />
         <Route
           path="/Customer/FundTransfer/AddBeneficiary24"

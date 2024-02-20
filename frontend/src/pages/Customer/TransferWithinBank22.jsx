@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Typography,
   Paper,
@@ -21,7 +21,6 @@ import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 import CustomerSideNavigationMenu from "../../components/CustomerSideNavigationMenu";
 import CustomerTopNavigationBar from "../../components/CustomerTopNavigationBar";
 
@@ -29,26 +28,29 @@ const TransferWithinBank22 = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
-  const transferredData = location.state?.transferredData || null;
-
   const [otp, setOtp] = useState("");
   const [isOtpValid, setIsOtpValid] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
 
+  const transferredData = location.state?.transferredData || null;
+
   const handleOtpValidation = () => {
-    // For simplicity, assuming a static OTP value (you should replace this with actual validation logic)
     const expectedOtp = "112"; // Static OTP for demonstration
 
     if (otp === expectedOtp) {
       setIsOtpValid(true);
       setShowDialog(true);
-      // After 5 seconds, redirect to the home page
-      setTimeout(() => {
-        toast.info("Redirecting to homepage in 5 seconds...");
-        setTimeout(() => {
-          navigate("/Customer/Account/ViewAccountBalance");
-        }, 5000);
-      }, 1000);
+
+      const transferData = {
+        accountNumber: transferredData.accountNumber,
+        amount: transferredData.amount,
+        remarks: transferredData.remarks,
+      };
+
+      // Use navigate to pass data to the next page through the URL
+      navigate("/Customer/FundTransfer/TransferWithinBank23", {
+        state: { transferData },
+      });
     } else {
       setIsOtpValid(false);
       setShowDialog(false);
@@ -150,10 +152,10 @@ const TransferWithinBank22 = () => {
       </div>
 
       <Dialog open={showDialog} onClose={() => setShowDialog(false)}>
-        <DialogTitle>Transfer Successful</DialogTitle>
+        <DialogTitle>OTP Validation</DialogTitle>
         <DialogContent>
           <Typography>
-            Your transfer was successful! Redirecting to the homepage...
+            Your OTP is successfully validated! Redirecting... Please wait...
           </Typography>
         </DialogContent>
       </Dialog>
