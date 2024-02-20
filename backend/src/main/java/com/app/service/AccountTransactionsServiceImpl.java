@@ -102,6 +102,12 @@ public class AccountTransactionsServiceImpl implements AccountTransactionsServic
 		else if (customer.getKycStatus()== false) {
             throw new RuntimeException("KYC is already rejected! Ask the customer to reapply for KYC verification...");
         }
+		else if(amountToDeposit<=0) {
+			throw new RuntimeException("Not a valid amount... Please try again");
+		}
+		else if(amountToDeposit>100000) {
+			throw new RuntimeException("Cannot deposit amount greater than ₹ 1,00,000 in one transaction... Try again with smaller amount");
+		}
 		//if KYC is already approved
 		else {
 			AccountTransactions transaction = new AccountTransactions();
@@ -153,6 +159,9 @@ public class AccountTransactionsServiceImpl implements AccountTransactionsServic
 		else if(amountToWithdraw<=0) {
 			throw new RuntimeException("Not a valid amount... Please try again");
 		}
+		else if(amountToWithdraw>100000) {
+			throw new RuntimeException("Cannot withdraw amount greater than ₹ 1,00,000 in one transaction... Try again with smaller amount");
+		}
 		//if KYC is already approved
 		else {
 			AccountTransactions transaction = new AccountTransactions();
@@ -185,7 +194,10 @@ public class AccountTransactionsServiceImpl implements AccountTransactionsServic
 		
 		CustomerSavingAccountsDTO savingaccountdetail =  mapper.map(customerSavingsAccountDao.findByCustomer(customerId), CustomerSavingAccountsDTO.class);
 		
-		if(customer.getKycStatus()== null) {
+		if(customer.getCustomerId()==receiver.getCustomerId()){
+			throw new RuntimeException("Cannot send money to yourself...");
+		}
+		else if(customer.getKycStatus()== null) {
 			// KYC error
 	        throw new RuntimeException("Customer KYC error! Please get your KYC verified for activating transactions...");
 		}
@@ -211,6 +223,9 @@ public class AccountTransactionsServiceImpl implements AccountTransactionsServic
 	        }
 			else if(savingaccountdetail.getBalance()<0 || (savingaccountdetail.getBalance()-amountToSend <0)) {
 				throw new RuntimeException("Insufficient Balance in your account! Cannot complete transaction...");
+			}
+			else if(amountToSend>100000) {
+				throw new RuntimeException("Cannot send amount greater than ₹ 1,00,000 in one transaction... Try again with smaller amount");
 			}
 			else if(amountToSend<=0) {
 				throw new RuntimeException("Not a valid amount... Please try again");
