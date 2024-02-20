@@ -92,7 +92,7 @@ public class EmployeeController {
 		Optional<CustomerDetailsDTO> customer = customerService.getCustomerDetailsByCustomerId(customerId);
 		System.out.println(customer);
 		
-		emailService.sendKYCRejectionMail(customer.get().getEmailId(), 
+		emailService.sendKYCRejectionMail(customer.get().getEmailId(),  // ,<------- Migrate to Service layer
 				customer.get().getAccountHolderFirstName(),
 				customer.get().getAccountHolderLastName());
 		
@@ -115,7 +115,7 @@ public class EmployeeController {
 		Optional<CustomerDetailsDTO> customer = customerService.getCustomerDetailsByCustomerId(customerId);
 		
 		
-		emailService.sendKYCApprovedMail(customer.get().getEmailId(), 
+		emailService.sendKYCApprovedMail(customer.get().getEmailId(),  // ,<------- Migrate to Service layer
 				customer.get().getAccountHolderFirstName(),
 				customer.get().getAccountHolderLastName());
 		
@@ -126,6 +126,44 @@ public class EmployeeController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		} catch (Exception e) {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error changing KYC status...");
+		}
+	}
+	
+	//Freeze account - deactivate
+	@PutMapping("/Accounts/DeactivateOrFreezeAccountTemporarily/{accountNumber}")
+    public ResponseEntity<String> DeactivateOrFreezeAccount(@PathVariable String accountNumber) {
+		try {
+		customerService.deactivateAccountTemporarily(accountNumber);
+//		Optional<CustomerDetailsDTO> customer = customerService.getCustomerDetailsByCustomerId(customerId);
+//		System.out.println(customer);
+//		
+//		emailService.sendKYCRejectionMail(customer.get().getEmailId(), 
+//				customer.get().getAccountHolderFirstName(),
+//				customer.get().getAccountHolderLastName());
+		
+		return ResponseEntity.ok("Customer Account deactivated!");
+		} catch (EntityNotFoundException e) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (RuntimeException e) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (Exception e) {
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error de - activating / freezing Account...");
+		}
+	}
+	
+	//Re-activate account
+	@PutMapping("/Accounts/ReactivateAccount/{accountNumber}")
+    public ResponseEntity<String> ReactivateAccount(@PathVariable String accountNumber) {
+		try {
+		customerService.reactivateAccount(accountNumber);
+		
+		return ResponseEntity.ok("Customer account reactivated!");
+		} catch (EntityNotFoundException e) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (RuntimeException e) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (Exception e) {
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error reactivating Account...");
 		}
 	}
 	

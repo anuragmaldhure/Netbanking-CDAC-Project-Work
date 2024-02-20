@@ -4,12 +4,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import com.app.entities.CustomerDetails;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Random;
 
@@ -215,7 +211,7 @@ public class EmailService {
 	    			    "Receiver Account Holder Name : "+ accountHolderFirstName2 + " "+ accountHolderLastName2 + "\n" +
 	    			    "Transaction Id : "+ transactionId +"\n" +
 	    			    "Transaction amount : ₹ "+ amountToSend +"\n" +
-	    			    "Remarks : ₹ "+ remarks +"\n" +
+	    			    "Remarks : "+ remarks +"\n" +
 	    			    "Timestamp : "+ transactionTimestamp + "\n\n"+
 	    			    "Should you notice any suspicious activity, please do not hesitate to contact us via contact details given in Other Services / Contact Us.\n\n" +
 	    			    "We also invite you to explore our latest offers, exclusively designed for you, in the Offers Section.\n\n" +
@@ -249,7 +245,7 @@ public class EmailService {
 	    			    "Sender Account Holder Name : "+ accountHolderFirstName2 + " "+ accountHolderLastName2 + "\n" +
 	    			    "Transaction Id : "+ transactionId +"\n" +
 	    			    "Transaction amount : ₹ "+ amountToSend +"\n" +
-	    			    "Remarks : ₹ "+ remarks +"\n" +
+	    			    "Remarks : "+ remarks +"\n" +
 	    			    "Timestamp : "+ transactionTimestamp + "\n\n"+
 	    			    "Should you notice any suspicious activity, please do not hesitate to contact us via contact details given in Other Services / Contact Us.\n\n" +
 	    			    "We also invite you to explore our latest offers, exclusively designed for you, in the Offers Section.\n\n" +
@@ -266,7 +262,58 @@ public class EmailService {
 	        }
 	        return null;	
 	}
+	
+    public String accountDeactivationMail(String userEmail, String FirstName, String LastName, String accountNumber) {
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
+            helper.setTo(userEmail);
+            helper.setSubject("Aarna Bank : Your account has been temporarily deactivated / freezed!");
+            String messageString = "Dear "+ FirstName + " "+ LastName +", Our bank employee has temporarily deactivated / freezed your bank account with  "
+            		+ "account number : "+ accountNumber + ". This action is either taken as per your request or due to some non-compliance of bank policies. "
+            		+"Please contact us via contact details given in Other Services / Contact Us section for further assistance if required. "
+            		+ "Please ask our employees to reactivate your account at earliest to carry out transaction (Withdraw/ Depoit/ Send Money)"
+            		+"\n\n" + 
+            		"Happy Banking! 😊\n\n" +
+	    			"Best Regards,\n\n" +
+	    			"Aarna Bank";
+            
+            helper.setText(messageString);
+
+            javaMailSender.send(message);
+            return messageString;
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            // Handle exception
+        }
+        return null;
+    }
+    
+    public String accountReactivationMail(String userEmail, String FirstName, String LastName, String accountNumber) {
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setTo(userEmail);
+            helper.setSubject("Aarna Bank : Your account has been re-activated!");
+            String messageString = "Dear "+ FirstName + " "+ LastName +", Our bank employee has re-activated your bank account with  "
+            		+ "account number : "+ accountNumber + ". This action is either taken as per your request. "
+            		+"Please contact us via contact details given in Other Services / Contact Us section for further assistance if required. "
+            		+"\n\n" + 
+            		"Happy Banking! 😊\n\n" +
+	    			"Best Regards,\n\n" +
+	    			"Aarna Bank";
+            helper.setText(messageString);
+            
+            javaMailSender.send(message);
+            return messageString;
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            // Handle exception
+        }
+        return null;
+    }
 
 //	public String sendMoneyMail(String emailId, String accountHolderFirstName, String accountHolderLastName,
 //            String beneficiaryFirstName, String beneficiaryLastName, CustomerDetails beneficiaryAccountNumber) {

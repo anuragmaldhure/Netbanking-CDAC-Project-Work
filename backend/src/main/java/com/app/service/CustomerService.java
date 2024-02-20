@@ -26,5 +26,9 @@ public interface CustomerService {
 
 	List<CustomerDetailsDTO> getAllCustomerDetails();
 
+	void deactivateAccountTemporarily(String accountNumber);
+
+	void reactivateAccount(String accountNumber);
+
 //	Optional<CustomerDetails> findByCustomerId(Long customerId);
 }

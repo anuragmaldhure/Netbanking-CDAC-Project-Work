@@ -1,6 +1,5 @@
 package com.app.service;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -58,7 +57,7 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		CustomerSavingAccounts accountsdetail = new CustomerSavingAccounts(customer.getAccountNumber());
 		System.out.println("Empty class created : "+accountsdetail);
-		accountsdetail.setSignupTimestamp(new Timestamp(0));
+		accountsdetail.setSignupTimestamp(new Date(System.currentTimeMillis()));
 		accountsdetail.setCustomer(customer);
 		accountsdetail.setBalance(0.0);
 		accountsdetail.setAccountOpeningDate(new Date());
@@ -183,6 +182,55 @@ public class CustomerServiceImpl implements CustomerService{
 		            .stream()
 		            .map(customer -> mapper.map(customer, CustomerDetailsDTO.class))
 		            .collect(Collectors.toList());
+	}
+
+
+	@Override
+	public void deactivateAccountTemporarily(String accountNumber) {
+		CustomerDetails customer = customerDao.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with account number : " + accountNumber));
+	
+        if (customer.getAccountActiveStatus() == true) {
+            customer.setAccountActiveStatus(false);
+            System.out.println("Successfully deactivated / freezed  account number : " + accountNumber);
+            customerDao.save(customer);	 
+            	
+    		emailService.accountDeactivationMail(
+    				customer.getEmailId(),
+    				customer.getAccountHolderFirstName(),
+    				customer.getAccountHolderLastName(),
+    				customer.getAccountNumber()
+    		);
+    		
+        }
+    	//Check if already rejected
+        else {
+        	 throw new RuntimeException("Account is already deactivated or freezed!");
+        }
+	}
+
+
+	@Override
+	public void reactivateAccount(String accountNumber) {
+		CustomerDetails customer = customerDao.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with account number : " + accountNumber));
+	
+        if (customer.getAccountActiveStatus() == false) {
+            customer.setAccountActiveStatus(true);
+            System.out.println("Successfully re - activated a/c with account number : " + accountNumber);
+            customerDao.save(customer);	 
+            
+            emailService.accountReactivationMail(
+            		customer.getEmailId(),
+            		customer.getAccountHolderFirstName(),
+            		customer.getAccountHolderLastName(),
+            		customer.getAccountNumber()
+            );
+        }
+    	//Check if already rejected
+        else {
+        	 throw new RuntimeException("Account is already activated!");
+        }
 	}
 
 
