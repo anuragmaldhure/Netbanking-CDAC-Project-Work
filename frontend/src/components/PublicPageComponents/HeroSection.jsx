@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./HeroSection.css";
+import styles from "./HeroSection.module.css";
 import { Link as ScrollLink } from "react-scroll";
 
 const HeroSection = () => {
@@ -8,7 +8,7 @@ const HeroSection = () => {
       <video autoPlay muted loop>
         <source
           className={styles.embedResponsive}
-          src="./src/assets/videos/6.mp4"
+          src="../../assets/videos/6.mp4"
           type="video/mp4"
         />
       </video>
@@ -27,7 +27,7 @@ const HeroSection = () => {
           spy={true}
           smooth={true}
           offset={-70}
-          duration={8000}
+          duration={200}
         >
           Get Started
         </ScrollLink>

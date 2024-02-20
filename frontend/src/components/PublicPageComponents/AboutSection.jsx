@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import styles from "./AboutSection.css"; // Import the new CSS file
+import styles from "./AboutSection.module.css"; // Import the new CSS file
 import { Link as ScrollLink } from "react-scroll";
 
 const AboutSection = () => {
@@ -17,10 +17,15 @@ const AboutSection = () => {
           <h6>PREMIUM BANK</h6>
           <h2>Unlimited Transaction with zero fees</h2>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur
-            minus animi qui aperiam illo quae voluptas a distinctio veritatis!
-            Rerum similique consequatur tenetur! Obcaecati repellendus nihil
-            illum natus harum sequi?
+            Welcome to AARNA Bank, where we redefine your banking experience.
+            Enjoy the freedom of unlimited transactions with zero fees. Our
+            cutting-edge technology ensures seamless and secure online banking
+            for all your financial needs.
+          </p>
+          <p>
+            At AARNA Bank, we prioritize your convenience. Access your account
+            anytime, anywhere, and make transactions without worrying about
+            hidden charges. Experience the future of banking with us.
           </p>
           <ScrollLink
             to="discover" // Replace 'discover' with the ID of the next section
@@ -36,7 +41,7 @@ const AboutSection = () => {
         <div className={`img col-lg-6 col-md-6 col-12 pt-5 pb-5 ${styles.img}`}>
           <img
             className="img-fluid"
-            src="./src/assets/images/1.svg"
+            src="../../assets/images/1.svg"
             alt="About Section"
           />
         </div>

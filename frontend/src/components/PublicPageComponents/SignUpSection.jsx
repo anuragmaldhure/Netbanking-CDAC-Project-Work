@@ -1,6 +1,7 @@
 import React from "react";
-import styles from "./SignUpSection.module.css";
 import { Link as ScrollLink } from "react-scroll";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import styles from "./SignUpSection.module.css";
 
 const SignUpSection = () => {
   return (
@@ -17,16 +18,19 @@ const SignUpSection = () => {
             quo, sequi ipsa aspernatur natus mollitia non suscipit dolor. Unde
             nisi enim nobis?
           </p>
-          <ScrollLink
-            to="desired-section-id" // Replace with the actual section ID to scroll to
-            spy={true}
-            smooth={true}
-            offset={-70} // Adjust offset if needed
-            duration={500} // Duration of the scroll animation
-            className={styles.startNow}
-          >
-            Start Now
-          </ScrollLink>
+          <Link to="/Signup" className={styles.startNow}>
+            {" "}
+            <ScrollLink
+              to="desired-section-id" // Replace with the actual section ID to scroll to
+              spy={true}
+              smooth={true}
+              offset={-70} // Adjust offset if needed
+              duration={500} // Duration of the scroll animation
+              className={styles.startNow}
+            >
+              Start Now
+            </ScrollLink>
+          </Link>
         </div>
         <div className={`img col-lg-6 col-md-6 col-12 pt-5 pb-5 ${styles.img}`}>
           <img
