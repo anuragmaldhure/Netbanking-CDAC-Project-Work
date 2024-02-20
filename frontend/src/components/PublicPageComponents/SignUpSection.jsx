@@ -19,17 +19,9 @@ const SignUpSection = () => {
             nisi enim nobis?
           </p>
           <Link to="/Signup" className={styles.startNow}>
-            {" "}
-            <ScrollLink
-              to="desired-section-id" // Replace with the actual section ID to scroll to
-              spy={true}
-              smooth={true}
-              offset={-70} // Adjust offset if needed
-              duration={500} // Duration of the scroll animation
-              className={styles.startNow}
-            >
+            
               Start Now
-            </ScrollLink>
+           
           </Link>
         </div>
         <div className={`img col-lg-6 col-md-6 col-12 pt-5 pb-5 ${styles.img}`}>

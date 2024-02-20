@@ -1,39 +1,30 @@
-/* SingupForm.module.css
+/* SignUpForm.module.css */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap");
 
-:root {
-  --green: rgb(33, 250, 131);
-  --red: rgb(252, 86, 108);
-  --dusky-green: rgb(6, 170, 94);
-  --opac-white: rgba(255, 255, 255, 0.8);
-  --form-txt: rgba(255, 255, 255, 0.5);
-  --darky: #1d2b3a;
-  --light-grey: rgb(105, 105, 105);
+:local .back {
+  overflow: auto; /* Change this to 'auto' to enable scrolling */
+  background-color: rgb(6, 170, 94);
 }
 
-body {
-  overflow: hidden;
-  background-color: var(--dusky-green);
-}
-
-.cardContainer {
+:local .cardContainer {
   display: grid;
   grid-template-columns: calc(100% - 60%) auto;
   height: 100vh;
   width: 100%;
   overflow: hidden;
-  background-color: var(--darky);
+  background-color: #1d2b3a;
 }
 
-.formContainer {
+:local .formContainer {
   width: 50vw;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 45px;
   padding: 50px;
-  color: var(--form-txt);
+  color: rgba(255, 255, 255, 0.5);
 }
 
-.formHeader {
+:local .formHeader {
   grid-column: 1 / -1;
   letter-spacing: 0.06em;
   margin-bottom: 30px;
@@ -41,7 +32,7 @@ body {
   color: white;
 }
 
-input {
+:local input {
   display: block;
   border-radius: 4px;
   border: 0;
@@ -50,23 +41,23 @@ input {
   margin-top: 5px;
   background-color: rgba(255, 255, 255, 0);
   transition: all 0.5s ease-in;
-  color: var(--opac-white);
+  color: rgba(255, 255, 255, 0.8);
 }
 
-input::placeholder {
+:local input::placeholder {
   content: none;
 }
 
-span {
+:local span {
   letter-spacing: 0.05em;
   text-transform: uppercase;
   font-size: 15px;
   transition: all 0.4s;
 }
 
-[type="submit"] {
+.submitBtn {
   border: 0;
-  background-color: var(--dusky-green);
+  background-color: rgb(6, 170, 94);
   color: white;
   padding: 10px 50px;
   letter-spacing: 0.05em;
@@ -76,26 +67,38 @@ span {
   outline: none;
 }
 
-form {
+/* :local [type="submit"] {
+  border: 0;
+  background-color: rgb(6, 170, 94);
+  color: white;
+  padding: 10px 50px;
+  letter-spacing: 0.05em;
+  border-radius: 5px;
+  margin-top: 20px;
+  font-size: 17px;
+  outline: none;
+} */
+
+:local form {
   width: auto;
   display: grid;
   place-items: center;
 }
 
-.btmText {
+:local .btmText {
   margin-top: 15px;
   font-size: 14px;
 }
 
-.btmTextHighlighted {
-  color: var(--dusky-green);
+:local .btmTextHighlighted {
+  color: rgb(6, 170, 94);
 }
 
-.inputContainer {
+:local .inputContainer {
   position: relative;
 }
 
-span:not(.btmTextHighlighted) {
+:local .formContainer span:not(.btmTextHighlighted) {
   position: absolute;
   left: 0;
   top: 0;
@@ -103,30 +106,30 @@ span:not(.btmTextHighlighted) {
   pointer-events: none;
 }
 
-input:focus ~ span,
-input:valid ~ span {
+:local input:focus ~ span,
+:local input:valid ~ span {
   font-size: 10px;
   transform: translateX(4px) translateY(-7px);
   font-size: 0.8em;
   padding: 0 6px;
   color: var(--cyny-green);
-  background-color: var(--dusky-green);
+  background-color: rgb(6, 170, 94);
   color: white;
   border-radius: 2px;
 }
 
-input:focus,
-input:focusvisible {
-  border: 1px solid var(--green);
+:local input:focus,
+:local input:focus-visible {
+  border: 1px solid rgb(33, 250, 131);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   outline: none;
 }
+/* 
+:local input:valid {
+  border: 1px solid rgb(33, 250, 131);
+} */
 
-input:valid {
-  border: 1px solid var(--green);
-}
-
-.error {
+:local .error {
   color: rgb(255, 51, 51);
   font-family: sans-serif;
   font-weight: 500;
@@ -135,26 +138,26 @@ input:valid {
   margin-top: 4px;
 }
 
-.imageContainer {
+:local .imageContainer {
   display: grid;
   place-items: center;
-  background-color: var(--dusky-green);
+  background-color: rgb(6, 170, 94);
   color: white;
 }
 
-.imageContainer > img {
+:local .imageContainer > img {
   width: calc(90%);
 }
 
-.company,
-.imageContainer > .quote {
+:local .company,
+:local .imageContainer > .quote {
   width: 100%;
   height: 100%;
   text-align: center;
   font-size: 19px;
 }
 
-.company {
+:local .company {
   font-size: 34px;
   text-align: left;
   height: 70px;
@@ -162,21 +165,21 @@ input:valid {
   padding: 2% 0 0 5%;
 }
 
-.outroOverlay > .company {
+:local .outroOverlay > .company {
   position: absolute;
   top: 0;
 }
 
-.mobileBtmNav {
+:local .mobileBtmNav {
   display: none;
 }
 
-.mobileBtmNav {
+:local .mobileBtmNav {
   text-decoration: none;
   display: none;
 }
 
-.mobileBtmNav > img {
+:local .mobileBtmNav > img {
   transform: scale(0.3) rotateZ(180deg);
 }
 
@@ -192,9 +195,9 @@ input:valid {
   }
 }
 
-.outroOverlay {
+:local .outroOverlay {
   display: flex;
-  background-color: var(--dusky-green);
+  background-color: rgb(6, 170, 94);
   height: 100vh;
   width: 100%;
   z-index: 0;
@@ -205,12 +208,12 @@ input:valid {
   position: relative;
 }
 
-.outroOverlay > #signedUp-illustration {
+:local .outroOverlay > #signedUpIllustration {
   height: 90%;
   z-index: 2;
 }
 
-.outroOverlay > .shape {
+:local .outroOverlay > .shape {
   position: absolute;
   top: 0;
   left: 0;
@@ -219,80 +222,80 @@ input:valid {
   width: 150%;
 }
 
-.outroOverlay > .outroGreeting {
+:local .outroOverlay > .outroGreeting {
   z-index: 3;
   font-weight: 700;
   letter-spacing: 0.02em;
   word-spacing: 0.1em;
 }
 
-.disabled {
+:local .disabled {
   display: none;
 }
 
-.UpAnimationClass {
+:local .UpAnimationClass {
   animation: 1.3s 1 forwards cubic-bezier(0.36, -0.01, 0.5, 1.38) slideUp;
   animation-delay: 0s;
 }
 
-.RightAnimationClass {
+:local .RightAnimationClass {
   animation: 1.3s 1 forwards cubic-bezier(0.36, -0.01, 0.5, 1.38) slideRight;
   animation-delay: 0s;
 }
 
-.authorLink {
+:local .authorLink {
   position: fixed;
   bottom: 0;
   padding-bottom: 10px;
   z-index: 5;
 }
 
-.authorLink,
-a {
+:local .authorLink,
+:local a {
   text-decoration: none;
-  color: var(--light-grey);
+  color: rgb(105, 105, 105);
   transition: 0.3s ease-out;
 }
 
-.authorLink > a:hover {
-  color: var(--darky);
+:local .authorLink > a:hover {
+  color: #1d2b3a;
 }
 
 @media only screen and (max-width: 540px) {
-  body {
+  :local body {
     width: 100%;
     overflow: visible;
   }
 
-  .imageContainer > [class] {
+  :local .imageContainer > [class] {
     transform: scale(1);
   }
 
-  .quote {
+  :local .quote {
     margin-top: -50px;
   }
 
-  .cardContainer {
+  :local .cardContainer {
     grid-template-rows: 100vh minmax(100vh, auto);
     grid-template-columns: none;
     overflow: hidden;
     height: auto;
   }
 
-  .imageContainer {
+  :local .imageContainer {
     width: 100%;
     position: relative;
   }
 
-  .imageContainer > img {
+  :local .imageContainer > img {
     width: calc(110%);
   }
 
-  .error {
+  :local .error {
     font-size: 13px;
   }
 
-  .formContainer {
+  :local .formContainer {
     display: grid;
     place-items: center;
     grid-template-columns: none;
@@ -304,7 +307,7 @@ a {
     color: rgba(255, 255, 255, 0.5);
   }
 
-  .mobileBtmNav {
+  :local .mobileBtmNav {
     display: block;
     position: absolute;
     bottom: 0;
@@ -312,29 +315,29 @@ a {
     animation: float 1s cubic-bezier(0.59, 0.575, 0.565, 1) infinite;
   }
 
-  .form {
+  :local .form {
     padding: 50px;
     display: flex;
     align-items: center;
   }
 
-  .outroOverlay {
+  :local .outroOverlay {
     flex-direction: column;
     justify-content: center;
     gap: 30px;
   }
 
-  .outroOverlay > #signedUpllustration {
+  :local .outroOverlay > #signedUpllustration {
     height: auto;
     z-index: 2;
   }
 
-  .outroOverlay > .shape {
+  :local .outroOverlay > .shape {
     display: none;
   }
 
-  .outroOverlay > .outroGreeting {
+  :local .outroOverlay > .outroGreeting {
     font-size: 20px;
     order: 1;
   }
-} */
+}

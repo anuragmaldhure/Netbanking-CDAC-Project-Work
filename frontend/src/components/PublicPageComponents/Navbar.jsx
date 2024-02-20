@@ -3,8 +3,8 @@ import { Link as ScrollLink } from "react-scroll";
 // import { Link } from "react-router-dom";
 import styles from "./Navbar.module.css";
 
-import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const Navbar = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -26,7 +26,7 @@ const Navbar = () => {
           offset={-70}
           duration={100}
         >
-          AARNA
+          AARNA BANK
         </ScrollLink>
         <button
           className="navbar-toggler"
@@ -81,7 +81,7 @@ const Navbar = () => {
             <li className="nav-item">
               <ScrollLink
                 className="nav-link"
-                to="/login"
+                to="signup"
                 spy={true}
                 smooth={true}
                 offset={-70}
