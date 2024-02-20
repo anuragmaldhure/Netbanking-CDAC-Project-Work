@@ -18,11 +18,13 @@ public interface CustomerService {
 
 	List<CustomerDetailsDTO> getCustomerDetailsByLastName(String lname);
 
-//	void changePassword(Long customerId, String currentPassword, String newPassword);
+	void changePassword(Long customerId, String currentPassword, String newPassword);
 
 	void changeKYCstatusReject(Long customerId);
 
 	void changeKYCstatusApproved(Long customerId);
 
 	List<CustomerDetailsDTO> getAllCustomerDetails();
+
+//	Optional<CustomerDetails> findByCustomerId(Long customerId);
 }

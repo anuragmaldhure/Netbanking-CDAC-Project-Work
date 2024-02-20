@@ -116,25 +116,25 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 
-//	@Override
-//    public void changePassword(Long customerId, String currentPassword, String newPassword) {
-//        CustomerDetails customer = customerDao.findById(customerId)
-//                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
-//
-//        // Perform any necessary validations or checks before updating the password
-//        // Check if the old password matches the user's current password
-//        if (!customer.getPassword().equals(currentPassword)) {
-//            throw new RuntimeException("Your current password does not match!");
-//        }
-//
-//        // Update the password
-//        customer.setPassword(newPassword);
-//
-//        // Save the updated customer
-//        customerDao.save(customer);
-//    }
-//
-//
+	@Override
+    public void changePassword(Long customerId, String currentPassword, String newPassword) {
+        CustomerDetails customer = customerDao.findById(customerId)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
+
+        // Perform any necessary validations or checks before updating the password
+        // Check if the old password matches the user's current password
+        if (!customer.getPassword().equals(currentPassword)) {
+            throw new RuntimeException("Your current password does not match!");
+        }
+
+        // Update the password
+        customer.setPassword(newPassword);
+
+        // Save the updated customer
+        customerDao.save(customer);
+    }
+
+
 	@Override
 	public void changeKYCstatusReject(Long customerId) {
 		CustomerDetails customer = customerDao.findById(customerId)
@@ -184,5 +184,13 @@ public class CustomerServiceImpl implements CustomerService{
 		            .map(customer -> mapper.map(customer, CustomerDetailsDTO.class))
 		            .collect(Collectors.toList());
 	}
+
+
+//	@Override
+//	public Optional<CustomerDetails> findByCustomerId(Long customerId) {
+//		CustomerDetails customer = customerDao.findById(customerId)
+//                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
+//		return Optional.of(customer);
+//	}
 
 }

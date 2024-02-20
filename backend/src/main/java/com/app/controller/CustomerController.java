@@ -10,9 +10,7 @@ import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
-import com.app.dao.CustomerDao;
 import com.app.dto.AccountTransactionsDTO;
-import com.app.dto.AddBeneficiaryDTO;
 import com.app.dto.customer.CreateNewCustomerDTO;
 import com.app.dto.customer.CustomerDetailsDTO;
 import com.app.entities.*;
@@ -25,7 +23,6 @@ import com.app.service.ImageHandlingService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -217,6 +214,29 @@ public class CustomerController {
 		System.out.println("in download customer aadhar " + customerId);
 		return ResponseEntity.ok(imgService.downloadCustomerAadhar(customerId));
 	}
+	//Change Password
+	@PutMapping("/OtherServices/ChangePassword30/{customerId}")
+    public ResponseEntity<String> changePassword(@PathVariable Long customerId,
+    											@RequestParam String currentPassword,
+    											@RequestParam String newPassword) {
+        try {
+        	customerService.changePassword(customerId, currentPassword, newPassword);
+            return ResponseEntity.ok("Password changed successfully.");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error changing password.");
+        }
+	}
+	
+//	//Get All available offers
+//	@GetMapping("/OtherServices/OffersAvailableForMe31/{customerId}")
+//	List<Offers> getAllOffersAvailableForMe(@PathVariable Long customerId){
+//		System.out.println("in get all offers for customer " + customerId);
+//		return offersService.getAllOffersAvailableForMe(customerId);
+//	}
 //	
 //	//Get account balance
 //	@GetMapping("/FundTransfer/SendMoney21/{customerId}")
@@ -314,29 +334,6 @@ public class CustomerController {
 //
 ////Page 29 =>  Customer/OtherServices/MessageAndEmailAlerts29 -> NEED TO IMPLEMENT AND REFACTOR DB
 //	
-//	//Change Password
-//	@PutMapping("/OtherServices/ChangePassword30/{customerId}")
-//    public ResponseEntity<String> changePassword(@PathVariable Long customerId,
-//    											@RequestParam String currentPassword,
-//    											@RequestParam String newPassword) {
-//        try {
-//        	customerService.changePassword(customerId, currentPassword, newPassword);
-//            return ResponseEntity.ok("Password changed successfully.");
-//        } catch (EntityNotFoundException e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//        } catch (RuntimeException e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error changing password.");
-//        }
-//	}
-//	
-//	//Get All available offers
-//	@GetMapping("/OtherServices/OffersAvailableForMe31/{customerId}")
-//	List<Offers> getAllOffersAvailableForMe(@PathVariable Long customerId){
-//		System.out.println("in get all offers for customer " + customerId);
-//		return offersService.getAllOffersAvailableForMe(customerId);
-//	}
 
 	//Get Contact Details 
 //	@GetMapping("/OtherServices/ContactUs37")  -> NEED TO IMPLEMENT AND REFACTOR DB
