@@ -2,8 +2,6 @@ package com.app.dto;
 
 import java.time.LocalDateTime;
 
-import lombok.NoArgsConstructor;
-
 //DTO :  resp DTO : to send API resp from rest server ---> rest clnt
 public class ApiResponse {
 	
@@ -37,6 +35,5 @@ public class ApiResponse {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
 }
 

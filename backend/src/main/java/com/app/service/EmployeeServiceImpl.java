@@ -3,7 +3,6 @@ package com.app.service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.app.dao.EmployeeDao;
 import com.app.dto.BankEmployeeDTO;
-import com.app.dto.customer.CustomerDetailsDTO;
 import com.app.entities.BankEmployeeDetails;
 import com.app.entities.Role;
 

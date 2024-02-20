@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import com.app.dto.customer.CreateNewCustomerDTO;
 import com.app.dto.customer.CustomerDetailsDTO;
+import com.app.dto.customer.CustomerEssentialDataDTO;
 import com.app.entities.CustomerDetails;
 
 public interface CustomerService {
@@ -29,6 +30,8 @@ public interface CustomerService {
 	void deactivateAccountTemporarily(String accountNumber);
 
 	void reactivateAccount(String accountNumber);
+
+	void addCustomerEssentialData(Long customerId, CustomerEssentialDataDTO customerEssentialData);
 
 //	Optional<CustomerDetails> findByCustomerId(Long customerId);
 }

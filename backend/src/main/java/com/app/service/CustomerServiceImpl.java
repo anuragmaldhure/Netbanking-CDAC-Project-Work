@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.modelmapper.ModelMapper;
 
-import com.app.dao.CustomerAddressDao;
 import com.app.dao.CustomerDao;
 import com.app.dao.CustomerSavingsAccountDao;
 import com.app.dto.customer.CreateNewCustomerDTO;
 import com.app.dto.customer.CustomerDetailsDTO;
+import com.app.dto.customer.CustomerEssentialDataDTO;
 import com.app.entities.CustomerDetails;
 import com.app.entities.CustomerSavingAccounts;
 import com.app.entities.Role;
@@ -31,13 +31,10 @@ public class CustomerServiceImpl implements CustomerService{
 	private CustomerDao customerDao;
 	
 	@Autowired
-	CustomerSavingsAccountDao customerSavingsAccountDao;
+	private CustomerSavingsAccountDao customerSavingsAccountDao;
 	
 	@Autowired
-	CustomerAddressDao customerAddressDao;
-	
-	@Autowired
-	EmailService emailService;
+	private EmailService emailService;
 	
 	@Override
 	public CustomerDetails registerNewCustomer(CreateNewCustomerDTO customerDTO) {
@@ -231,6 +228,23 @@ public class CustomerServiceImpl implements CustomerService{
         else {
         	 throw new RuntimeException("Account is already activated!");
         }
+	}
+
+
+	@Override
+	public void addCustomerEssentialData(Long customerId, CustomerEssentialDataDTO customerEssentialData) {
+		CustomerDetails customer = customerDao.findById(customerId)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
+
+		 customer.setGender(customerEssentialData.getGender());
+		 customer.setDateOfBirth(customerEssentialData.getDateOfBirth());
+		 customer.setPanNumber(customerEssentialData.getPanNumber());
+		 customer.setAdhaarNumber(customerEssentialData.getAdhaarNumber());
+		 customer.setOccupation(customerEssentialData.getOccupation());
+		 customer.setAnnualIncome(customerEssentialData.getAnnualIncome());
+	     
+		 // Save the updated address
+	     customerDao.save(customer);
 	}
 
 

@@ -12,9 +12,13 @@ import javax.persistence.EntityNotFoundException;
 
 import com.app.dto.AccountTransactionsDTO;
 import com.app.dto.customer.CreateNewCustomerDTO;
+import com.app.dto.customer.CustomerAddressDTO;
 import com.app.dto.customer.CustomerDetailsDTO;
+import com.app.dto.customer.CustomerEssentialDataDTO;
+import com.app.dto.customer.CustomerNomineeDetailsDTO;
 import com.app.entities.*;
 import com.app.service.AccountTransactionsService;
+import com.app.service.CustomerAddressService;
 //import com.app.service.BeneficiaryService;
 import com.app.service.CustomerSavingsAccountService;
 import com.app.service.CustomerService;
@@ -49,6 +53,9 @@ public class CustomerController {
 	
 	@Autowired
 	private OffersService offersService;
+	
+	@Autowired
+	private CustomerAddressService customerAddressService;
 //	
 //	@Autowired 
 //	private BeneficiaryService beneficiaryService;
@@ -171,6 +178,7 @@ public class CustomerController {
 		System.out.println("in download customer aadhar " + customerId);
 		return ResponseEntity.ok(imgService.downloadCustomerAadhar(customerId));
 	}
+	
 	//Change Password
 	@PutMapping("/OtherServices/ChangePassword30/{customerId}")
     public ResponseEntity<String> changePassword(@PathVariable Long customerId,
@@ -209,10 +217,58 @@ public class CustomerController {
 	}
 	
 	//Get All available offers
-	@GetMapping("/OtherServices/OffersAvailableForMe31/{customerId}")
+	@GetMapping("/OtherServices/OffersAvailableForMe/{customerId}")
 	List<Offers> getAllOffersAvailableForMe(@PathVariable Long customerId){
 		System.out.println("in get all offers for customer " + customerId);
 		return offersService.getAllOffersAvailableForMe(customerId);
+	}
+	
+	//KYC - Add address
+	@PutMapping("/KYC/address/{customerId}")
+    public ResponseEntity<String> addAddress(@PathVariable Long customerId,
+    											@RequestBody CustomerAddressDTO addressDTO ) {
+        try {
+        	customerAddressService.putCustomerAddress(customerId, addressDTO);
+            return ResponseEntity.ok("Address updated successfully!");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in updating address...");
+        }
+	}
+	
+	//KYC - Add nominee details
+	@PutMapping("/KYC/NomineeDetails/{customerId}")
+    public ResponseEntity<String> addNomineeDetails(@PathVariable Long customerId,
+    											@RequestBody CustomerNomineeDetailsDTO customerNomineeDetails ) {
+        try {
+        	customerSavingsAccountService.addNomineeDetails(customerId, customerNomineeDetails);
+            return ResponseEntity.ok("Account Nominee Details updated successfully!");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in updating Account Related Details...");
+        }
+	}
+	
+	//KYC - Add Customer Essentials Details
+	@PutMapping("/KYC/CustomerEssentialData/{customerId}")
+    public ResponseEntity<String> addCustomerEssentialData(@PathVariable Long customerId,
+    											@RequestBody CustomerEssentialDataDTO customerEssentialData ) {
+        try {
+        	customerService.addCustomerEssentialData(customerId, customerEssentialData);
+            return ResponseEntity.ok("Customer Essentials Details updated successfully!");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in updating Customer Essentials Details...");
+        }
 	}
 	
 //	//Get account balance
@@ -229,10 +285,10 @@ public class CustomerController {
 //        return ResponseEntity.ok("Customer not found!");
 //	}
 //	
-//	//To get OTP on mobile/email and verify it
-////	@PostMapping("/FundTransfer/SendMoney22")
-//
-//	
+	//To get OTP on mobile/email and verify it
+//	@PostMapping("/FundTransfer/SendMoney22")
+
+	
 
 //	//Add Beneficiary
 //	@PostMapping("/FundTransfer/AddBenificiary24/{customerId}")

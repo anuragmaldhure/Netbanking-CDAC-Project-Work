@@ -92,7 +92,7 @@ public class EmployeeController {
 		Optional<CustomerDetailsDTO> customer = customerService.getCustomerDetailsByCustomerId(customerId);
 		System.out.println(customer);
 		
-		emailService.sendKYCRejectionMail(customer.get().getEmailId(),  // ,<------- Migrate to Service layer
+		emailService.sendKYCRejectionMail(customer.get().getEmailId(),  
 				customer.get().getAccountHolderFirstName(),
 				customer.get().getAccountHolderLastName());
 		
@@ -115,7 +115,7 @@ public class EmployeeController {
 		Optional<CustomerDetailsDTO> customer = customerService.getCustomerDetailsByCustomerId(customerId);
 		
 		
-		emailService.sendKYCApprovedMail(customer.get().getEmailId(),  // ,<------- Migrate to Service layer
+		emailService.sendKYCApprovedMail(customer.get().getEmailId(),
 				customer.get().getAccountHolderFirstName(),
 				customer.get().getAccountHolderLastName());
 		
@@ -134,12 +134,6 @@ public class EmployeeController {
     public ResponseEntity<String> DeactivateOrFreezeAccount(@PathVariable String accountNumber) {
 		try {
 		customerService.deactivateAccountTemporarily(accountNumber);
-//		Optional<CustomerDetailsDTO> customer = customerService.getCustomerDetailsByCustomerId(customerId);
-//		System.out.println(customer);
-//		
-//		emailService.sendKYCRejectionMail(customer.get().getEmailId(), 
-//				customer.get().getAccountHolderFirstName(),
-//				customer.get().getAccountHolderLastName());
 		
 		return ResponseEntity.ok("Customer Account deactivated!");
 		} catch (EntityNotFoundException e) {

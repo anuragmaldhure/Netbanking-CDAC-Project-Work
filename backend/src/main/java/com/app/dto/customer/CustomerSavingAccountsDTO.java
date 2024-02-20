@@ -2,15 +2,6 @@ package com.app.dto.customer;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
-import com.app.entities.CustomerDetails;
-
 public class CustomerSavingAccountsDTO {
 
 	    private String accountNumber;

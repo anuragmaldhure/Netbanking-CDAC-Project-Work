@@ -1,6 +1,11 @@
 package com.app.dto.customer;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
+
 public class CustomerAddressDTO {
+    @JsonProperty(access = Access.READ_ONLY) // used during serialization
     private Long customerId;
     private String address;
     private String city;

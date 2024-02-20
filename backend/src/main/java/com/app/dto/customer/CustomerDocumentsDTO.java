@@ -2,16 +2,6 @@ package com.app.dto.customer;
 
 import java.util.Arrays;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.OneToOne;
-
-import com.app.entities.CustomerDetails;
-
 public class CustomerDocumentsDTO {
     private Long documentNo;
     private String panCardPhotoImagePath;

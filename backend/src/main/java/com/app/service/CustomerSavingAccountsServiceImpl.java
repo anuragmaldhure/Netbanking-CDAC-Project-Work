@@ -1,6 +1,5 @@
 package com.app.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -10,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.app.dao.CustomerDao;
 import com.app.dao.CustomerSavingsAccountDao;
-import com.app.dto.customer.CustomerDetailsDTO;
+import com.app.dto.customer.CustomerNomineeDetailsDTO;
 import com.app.dto.customer.CustomerSavingAccountsDTO;
+import com.app.entities.CustomerDetails;
 import com.app.entities.CustomerSavingAccounts;
 
 @Service
@@ -29,6 +30,9 @@ public class CustomerSavingAccountsServiceImpl implements CustomerSavingsAccount
     
 	@Autowired
     private ModelMapper mapper;
+	
+	@Autowired
+	private CustomerDao customerDao;
 
 	@Override
 	public Object[] getAccountBalanceAndAccountNumberByCustomerId(Long customerId) {
@@ -55,5 +59,22 @@ public class CustomerSavingAccountsServiceImpl implements CustomerSavingsAccount
 		    } else {
 		        throw new EntityNotFoundException("Customer account not found with customer id: " + customerId);
 		    }
+	}
+
+	@Override
+	public void addNomineeDetails(Long customerId, CustomerNomineeDetailsDTO customerNomineeDetails) {
+		CustomerDetails customer = customerDao.findById(customerId)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
+		
+	 CustomerSavingAccounts customerSavingAccounts = customerSavingsAccountDao.findByCustomer(customerId);
+	 customerSavingAccounts.setNomineeDateOfBirth(customerNomineeDetails.getNomineeDateOfBirth());
+	 customerSavingAccounts.setNomineeFirstName(customerNomineeDetails.getNomineeFirstName());
+	 customerSavingAccounts.setNomineeLastName(customerNomineeDetails.getNomineeLastName());
+	 customerSavingAccounts.setNomineePanNumber(customerNomineeDetails.getNomineePanNumber());
+	 customerSavingAccounts.setCustomer(customer);
+     
+	 // Save the updated address
+     customerSavingsAccountDao.save(customerSavingAccounts);
+		
 	}
 }
