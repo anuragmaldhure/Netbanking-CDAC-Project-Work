@@ -5,13 +5,16 @@ import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.apache.logging.log4j.util.StringBuilderFormattable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +23,7 @@ import com.app.dto.customer.CustomerDetailsDTO;
 import com.app.dto.customer.CustomerDocumentsDTO;
 import com.app.dto.customer.CustomerPhotoDTO;
 import com.app.dto.customer.CustomerSavingAccountsDTO;
+import com.app.service.AccountTransactionsService;
 import com.app.service.CustomerAddressService;
 import com.app.service.CustomerDocumentsService;
 import com.app.service.CustomerSavingsAccountService;
@@ -42,6 +46,9 @@ public class EmployeeController {
 	
 	@Autowired 
 	private CustomerDocumentsService customerDocumentsService;
+	
+	@Autowired
+	AccountTransactionsService accountTransactionsService;
 	
 	@Autowired
 	private EmailService emailService;
@@ -151,10 +158,22 @@ public class EmployeeController {
 		return customerSavingsAccountService.getCustomerAccountDetails(customerId);
 	}
 	
-//	@PostMapping("/FundTransfer/DepositMoney44")
-//	public Optional<CustomerDetails> (@PathVariable Long customerId) {
-
-//	}
+	//from to
+	@PostMapping("/FundTransfer/DepositMoney/{employeeId}/{accountNumber}")
+	public ResponseEntity<String> depositMoneyDetails44 (@PathVariable Long employeeId, String accountNumber,
+		@RequestBody String remarks, Double amountToDeposit) {
+		try {
+			accountTransactionsService.depositMoney(employeeId, accountNumber, amountToDeposit, remarks);
+			
+		return ResponseEntity.ok("Successfully deposited " + amountToDeposit + " in account of customer account number: "+ accountNumber);
+		} catch (EntityNotFoundException e) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (RuntimeException e) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (Exception e) {
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in depositing money...");
+	}
+}
 	
 	//To get OTP on mobile/email and verify it
 //	@PostMapping("/FundTransfer/DepositMoney44")

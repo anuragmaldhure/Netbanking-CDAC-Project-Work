@@ -13,10 +13,10 @@ public interface AccountTransactionsService {
 	
 	// get all transactions : pagination
 	List<AccountTransactionsDTO> getAllTransactionDetailsByCustomer(Long customerId, int pageNumber, int pageSize);
-//
-//	void depositMoney(Double amountToDepoosit, Long customerId, Long employeeId, String remarks);
-//
-//	void withdrawMoney(Double amountToWithdraw, Long customerId, String remarks);
+
+	void withdrawMoney(Long customerId ,Double amountToWithdraw, String remarks);
+	
+	void depositMoney(Long employeeId, String accountNumber, Double amountToDeposit, String remarks);
 
 //	void sendMoney(Double amountToSend, Optional<CustomerDetails> customer, Optional<Beneficiary> beneficiary,
 //			String remarks);

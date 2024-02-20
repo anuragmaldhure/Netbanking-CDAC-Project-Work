@@ -111,37 +111,25 @@ public class CustomerController {
 	}
 
 	
-//	
-////	@GetMapping("/FundTransfer/WithdrawMoney6")
-//
-//	
-//	//To get OTP on mobile/email and verify it
-//	//Deposit transaction after getting amount and remarks from request
-//	@PostMapping("/FundTransfer/WithdrawMoney7/{customerId}")
-//	public ResponseEntity<String> withdrawMoneyByCustomer (@PathVariable Long customerId,
-//				@RequestBody Double amountToWithdraw, String remarks) {
-//		try {
-//			Optional<CustomerDetails> customer = customerService.getCustomerDetailsByCustomerId(customerId);
-//				
-//			accountTransactionsService.withdrawMoney(amountToWithdraw, customerId, remarks);
-//				
-//			emailService.withdrawMoneyMail(customer.get().getEmailId(), 
-//						customer.get().getAccountHolderFirstName(),
-//						customer.get().getAccountHolderLastName(),
-//						amountToWithdraw
-//					);
-//				
-//			return ResponseEntity.ok("Successfully withdrawn " + amountToWithdraw + " from account of customer id : "+ customerId);
-//		} catch (EntityNotFoundException e) {
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//		} catch (RuntimeException e) {
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//		} catch (Exception e) {
-//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in withdrawing money...");
-//		}
-//	}
-//
-//	
+	//Deposit transaction after getting amount and remarks from request
+	@PostMapping("/FundTransfer/WithdrawMoney/{customerId}")
+	public ResponseEntity<String> withdrawMoneyByCustomer (@PathVariable Long customerId,
+				@RequestBody String remarks, Double amountToWithdraw) {
+		try {
+				
+			accountTransactionsService.withdrawMoney(customerId, amountToWithdraw, remarks);
+				
+			return ResponseEntity.ok("Successfully withdrawn " + amountToWithdraw + " from account of customer id : "+ customerId);
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in withdrawing money...");
+		}
+	}
+
+
 //	//Withdraw transaction after getting amount and remarks from request
 ////	@GetMapping("/FundTransfer/WithdrawMoney8")
 ////	public Optional<CustomerDetails> (@PathVariable Long customerId) {
