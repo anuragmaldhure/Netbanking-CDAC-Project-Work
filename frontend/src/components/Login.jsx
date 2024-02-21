@@ -43,7 +43,7 @@ const Login = () => {
             <input
               type="text"
               placeholder="Username"
-              className={styles.usernameInput}
+              className={`${styles.usernameInput} ${styles.customFont}`}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
@@ -51,7 +51,7 @@ const Login = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
-                className={styles.passwordInput}
+                className={`${styles.passwordInput} ${styles.customFont}`}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -73,7 +73,7 @@ const Login = () => {
                   alt=""
                   className={styles.googleIcon}
                 />
-                Log In with Google
+                Log In 
               </button>
             </div>
             <div className={styles.loginBottom}>

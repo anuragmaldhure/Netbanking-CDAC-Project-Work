@@ -7,6 +7,7 @@
 
 .loginLeft {
   /* Styles for the left section */
+  margin-right: 250px; /* Adjust margin to create space between image and form */ /* Move the image more to the left */
 }
 
 .loginImage {
@@ -112,4 +113,8 @@
   margin-left: 20px;
   text-decoration: none;
   color: #007bff;
+}
+
+.customFont {
+  font-family: "Arial", sans-serif; /* Change the font-family to your desired font */
 }
