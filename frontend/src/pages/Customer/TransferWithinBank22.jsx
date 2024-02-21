@@ -39,20 +39,20 @@ const TransferWithinBank22 = () => {
 
     if (otp === expectedOtp) {
       setIsOtpValid(true);
-    
+
       const transferData = {
         accountNumber: transferredData.accountNumber,
         amount: transferredData.amount,
         remarks: transferredData.remarks,
       };
-    
+
       // Log the data before making the fetch request
       console.log("Data to be sent to the server:", transferData);
       console.log("Receiver Account Number:", receiverAccountNumber);
-    
+
       try {
         const response = await fetch(
-          `http://localhost:8080/Customer/FundTransfer/SendMoney/${customerId}/${receiverAccountNumber}`,
+          `http://localhost:8080/Customer/FundTransfer/SendMoney/${customerId}/${receiverAccountNumber}?amountToSend=${transferData.amount}`,
           {
             method: "POST",
             headers: {
@@ -60,14 +60,27 @@ const TransferWithinBank22 = () => {
             },
             body: JSON.stringify({
               remarks: transferData.remarks,
-              amountToSend: transferData.amount,
             }),
           }
         );
-    
+
+        //   const response = await fetch(
+        //     `http://localhost:8080/Customer/FundTransfer/SendMoney/${customerId}/${receiverAccountNumber}`,
+        //     {
+        //         method: "POST",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //         },
+        //         body: JSON.stringify({
+        //             remarks: transferData.remarks,
+        //             amountToSend: transferData.amount,
+        //         }),
+        //     }
+        // );
+
         if (response.ok) {
           setShowDialog(true);
-    
+
           // Use navigate to pass data to the next page through the URL
           navigate("/Customer/FundTransfer/TransferWithinBank23", {
             state: { transferData },
@@ -84,7 +97,7 @@ const TransferWithinBank22 = () => {
       setIsOtpValid(false);
       setShowDialog(false);
     }
-  };    
+  };
 
   const handleBack = () => {
     navigate(-1);

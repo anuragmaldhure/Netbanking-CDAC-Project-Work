@@ -39,6 +39,7 @@ import VerifyApproveKYC51 from "./pages/Employee/VerifyApproveKYC51";
 import SearchCustomer48 from "./pages/Employee/SearchCustomer48";
 import SignUpForm from "./components/PublicPageComponents/SignUpForm";
 import TransferWithinBank23 from "./pages/Customer/TransferWithinBank23";
+import { Dashboard } from "@mui/icons-material";
 
 function App() {
   return (
@@ -50,7 +51,7 @@ function App() {
 
         {/* Public Page Routes */}
         <Route path="/Signup" element={<SignUpForm />} />
-
+        {/* CUSTOMER SECTION */}
         {/* customer account section */}
         <Route
           path="/Customer/Account/ViewAccountBalance"
@@ -124,6 +125,9 @@ function App() {
           element={<NetBankingTutorials38 />}
         />
 
+        {/* EMPLOYEE SECTION */}
+        {/* employee accounts setion */}
+
         <Route
           path="/Employee/Accounts/SearchCustomer47"
           element={<SeachCustomer47 />}
@@ -140,6 +144,9 @@ function App() {
           path="/Employee/Accounts/VerifyApproveKYC51/:customerId"
           element={<VerifyApproveKYC51 />}
         />
+
+        {/* employee fund transfer section */}
+
         <Route
           path="/Employee/FundTransfer/DepositMoney43"
           element={<DepositMoney43 />}
@@ -152,6 +159,22 @@ function App() {
           path="/Employee/FundTransfer/DepositMoney45"
           element={<DepositMoney45 />}
         />
+
+        {/* MANAGER SECTION */}
+
+
+        {/* Manager Home section */}
+
+        <Route
+          path="/Manager/Home/Dashboard"
+          element={<Dashboard/>}
+        />
+
+        {/* Manager managemenet section for customer */}
+
+        {/* Manager management section for employee */}
+
+
       </Routes>
       <ToastContainer />
     </div>
