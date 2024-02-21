@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.modelmapper.ModelMapper;
@@ -36,13 +37,17 @@ public class CustomerServiceImpl implements CustomerService{
 	@Autowired
 	private EmailService emailService;
 	
+    @Autowired
+    private PasswordEncoder encoder;
+	
 	@Override
 	public CustomerDetails registerNewCustomer(CreateNewCustomerDTO customerDTO) {
 		CustomerDetails customer = new CustomerDetails();
 		customer.setAccountHolderFirstName(customerDTO.getAccountHolderFirstName());
 		customer.setAccountHolderLastName(customerDTO.getAccountHolderLastName());
 		customer.setUsername(customerDTO.getUsername());
-		customer.setPassword(customerDTO.getPassword());
+		customer.setPassword(encoder.encode(customerDTO.getPassword()));  //pwd : encrypted using SHA
+//		System.out.println(customer.getPassword());
 		customer.setEmailId(customerDTO.getEmailId());
 		customer.setMobileNumber(customerDTO.getMobileNumber());
 		customer.setRole(Role.CUSTOMER);

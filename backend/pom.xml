@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>spring_boot_backend_security_jwt_template</artifactId>
+	<artifactId>Aarna_Bank_Feb_23</artifactId>
 	<version>0.0.1</version>
-	<name>spring_boot_backend_security_jwt_template</name>
+	<name>Aarna Bank Feb 23</name>
 	<description>Template Project for Spring Boot based Backend, swagger,model mapper, JWT , security </description>
 	<properties>
 		<java.version>11</java.version>
@@ -87,14 +87,14 @@
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
-			<version>0.11.5</version>
+			<version>0.12.5</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-impl</artifactId>
-			<version>0.11.5</version>
+			<version>0.12.5</version>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -102,8 +102,8 @@
 		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-jackson</artifactId>
-			<version>0.11.5</version>
+			<artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if Gson is preferred -->
+			<version>0.12.5</version>
 			<scope>runtime</scope>
 		</dependency>
 		

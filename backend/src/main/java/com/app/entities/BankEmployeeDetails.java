@@ -39,7 +39,7 @@ public class BankEmployeeDetails {
     @Column(name = "Email_ID", nullable = false)
     private String emailId;
 
-    @Column(name = "Username", nullable = false)
+    @Column(name = "Username", nullable = false, unique = true)
     private String username;
 
     @Column(name = "Last_Login")

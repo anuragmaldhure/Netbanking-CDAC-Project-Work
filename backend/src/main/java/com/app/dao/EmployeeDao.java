@@ -16,5 +16,7 @@ public interface EmployeeDao extends JpaRepository<BankEmployeeDetails, Long>{
 
 	@Query(value = "SELECT * FROM bank_employee_details", nativeQuery = true)
 	List<BankEmployeeDetails> getAllEmployeeDetails();
+
+	BankEmployeeDetails findByUsername(String username);
 		
 }

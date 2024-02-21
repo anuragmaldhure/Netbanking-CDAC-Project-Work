@@ -21,5 +21,7 @@ public interface CustomerDao extends JpaRepository<CustomerDetails, Long>{
 	    List<CustomerDetails> findByAccountHolderLastName(@Param("lastName") String lastName);
 
 		@Query(value = "SELECT * FROM customer_details", nativeQuery = true)
-		List<CustomerDetails> getAllCustomerDetails();		
+		List<CustomerDetails> getAllCustomerDetails();
+
+		CustomerDetails findByUsername(String username);		
 }
