@@ -1,90 +1,88 @@
-// Login.jsx
-
-import React, { useState } from "react";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useEffect, useState } from "react";
 import Image from "../../assets/images/obj.jpg";
+import Logo from "../../assets/images/logo.png";
 import GoogleSvg from "../../assets/images/icons8-google.svg";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import styles from "./Login.module.css"; // Importing the CSS module
 
+
+// Component definition
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  // State for controlling password visibility
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = () => {
-    if (!username.trim()) {
-      toast.error("Please enter your username");
-      return;
-    }
-
-    if (!password.trim()) {
-      toast.error("Please enter your password");
-      return;
-    }
-
-    // Here you can perform login authentication logic
-    console.log("Logging in with username:", username, "and password:", password);
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
+  // JSX structure with styles applied using CSS Modules
   return (
-    <div className={styles.loginContainer}>
+    <div className={styles.loginMain}>
       <div className={styles.loginLeft}>
-        <img src={Image} alt="" className={styles.loginImage} />
+        <img src={Image} alt="" className={styles.loginLeftImg} />
       </div>
       <div className={styles.loginRight}>
-        <div className={styles.loginCenter}>
-          <h2>Welcome back!</h2>
-          <p>Please enter your details</p>
-          <form>
-            <input
-              type="text"
-              placeholder="Username"
-              className={`${styles.input} ${styles.customFont}`}
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <div className={styles.passInputDiv}>
+        <div className={styles.loginRightContainer}>
+          <div className={styles.loginLogo}>
+            <img src={Logo} alt="" className={styles.loginLogoImg} />
+          </div>
+          <div className={styles.loginCenter}>
+            <h2>Welcome back!</h2>
+            <p>Please enter your details</p>
+            <form>
               <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                className={`${styles.input} ${styles.customFont}`}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                type="email"
+                placeholder="Email"
+                className={styles.input}
               />
-              <button
-                type="button"
-                className={styles.showPasswordButton}
-                onClick={togglePasswordVisibility}
-              >
-                {showPassword ? "Hide" : "Show"}
-              </button>
-            </div>
-            <div className={styles.loginCenterButtons}>
-              <button type="button" className={`btn btn-success ${styles.loginButton}`} onClick={handleLogin}>
-                Log In
-              </button>
-            </div>
-            <div className={styles.loginBottom}>
-              <p className={styles.loginBottomP}>
-                Don't have an account?{" "}
-                <a
-                  href="http://localhost:3000/Signup"
-                  className={styles.signUpLink}
-                >
-                  Sign Up
+              <div className={styles.passInputDiv}>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  className={styles.input}
+                />
+                {showPassword ? (
+                  <FaEyeSlash
+                    onClick={() => {
+                      setShowPassword(!showPassword);
+                    }}
+                    className={styles.eyeIcon}
+                  />
+                ) : (
+                  <FaEye
+                    onClick={() => {
+                      setShowPassword(!showPassword);
+                    }}
+                    className={styles.eyeIcon}
+                  />
+                )}
+              </div>
+              <div className={styles.loginCenterOptions}>
+                <div className={styles.rememberDiv}>
+                  <input type="checkbox" id="remember-checkbox" />
+                  <label htmlFor="remember-checkbox">
+                    Remember for 30 days
+                  </label>
+                </div>
+                <a href="." className={styles.forgotPassLink}>
+                  Forgot password?
                 </a>
-              </p>
-            </div>
-          </form>
+              </div>
+              <div className={styles.loginCenterButtons}>
+                <button type="button" className={styles.loginButton}>
+                  Log In
+                </button>
+                <button type="button" className={styles.googleLoginButton}>
+                  <img src={GoogleSvg} alt="" className={styles.googleIcon} />
+                  Log In with Google
+                </button>
+              </div>
+            </form>
+          </div>
+          <p className={styles.loginBottomP}>
+            Don't have an account? <a href=".">Sign Up</a>
+          </p>
         </div>
       </div>
     </div>
   );
 };
 
+// Exporting the component
 export default Login;
