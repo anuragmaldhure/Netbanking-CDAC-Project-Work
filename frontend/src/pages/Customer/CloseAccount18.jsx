@@ -32,6 +32,7 @@ const CloseAccount18 = () => {
     console.log("Feedback:", feedback);
     handleCloseCloseAccount();
   };
+  
   return (
     <div>
       <CustomerTopNavigationBar />
@@ -46,12 +47,11 @@ const CloseAccount18 = () => {
               mt: 5,
             }}
           >
-            {/* Your other components or page content */}
             <Box sx={{ textAlign: "center" }}>
-              <h1>CLOSE ACCOUNT</h1>
+              <h1>FREEZE / DEACTIVATE ACCOUNT</h1>
               <h2>
-                Do you really want to close your account? If yes, click on the
-                "Close Account" button below.
+                Are you sure you want to freeze or deactivate your account? If yes, click the
+                "Deactivate Account" button below.
               </h2>
             </Box>
 
@@ -71,16 +71,16 @@ const CloseAccount18 = () => {
               color="primary"
               variant="contained"
             >
-              Close Account
+              Deactivate Account
             </Button>
 
             {/* CloseAccount modal */}
             <Dialog open={isCloseAccountOpen} onClose={handleCloseCloseAccount}>
-              <DialogTitle>Close Account</DialogTitle>
+              <DialogTitle>Deactivate Account</DialogTitle>
               <DialogContent>
                 <DialogContentText>
-                  We're sorry to see you go. Closing your account is
-                  irreversible.
+                  We regret to inform you that deactivating your account will result in all transactions
+                  from and to your account being blocked effective immediately.
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
@@ -92,7 +92,7 @@ const CloseAccount18 = () => {
                   color="primary"
                   variant="contained"
                 >
-                  Confirm Closure
+                  Confirm Deactivation
                 </Button>
               </DialogActions>
             </Dialog>

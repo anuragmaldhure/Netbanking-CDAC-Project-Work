@@ -7,6 +7,7 @@ import CustomerTopNavigationBar from "../../components/CustomerTopNavigationBar"
 import backgroundImage from "../../resources/12.avif"; // Import your image file
 
 const ViewAccountBalance5 = () => {
+  const customerId = 1;
   const [transactions, setTransactions] = useState([]);
   const [accountDetails, setAccountDetails] = useState({});
 
@@ -29,7 +30,7 @@ const ViewAccountBalance5 = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/Customer/Account/getPaginated&SortedAllTransactions/${1}?pageNumber=${pageNumber}&pageSize=${pageSize}`
+          `http://localhost:8080/Customer/Account/getPaginated&SortedAllTransactions/${customerId}?pageNumber=${pageNumber}&pageSize=${pageSize}`
         );
         setTransactions(response.data); // Assuming response.data contains the list of transactions
 
