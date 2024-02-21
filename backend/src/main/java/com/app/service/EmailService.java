@@ -7,14 +7,13 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Date;
-import java.util.Random;
 
 @Service
 public class EmailService {
 
     private final JavaMailSender javaMailSender;
     
-    private String otp;
+//    private String otp;
 
     public EmailService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
@@ -59,8 +58,8 @@ public class EmailService {
 			return null;
 		}
 
-    public String sendOtp(String userEmail) {
-        setOtp(generateOtp());
+    public String sendOtp(String userEmail, String otp) {
+//        setOtp(generateOtp());
 
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
@@ -68,7 +67,9 @@ public class EmailService {
 
             helper.setTo(userEmail);
             helper.setSubject("Aarna Bank : Secure OTP for your transaction");
-            helper.setText("Your OTP is: " + otp +"\nPlease do not share OTP for security reasons. In case of any suspicious activity, contact us"+
+            helper.setText("Your OTP (one time password) is: " + otp +
+            		"\nIt is valid for next 2 minutes (60 seconds)"+
+            		"\nPlease do not share OTP for security reasons. In case of any suspicious activity, contact us"+
             "\n"
             + "© Aarna Bank ");
             
@@ -82,20 +83,20 @@ public class EmailService {
         return null;
     }
        
-    private String generateOtp() {
-        // Generate a 6-digit OTP
-        Random random = new Random();
-        int otp = 100000 + random.nextInt(900000);
-        return String.valueOf(otp);
-    }
-
-	public String getOtp() {
-		return otp;
-	}
-
-	public void setOtp(String otp) {
-		this.otp = otp;
-	}
+//    private String generateOtp() {
+//        // Generate a 6-digit OTP
+//        Random random = new Random();
+//        int otp = 100000 + random.nextInt(900000);
+//        return String.valueOf(otp);
+//    }
+//
+//	public String getOtp() {
+//		return otp;
+//	}
+//
+//	public void setOtp(String otp) {
+//		this.otp = otp;
+//	}
     
     public String sendKYCApprovedMail(String userEmail, String FirstName, String LastName) {
         try {

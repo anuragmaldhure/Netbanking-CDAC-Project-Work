@@ -23,6 +23,7 @@ import com.app.service.CustomerAddressService;
 import com.app.service.CustomerSavingsAccountService;
 import com.app.service.CustomerService;
 import com.app.service.ImageHandlingService;
+import com.app.service.OTPService;
 import com.app.service.OffersService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,9 @@ public class CustomerController {
 	
 	@Autowired 
 	private CustomerSavingsAccountService customerSavingsAccountService;
+	
+	@Autowired
+    private OTPService otpService;
 	
 	@Autowired
 	@Qualifier("image_db")
@@ -269,6 +273,24 @@ public class CustomerController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in updating Customer Essentials Details...");
         }
+	}
+	
+	//Otp Generation
+	@GetMapping("/transaction/otp/generate")
+	public ResponseEntity<String> generateOTP(@RequestParam Long customerId) {
+	    String otp = otpService.generateOTP(customerId);
+	    return ResponseEntity.ok(otp);
+	}
+	
+	//OTP verification
+	@PostMapping("/transaction/otp/verify")
+	public ResponseEntity<String> verifyOTP(@RequestParam Long customerId, String otp) {
+	    boolean isVerified = otpService.verifyOTP(customerId, otp);
+	    if (isVerified) {
+	        return ResponseEntity.ok("OTP Verified Successfully");
+	    } else {
+	        return ResponseEntity.badRequest().body("OTP Verification Failed");
+	    }
 	}
 	
 //	//Get account balance
