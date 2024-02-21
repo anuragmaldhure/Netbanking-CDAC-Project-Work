@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dto.customer.CustomerAddressDTO;
@@ -191,8 +192,8 @@ public class EmployeeController {
 	
 	//from to
 	@PostMapping("/FundTransfer/DepositMoney/{employeeId}/{accountNumber}")
-	public ResponseEntity<String> depositMoneyDetails44 (@PathVariable Long employeeId, String accountNumber,
-		@RequestBody String remarks, Double amountToDeposit) {
+	public ResponseEntity<String> depositMoneyDetails44 (@PathVariable Long employeeId, @PathVariable String accountNumber,
+		@RequestBody String remarks, @RequestParam Double amountToDeposit) {
 		try {
 			accountTransactionsService.depositMoney(employeeId, accountNumber, amountToDeposit, remarks);
 			

@@ -121,7 +121,7 @@ public class CustomerController {
 	//Deposit transaction after getting amount and remarks from request
 	@PostMapping("/FundTransfer/WithdrawMoney/{customerId}")
 	public ResponseEntity<String> withdrawMoneyByCustomer (@PathVariable Long customerId,
-				@RequestBody String remarks, Double amountToWithdraw) {
+				@RequestBody String remarks, @RequestParam Double amountToWithdraw) {
 		try {
 				
 			accountTransactionsService.withdrawMoney(customerId, amountToWithdraw, remarks);
@@ -186,8 +186,8 @@ public class CustomerController {
 	//Change Password
 	@PutMapping("/OtherServices/ChangePassword30/{customerId}")
     public ResponseEntity<String> changePassword(@PathVariable Long customerId,
-    											@RequestParam String currentPassword,
-    											@RequestParam String newPassword) {
+    											@RequestBody String currentPassword,
+    											@RequestBody String newPassword) {
         try {
         	customerService.changePassword(customerId, currentPassword, newPassword);
             return ResponseEntity.ok("Password changed successfully.");
@@ -203,8 +203,8 @@ public class CustomerController {
 	//send money after getting amount and remarks from request
 	//by to
 	@PostMapping("/FundTransfer/SendMoney/{customerId}/{receiverAccountNumber}")
-	public ResponseEntity<String> sendMoneyToBeneficiary(@PathVariable Long customerId, String receiverAccountNumber,
-			@RequestBody String remarks, Double amountToSend) {
+	public ResponseEntity<String> sendMoneyToBeneficiary(@PathVariable Long customerId, @PathVariable String receiverAccountNumber,
+			@RequestBody String remarks, @RequestParam Double amountToSend) {
 		try {
 					
 			accountTransactionsService.sendMoney(customerId, receiverAccountNumber, amountToSend, remarks);
@@ -284,7 +284,7 @@ public class CustomerController {
 	
 	//OTP verification
 	@PostMapping("/transaction/otp/verify")
-	public ResponseEntity<String> verifyOTP(@RequestParam Long customerId, String otp) {
+	public ResponseEntity<String> verifyOTP(@RequestParam Long customerId, @RequestBody String otp) {
 	    boolean isVerified = otpService.verifyOTP(customerId, otp);
 	    if (isVerified) {
 	        return ResponseEntity.ok("OTP Verified Successfully");
