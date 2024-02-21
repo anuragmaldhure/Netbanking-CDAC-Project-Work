@@ -1,0 +1,120 @@
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.loginLeft {
+  /* Styles for the left section */
+  margin-right: 250px; /* Adjust margin to create space between image and form */ /* Move the image more to the left */
+}
+
+.loginImage {
+  /* Styles for the image in the left section */
+}
+
+.loginRight {
+  /* Styles for the right section */
+  display: flex;
+  flex-direction: column; /* Align children vertically */
+  align-items: center; /* Center children horizontally */
+}
+
+.loginCenter {
+  text-align: center;
+}
+
+.usernameInput,
+.passwordInput {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: black;
+}
+
+.passInputDiv {
+  position: relative;
+}
+
+.showPasswordButton {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.loginCenterButtons {
+  margin-top: 20px;
+}
+
+.loginButton,
+.googleLoginButton {
+  padding: 10px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100px; /* Set a fixed width */
+  height: 40px; /* Set a fixed height */
+}
+
+.loginButton {
+  background-color: rgb(40, 175, 40);
+
+}
+.googleLoginButton {
+  background-color: #4285f4; /* Example color for Google button */
+  color: #fff;
+}
+
+.googleIcon {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.loginBottom {
+  margin-top: 20px;
+}
+
+.loginBottomP {
+  font-size: 14px;
+}
+
+.signUpLink {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.signUpLink:hover {
+  text-decoration: underline;
+}
+
+.loginCenterOptions {
+  margin-top: 20px;
+}
+
+.rememberDiv {
+  display: flex;
+  align-items: center;
+}
+
+.rememberCheckbox {
+  margin-right: 5px;
+}
+
+.forgotPassLink {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #007bff;
+}
+
+.customFont {
+  font-family: "Arial", sans-serif; /* Change the font-family to your desired font */
+}
