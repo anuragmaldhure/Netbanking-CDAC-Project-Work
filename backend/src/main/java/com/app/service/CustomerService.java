@@ -33,5 +33,7 @@ public interface CustomerService {
 
 	void addCustomerEssentialData(Long customerId, CustomerEssentialDataDTO customerEssentialData);
 
+	Optional<CustomerDetailsDTO> getCustomerDetailsByUsername(String username);
+
 //	Optional<CustomerDetails> findByCustomerId(Long customerId);
 }

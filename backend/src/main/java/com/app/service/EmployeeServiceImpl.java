@@ -59,4 +59,14 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public List<BankEmployeeDetails> getAllEmployeeDetails() {
 		return empDao.getAllEmployeeDetails();
 	}
+
+	@Override
+	public Optional<BankEmployeeDetails> getEmployeeDetailsByUsername(String username) {
+		BankEmployeeDetails employee = empDao.findByUsername(username);
+		if (employee != null) {
+	        return Optional.of(employee);
+	    } else {
+	        throw new EntityNotFoundException("Employee not found with username: " + username);
+	    }
+	}
 }

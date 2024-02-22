@@ -28,31 +28,31 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-//        http.csrf(csrf -> csrf.disable())
-//                .authorizeHttpRequests(auth -> auth
-//                        .mvcMatchers("/Manager").hasRole("MANAGER")
-//                        .mvcMatchers("/Employee").hasRole("EMPLOYEE")
-//                        .mvcMatchers("/Customer").hasRole("CUSTOMER")
-////                        .mvcMatchers("/users/signup", "/users/signin", "/cities", "/flights").permitAll()
-//                        .mvcMatchers("/swagger-ui/**","/v*/api-doc*/**").permitAll()
-//
-//                        .mvcMatchers("/public", "/signup", "/signin").permitAll()
-//                        .anyRequest().authenticated())
-//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-////        http.formLogin(Customizer.withDefaults());
-//        return http.build();
+        http.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .mvcMatchers("/Manager").hasRole("MANAGER")
+                        .mvcMatchers("/Employee").hasRole("EMPLOYEE")
+                        .mvcMatchers("/Customer").hasRole("CUSTOMER")
+//                        .mvcMatchers("/users/signup", "/users/signin", "/cities", "/flights").permitAll()
+                        .mvcMatchers("/swagger-ui/**","/v*/api-doc*/**").permitAll()
+
+                        .mvcMatchers("/public", "/signup", "/signin").permitAll()
+                        .anyRequest().authenticated())
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+//        http.formLogin(Customizer.withDefaults());
+        return http.build();
     	
-      http.csrf(csrf -> csrf.disable())
-      	.authorizeHttpRequests(auth -> auth
-	            .mvcMatchers("/Manager/**").hasRole("MANAGER")
-	            .mvcMatchers("/Employee/**").hasRole("EMPLOYEE")
-	            .mvcMatchers("/Customer/**").hasRole("CUSTOMER")
-	            .mvcMatchers("/public", "/signup", "/signin").permitAll()
-	            .mvcMatchers("/swagger-ui/**", "/v*/api-doc*/**").permitAll()
-	            .anyRequest().authenticated()
-	        .and()
-	        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class));
-    	return http.build();
+//      http.csrf(csrf -> csrf.disable())
+//      	.authorizeHttpRequests(auth -> auth
+//	            .mvcMatchers("/Manager/**").hasRole("MANAGER")
+//	            .mvcMatchers("/Employee/**").hasRole("EMPLOYEE")
+//	            .mvcMatchers("/Customer/**").hasRole("CUSTOMER")
+//	            .mvcMatchers("/public", "/signup", "/signin").permitAll()
+//	            .mvcMatchers("/swagger-ui/**", "/v*/api-doc*/**").permitAll()
+//	            .anyRequest().authenticated()
+//	        .and()
+//	        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class));
+//    	return http.build();
     }
 
     @Bean

@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Component;
+import io.jsonwebtoken.ExpiredJwtException;
 
 import com.app.entities.CustomUserDetails;
 
@@ -20,6 +21,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.security.core.userdetails.UserDetails;
+
 
 @Component
 public class JwtUtils {
@@ -52,6 +55,34 @@ public class JwtUtils {
                 .parseSignedClaims(jwtToken)
                 .getPayload();
     }
+    
+//    public Claims validateJwtToken(String token) {
+//        try {
+//            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+//        } catch (ExpiredJwtException e) {
+//            // Handle token expiration by generating a new token if needed
+//            // Implement logic to regenerate OTP or token
+//            if (tokenNeedsRefresh(e)) {
+//                return generateNewToken(); // Replace with your logic to generate a new token
+//            }
+//            return null; // Placeholder, replace with actual logic
+//        }
+//    }
+//
+//    private boolean tokenNeedsRefresh(ExpiredJwtException e) {
+//        // Implement logic to determine if the token needs to be refreshed
+//        // For example, check if the token expiration is within a certain threshold
+//        // Return true if the token needs to be refreshed, false otherwise
+//        return false; // Placeholder, replace with actual logic
+//    }
+//
+//    private Claims generateNewToken() {
+//        // Implement logic to generate a new token
+//        // This could involve generating a new JWT token with updated expiration or generating a new OTP
+//        // Return the new Claims object representing the new token
+//        return null; // Placeholder, replace with actual logic
+//    }
+
 
     public List<GrantedAuthority> getAuthoritiesFromClaims(Claims claims) {
         String authString = (String) claims.get("authorities");

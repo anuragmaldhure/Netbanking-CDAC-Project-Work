@@ -8,7 +8,8 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,16 +24,17 @@ import com.app.dto.customer.CustomerDetailsDTO;
 import com.app.dto.customer.CustomerDocumentsDTO;
 import com.app.dto.customer.CustomerPhotoDTO;
 import com.app.dto.customer.CustomerSavingAccountsDTO;
+import com.app.entities.BankEmployeeDetails;
 import com.app.service.AccountTransactionsService;
 import com.app.service.CustomerAddressService;
 import com.app.service.CustomerDocumentsService;
 import com.app.service.CustomerSavingsAccountService;
 import com.app.service.CustomerService;
 import com.app.service.EmailService;
+import com.app.service.EmployeeService;
 
 @RestController
 @RequestMapping("/Employee")
-@CrossOrigin(origins = "http://localhost:3000")
 public class EmployeeController {
 	
 	@Autowired
@@ -48,7 +50,10 @@ public class EmployeeController {
 	private CustomerDocumentsService customerDocumentsService;
 	
 	@Autowired
-	AccountTransactionsService accountTransactionsService;
+	private AccountTransactionsService accountTransactionsService;
+	
+	@Autowired
+	private EmployeeService employeeService;
 	
 	@Autowired
 	private EmailService emailService;
@@ -56,6 +61,33 @@ public class EmployeeController {
 	public EmployeeController() {
 		System.out.println("in ctor of " + getClass());
 	}
+	
+	//	Get logged in employee's employeeId from Spring Security Security Context
+	@GetMapping("/User")
+	public Long getEmployeeID(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName(); // This gets the username
+		System.out.println("in get employee details INTERNALLY by username from Security Context, USERNAME ->" + username );
+		
+		Optional<BankEmployeeDetails> bankEmployeeDetails = employeeService.getEmployeeDetailsByUsername(username);
+		
+		System.out.println("in get employee id INTERNALLY by username, Employee ID ->" + bankEmployeeDetails.get().getEmployeeId());
+		return bankEmployeeDetails.get().getEmployeeId();
+	}
+	
+//	Get logged in employee's details from Spring Security Security Context
+	@GetMapping("/User/GetMyDetails")
+	public BankEmployeeDetails getMyDetails(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName(); // This gets the username
+		System.out.println("in get customer details INTERNALLY by username from Security Context, USERNAME ->" + username );
+		
+		Optional<BankEmployeeDetails> bankEmployeeDetails = employeeService.getEmployeeDetailsByUsername(username);
+		
+		System.out.println("in get employee details INTERNALLY by username, Employee object ->" + bankEmployeeDetails);
+		return bankEmployeeDetails.get();
+	}
+
 	
 	//SEARCH FUNCTIONALITIES
 	//For getting customer details by account number

@@ -253,6 +253,19 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 
+	@Override
+	public Optional<CustomerDetailsDTO> getCustomerDetailsByUsername(String username) {
+		CustomerDetails customer = customerDao.findByUsername(username);
+		if (customer != null) {
+	        // Map CustomerDetails entity to CustomerDetailsDTO
+	        CustomerDetailsDTO customerDetailsDTO = mapper.map(customer, CustomerDetailsDTO.class);
+	        return Optional.of(customerDetailsDTO);
+	    } else {
+	        throw new EntityNotFoundException("Customer not found with username: " + username);
+	    }
+	}
+
+
 //	@Override
 //	public Optional<CustomerDetails> findByCustomerId(Long customerId) {
 //		CustomerDetails customer = customerDao.findById(customerId)

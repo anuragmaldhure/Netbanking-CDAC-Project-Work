@@ -5,7 +5,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,13 +19,14 @@ import com.app.dto.BankEmployeeDTO;
 import com.app.dto.customer.CustomerDetailsDTO;
 import com.app.dto.customer.CustomerSavingAccountsDTO;
 import com.app.entities.BankEmployeeDetails;
+import com.app.entities.ManagerDetails;
 import com.app.service.CustomerSavingsAccountService;
 import com.app.service.CustomerService;
 import com.app.service.EmployeeService;
+import com.app.service.ManagerService;
 
 @RestController
 @RequestMapping("/Manager")
-@CrossOrigin(origins = "http://localhost:3000")
 public class ManagerController {
 	@Autowired
 	private CustomerService customerService;
@@ -35,8 +37,35 @@ public class ManagerController {
 	@Autowired
 	private EmployeeService employeeService;
 	
+	@Autowired
+	private ManagerService managerService;
+	
 	public ManagerController() {
 		System.out.println("in ctor of " + getClass());
+	}
+	
+	//	Get logged in manager's managerId from Spring Security Security Context
+	@GetMapping("/User")
+	public Long getManagerID(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName(); // This gets the username
+		System.out.println("in get manager details INTERNALLY by username from Security Context, USERNAME ->" + username );
+		
+		Optional<ManagerDetails> managerDetails = managerService.getManagerByUsername(username);
+		System.out.println("in get manager id INTERNALLY by username, CustomerDetailsDTO ->" + managerDetails.get().getManagerId());
+		return managerDetails.get().getManagerId();
+	}
+	
+//	Get logged in manager's details from Spring Security Security Context
+	@GetMapping("/User/GetMyDetails")
+	public ManagerDetails getManagerDetails(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName(); // This gets the username
+		System.out.println("in get customer details INTERNALLY by username from Security Context, USERNAME ->" + username );
+		
+		Optional<ManagerDetails> managerDetails = managerService.getManagerByUsername(username);
+		System.out.println("in get manager id INTERNALLY by username, CustomerDetailsDTO ->" + managerDetails);
+		return managerDetails.get();
 	}
 	
 	@GetMapping("/SearchEmployee/{empId}")

@@ -27,10 +27,11 @@ import com.app.service.OTPService;
 import com.app.service.OffersService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,7 +44,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/Customer")
-@CrossOrigin(origins = "http://localhost:3000")
 public class CustomerController {
 	
 	@Autowired
@@ -70,7 +70,7 @@ public class CustomerController {
 	@Autowired
 	@Qualifier("image_db")
 	private ImageHandlingService imgService;
-	
+		
 	public CustomerController() {
 		System.out.println("in ctor of " + getClass());
 	}
@@ -82,8 +82,32 @@ public class CustomerController {
 		return customerService.registerNewCustomer(customerDTO);
 	}
 	
-//	Page 4 => /registerSuccess
+//	Get logged in customer's customerId from Spring Security Security Context
+	@GetMapping("/User")
+	public Long getCustomerID(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName(); // This gets the username
+		System.out.println("in get customer details INTERNALLY by username from Security Context, USERNAME ->" + username );
+		
+		Optional<CustomerDetailsDTO> customerDetailsDTOObject = customerService.getCustomerDetailsByUsername(username);
+		System.out.println("in get customer details INTERNALLY by username, ID ->" + customerDetailsDTOObject.get().getCustomerId());
+		return customerDetailsDTOObject.get().getCustomerId();
+	}
 
+	
+//	Get logged in customer's details from Spring Security Security Context
+	@GetMapping("/User/GetMyDetails")
+	public CustomerDetailsDTO getMyDetails(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName(); // This gets the username
+		System.out.println("in get customer details INTERNALLY by username from Security Context, USERNAME ->" + username );
+		
+		Optional<CustomerDetailsDTO> customerDetailsDTOObject = customerService.getCustomerDetailsByUsername(username);
+		System.out.println("in get customer details INTERNALLY by username, CustomerDetailsDTO ->" + customerDetailsDTOObject);
+		return customerDetailsDTOObject.get();
+	}
+	
+	//@GetMapping
 //	Get all transactions of a customer
 	@GetMapping("/Account/getAllTransactions/{customerId}")
 	List<AccountTransactionsDTO> getAllTransaction(@PathVariable Long customerId){
@@ -186,8 +210,8 @@ public class CustomerController {
 	//Change Password
 	@PutMapping("/OtherServices/ChangePassword30/{customerId}")
     public ResponseEntity<String> changePassword(@PathVariable Long customerId,
-    											@RequestBody String currentPassword,
-    											@RequestBody String newPassword) {
+    											@RequestParam String currentPassword,
+    											@RequestParam String newPassword) {
         try {
         	customerService.changePassword(customerId, currentPassword, newPassword);
             return ResponseEntity.ok("Password changed successfully.");
@@ -203,7 +227,7 @@ public class CustomerController {
 	//send money after getting amount and remarks from request
 	//by to
 	@PostMapping("/FundTransfer/SendMoney/{customerId}/{receiverAccountNumber}")
-	public ResponseEntity<String> sendMoneyToBeneficiary(@PathVariable Long customerId, @PathVariable String receiverAccountNumber,
+	public ResponseEntity<String> sendMoney(@PathVariable Long customerId, @PathVariable String receiverAccountNumber,
 			@RequestBody String remarks, @RequestParam Double amountToSend) {
 		try {
 					
@@ -284,7 +308,7 @@ public class CustomerController {
 	
 	//OTP verification
 	@PostMapping("/transaction/otp/verify")
-	public ResponseEntity<String> verifyOTP(@RequestParam Long customerId, @RequestBody String otp) {
+	public ResponseEntity<String> verifyOTP(@RequestParam Long customerId, @RequestParam String otp) {
 	    boolean isVerified = otpService.verifyOTP(customerId, otp);
 	    if (isVerified) {
 	        return ResponseEntity.ok("OTP Verified Successfully");

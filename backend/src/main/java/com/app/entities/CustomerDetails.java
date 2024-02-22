@@ -403,6 +403,5 @@ public class CustomerDetails {
 				.append(", accountActiveStatus=").append(accountActiveStatus).append(", lastLoginTimestamp=")
 				.append(lastLoginTimestamp).append("]");
 		return builder.toString();
-	}	
-    
+	}
 }

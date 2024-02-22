@@ -15,5 +15,7 @@ public interface EmployeeService {
 	String deleteEmp(Long empId);
 
 	List<BankEmployeeDetails> getAllEmployeeDetails();
+
+	Optional<BankEmployeeDetails> getEmployeeDetailsByUsername(String username);
     
 }
