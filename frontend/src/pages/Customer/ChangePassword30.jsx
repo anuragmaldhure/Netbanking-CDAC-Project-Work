@@ -53,15 +53,15 @@ const ChangePassword30 = () => {
     }
 
     try {
-      // Log the data before making the fetch request
-      console.log("Data to be sent to the server:", {
-        customerId: customerId,
-        currentPassword: currentPassword,
-        newPassword: newPassword,
-      });
-
       const response = await Axios.put(
-        `http://localhost:8080/OtherServices/ChangePassword30/${customerId}?currentPassword=${currentPassword}&newPassword=${newPassword}`
+        `http://localhost:8080/Customer/OtherServices/ChangePassword30/${customerId}`,
+        null, // Set to null for the request body
+        {
+          params: {
+            currentPassword: currentPassword,
+            newPassword: newPassword,
+          },
+        }
       );
 
       if (response.status === 200) {
