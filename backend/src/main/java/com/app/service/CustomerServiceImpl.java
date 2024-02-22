@@ -37,8 +37,8 @@ public class CustomerServiceImpl implements CustomerService{
 	@Autowired
 	private EmailService emailService;
 	
-    @Autowired
-    private PasswordEncoder encoder;
+//    @Autowired
+//    private PasswordEncoder encoder;
 	
 	@Override
 	public CustomerDetails registerNewCustomer(CreateNewCustomerDTO customerDTO) {
@@ -46,7 +46,8 @@ public class CustomerServiceImpl implements CustomerService{
 		customer.setAccountHolderFirstName(customerDTO.getAccountHolderFirstName());
 		customer.setAccountHolderLastName(customerDTO.getAccountHolderLastName());
 		customer.setUsername(customerDTO.getUsername());
-		customer.setPassword(encoder.encode(customerDTO.getPassword()));  //pwd : encrypted using SHA
+//		customer.setPassword(encoder.encode(customerDTO.getPassword()));  //pwd : encrypted using SHA
+		customer.setPassword(customerDTO.getPassword());  //pwd : encrypted using SHA
 //		System.out.println(customer.getPassword());
 		customer.setEmailId(customerDTO.getEmailId());
 		customer.setMobileNumber(customerDTO.getMobileNumber());

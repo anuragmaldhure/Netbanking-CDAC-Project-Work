@@ -22,26 +22,40 @@ import com.app.service.CustomUserDetailsService;
 @EnableWebSecurity
 public class SecurityConfig{
 
-    @Autowired
-    private JwtAuthenticationFilter jwtFilter;
+//    @Autowired
+//    private JwtAuthenticationFilter jwtFilter;
+	
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	    http.csrf(csrf -> csrf.disable())
+	            .authorizeHttpRequests(auth -> auth
+	                    .mvcMatchers("/**").permitAll() // Authorize everyone for all links
+	                    .mvcMatchers("/swagger-ui/**", "/v*/api-doc*/**").permitAll()
+	                    .mvcMatchers("/public", "/signup", "/signin").permitAll())
+	            .logout(logout -> logout.disable()) // Disable logout
+	            .formLogin(form -> form.disable()) // Disable form login
+	            .httpBasic(httpBasic -> httpBasic.disable()); // Disable HTTP Basic authentication
+	    return http.build();
+	}
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .mvcMatchers("/Manager").hasRole("MANAGER")
-                        .mvcMatchers("/Employee").hasRole("EMPLOYEE")
-                        .mvcMatchers("/Customer").hasRole("CUSTOMER")
-//                        .mvcMatchers("/users/signup", "/users/signin", "/cities", "/flights").permitAll()
-                        .mvcMatchers("/swagger-ui/**","/v*/api-doc*/**").permitAll()
-
-                        .mvcMatchers("/public", "/signup", "/signin").permitAll()
-                        .anyRequest().authenticated())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-//        http.formLogin(Customizer.withDefaults());
-        return http.build();
-    	
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//
+//        http.csrf(csrf -> csrf.disable())
+//                .authorizeHttpRequests(auth -> auth
+//                        .mvcMatchers("/Manager").hasRole("MANAGER")
+//                        .mvcMatchers("/Employee").hasRole("EMPLOYEE")
+//                        .mvcMatchers("/Customer").hasRole("CUSTOMER")
+////                        .mvcMatchers("/users/signup", "/users/signin", "/cities", "/flights").permitAll()
+//                        .mvcMatchers("/swagger-ui/**","/v*/api-doc*/**").permitAll()
+//
+//                        .mvcMatchers("/public", "/signup", "/signin").permitAll()
+//                        .anyRequest().authenticated())
+//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+////        http.formLogin(Customizer.withDefaults());
+//        return http.build();
+//    	
 //      http.csrf(csrf -> csrf.disable())
 //      	.authorizeHttpRequests(auth -> auth
 //	            .mvcMatchers("/Manager/**").hasRole("MANAGER")
@@ -53,25 +67,25 @@ public class SecurityConfig{
 //	        .and()
 //	        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class));
 //    	return http.build();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new CustomUserDetailsService();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager() {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService());
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        return new ProviderManager(daoAuthenticationProvider);
-    }
+//    }
+//
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        return new CustomUserDetailsService();
+//    }
+//
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return NoOpPasswordEncoder.getInstance();
+//    }
+//
+//    @Bean
+//    public AuthenticationManager authenticationManager() {
+//        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+//        daoAuthenticationProvider.setUserDetailsService(userDetailsService());
+//        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+//        return new ProviderManager(daoAuthenticationProvider);
+//    }
     
 }
 
