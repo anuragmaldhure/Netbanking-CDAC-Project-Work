@@ -68,7 +68,7 @@ public class EmailService {
             helper.setTo(userEmail);
             helper.setSubject("Aarna Bank : Secure OTP for your transaction");
             helper.setText("Your OTP (one time password) is: " + otp +
-            		"\nIt is valid for next 2 minutes (60 seconds)"+
+            		"\nIt is valid for next 2 minutes (120 seconds)"+
             		"\nPlease do not share OTP for security reasons. In case of any suspicious activity, contact us"+
             "\n"
             + "© Aarna Bank ");

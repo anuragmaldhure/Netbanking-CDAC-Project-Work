@@ -303,7 +303,7 @@ public class CustomerController {
 	@GetMapping("/transaction/otp/generate")
 	public ResponseEntity<String> generateOTP(@RequestParam Long customerId) {
 	    String otp = otpService.generateOTP(customerId);
-	    return ResponseEntity.ok(otp);
+	    return ResponseEntity.ok(otp); //Sending otp to client side for testing purpose since it is our project and not production version of software
 	}
 	
 	//OTP verification
