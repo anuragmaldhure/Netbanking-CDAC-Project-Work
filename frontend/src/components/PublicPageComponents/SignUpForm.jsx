@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import styles from "./SignUpForm.module.css";
 
 const SignUpForm = () => {
+  const navigate = useNavigate();
+
   const [formValues, setFormValues] = useState({
     fName: "",
     lName: "",
@@ -17,6 +22,21 @@ const SignUpForm = () => {
     formContainer: "",
     outroOverlay: "",
   });
+
+  useEffect(() => {
+    if (animationClasses.outroOverlay === styles.UpAnimationClass) {
+      // Show toast for 2 seconds
+      toast.success("Account created successfully", { autoClose: 2000 });
+
+      // Navigate to /login after 2 seconds
+      const timeoutId = setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+
+      // Cleanup the timeout to prevent unexpected behavior
+      return () => clearTimeout(timeoutId);
+    }
+  }, [animationClasses.outroOverlay, navigate]);
 
   const handleInputChange = (e, fieldName) => {
     const { value } = e.target;
@@ -42,7 +62,9 @@ const SignUpForm = () => {
 
   return (
     <div>
-      <main className={`${styles.cardContainer} ${animationClasses.cardContainer}`}>
+      <main
+        className={`${styles.cardContainer} ${animationClasses.cardContainer}`}
+      >
         <div className={styles.imageContainer}>
           <h1 className={styles.company}>
             AARNA BANK <sup>&trade;</sup>

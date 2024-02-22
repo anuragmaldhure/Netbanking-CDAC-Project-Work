@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Typography,
   Paper,
@@ -9,16 +9,17 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
+  CircularProgress,
 } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useTheme } from "@mui/material/styles";
 import {
   ArrowBack as ArrowBackIcon,
   CheckCircleOutline as CheckCircleOutlineIcon,
 } from "@mui/icons-material";
-// import { toast } from "react-toastify";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
+import axios from "axios";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import "bootstrap/dist/css/bootstrap.min.css"; // Include Bootstrap CSS
 
 import CustomerSideNavigationMenu from "../../components/CustomerSideNavigationMenu";
 import CustomerTopNavigationBar from "../../components/CustomerTopNavigationBar";
@@ -27,75 +28,79 @@ const TransferWithinBank22 = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
-  const [otp, setOtp] = useState("");
-  const [isOtpValid, setIsOtpValid] = useState(false);
+  const [userInputOtp, setUserInputOtp] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
-
   const transferredData = location.state?.transferredData || null;
-  const customerId = 1; // Define customer id as 1
-  const receiverAccountNumber = transferredData.accountNumber;
-  const handleOtpValidation = async () => {
-    const expectedOtp = "112"; // Static OTP for demonstration
+  const customerId = 1;
+  const receiverAccountNumber = transferredData?.accountNumber || null;
 
-    if (otp === expectedOtp) {
-      setIsOtpValid(true);
-
-      const transferData = {
-        accountNumber: transferredData.accountNumber,
-        amount: transferredData.amount,
-        remarks: transferredData.remarks,
-      };
-
-      // Log the data before making the fetch request
-      console.log("Data to be sent to the server:", transferData);
-      console.log("Receiver Account Number:", receiverAccountNumber);
-
+  useEffect(() => {
+    const fetchOTP = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:8080/Customer/FundTransfer/SendMoney/${customerId}/${receiverAccountNumber}?amountToSend=${transferData.amount}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              remarks: transferData.remarks,
-            }),
-          }
+        const otpResponse = await axios.get(
+          `http://localhost:8080/Customer/transaction/otp/generate?customerId=${customerId}`
         );
 
-        //   const response = await fetch(
-        //     `http://localhost:8080/Customer/FundTransfer/SendMoney/${customerId}/${receiverAccountNumber}`,
-        //     {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //         },
-        //         body: JSON.stringify({
-        //             remarks: transferData.remarks,
-        //             amountToSend: transferData.amount,
-        //         }),
-        //     }
-        // );
-
-        if (response.ok) {
-          setShowDialog(true);
-
-          // Use navigate to pass data to the next page through the URL
-          navigate("/Customer/FundTransfer/TransferWithinBank23", {
-            state: { transferData },
-          });
-        } else {
-          // Handle error response from the server
-          console.error("Failed to send money:", response.statusText);
-        }
+        const receivedOtp = otpResponse.data;
+        
       } catch (error) {
-        // Handle network or other errors
-        console.error("Error while sending money:", error.message);
+        console.error("Error fetching OTP:", error.message);
       }
-    } else {
-      setIsOtpValid(false);
-      setShowDialog(false);
+    };
+
+    fetchOTP();
+  }, [customerId]);
+
+  const handleOtpValidation = async () => {
+    try {
+      setIsLoading(true);
+
+      const verifyOtpResponse = await axios.post(
+        `http://localhost:8080/Customer/transaction/otp/verify?customerId=${customerId}&otp=${userInputOtp}`
+      );
+
+      setIsLoading(false);
+
+      if (verifyOtpResponse.data === "OTP Verified Successfully") {
+        setShowDialog(true);
+
+        const transferData = {
+          accountNumber: transferredData.accountNumber,
+          amount: transferredData.amount,
+          remarks: transferredData.remarks,
+        };
+        const remarksValue = transferredData.remarks;
+
+        console.log("Data to be sent to the server:", transferData);
+        console.log("Receiver Account Number:", receiverAccountNumber);
+
+        try {
+          const response = await fetch(
+            `http://localhost:8080/Customer/FundTransfer/SendMoney/${customerId}/${receiverAccountNumber}?amountToSend=${transferData.amount}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: remarksValue,
+            }
+          );
+
+          if (response.ok) {
+            navigate("/Customer/FundTransfer/TransferWithinBank23", {
+              state: { transferData },
+            });
+          } else {
+            console.error("Failed to send money:", response.statusText);
+          }
+        } catch (error) {
+          console.error("Error while sending money:", error.message);
+        }
+      }
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Error verifying OTP:", error.message);
     }
   };
 
@@ -162,27 +167,22 @@ const TransferWithinBank22 = () => {
               variant="outlined"
               fullWidth
               margin="normal"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
+              value={userInputOtp}
+              onChange={(e) => setUserInputOtp(e.target.value)}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
                       edge="end"
                       onClick={handleOtpValidation}
-                      disabled={isOtpValid}
+                      disabled={isLoading}
                     >
-                      {isOtpValid ? (
+                      {isLoading ? (
+                        <CircularProgress size={24} />
+                      ) : (
                         <CheckCircleOutlineIcon
                           sx={{ color: theme.palette.success.main }}
                         />
-                      ) : (
-                        <Typography
-                          variant="body2"
-                          sx={{ color: theme.palette.text.secondary }}
-                        >
-                          Verify
-                        </Typography>
                       )}
                     </IconButton>
                   </InputAdornment>
@@ -196,9 +196,17 @@ const TransferWithinBank22 = () => {
       <Dialog open={showDialog} onClose={() => setShowDialog(false)}>
         <DialogTitle>OTP Validation</DialogTitle>
         <DialogContent>
-          <Typography>
-            Your OTP is successfully validated! Redirecting... Please wait...
-          </Typography>
+          <div className="d-flex align-items-center">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <div className="ms-2">
+              <Typography>
+                Your OTP is being validated! Redirecting... Please
+                wait...
+              </Typography>
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
       <ToastContainer />

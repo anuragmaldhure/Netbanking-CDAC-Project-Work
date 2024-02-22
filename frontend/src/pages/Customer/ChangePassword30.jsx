@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -10,39 +10,73 @@ import {
 } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Axios from "axios";
 
 import CustomerSideNavigationMenu from "../../components/CustomerSideNavigationMenu";
 import CustomerTopNavigationBar from "../../components/CustomerTopNavigationBar";
 
 const ChangePassword30 = () => {
-  // Initialize currentPassword with a random value for testing
-  const [currentPassword, setCurrentPassword] = useState("testPassword123");
+  const [fetchedPassword, setFetchedPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+
+  useEffect(() => {
+    const fetchCustomerDetails = async () => {
+      try {
+        const response = await Axios.get(
+          `http://localhost:8080/Customer/Account/1`
+        );
+        setFetchedPassword(response.data.password);
+        console.log("Fetched Password:", response.data.password);
+      } catch (error) {
+        console.error("Error fetching customer details:", error);
+      }
+    };
+
+    fetchCustomerDetails();
+  }, []);
 
   const handleDialogClose = () => {
     setOpenDialog(false);
   };
-  const handleSubmit = () => {
-    // Validate if any of the fields is empty
-    if (!currentPassword || !newPassword || !confirmPassword) {
-      toast.error("Please enter all fields");
+
+  const handleSubmit = async () => {
+    // Assuming you have the necessary state variables like customerId
+    const customerId = 1; // replace with the actual value or get it from your state
+
+    // Validate that newPassword and confirmPassword match
+    if (newPassword !== confirmPassword) {
+      toast.error("New password and confirm password do not match");
       return;
     }
 
-    // Perform password validation logic here
-    // For demonstration purposes, let's assume the validation is checking if the current password is "testPassword123"
-    if (currentPassword !== "testPassword123") {
-      toast.error("Incorrect current password");
-    } else if (newPassword !== confirmPassword) {
-      toast.error("New password and confirm password do not match");
-    } else {
-      // Update password logic goes here
+    try {
+      // Log the data before making the fetch request
+      console.log("Data to be sent to the server:", {
+        customerId: customerId,
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+      });
 
-      // Show success dialog
-      setOpenDialog(true);
-      toast.success("Password changed successfully");
+      const response = await Axios.put(
+        `http://localhost:8080/OtherServices/ChangePassword30/${customerId}?currentPassword=${currentPassword}&newPassword=${newPassword}`
+      );
+
+      if (response.status === 200) {
+        // Password changed successfully
+        setOpenDialog(true);
+        toast.success("Password changed successfully");
+      } else {
+        // Handle error response from the server
+        console.error("Failed to change password:", response.statusText);
+        toast.error("Failed to change password");
+      }
+    } catch (error) {
+      // Handle network or other errors
+      console.error("Error changing password:", error.message);
+      toast.error("Error changing password");
     }
   };
 

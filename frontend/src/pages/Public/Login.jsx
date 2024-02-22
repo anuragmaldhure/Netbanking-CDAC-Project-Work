@@ -1,88 +1,115 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 import Image from "../../assets/images/obj.jpg";
-import Logo from "../../assets/images/logo.png";
-import GoogleSvg from "../../assets/images/icons8-google.svg";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import styles from "./Login.module.css"; // Importing the CSS module
+import styles from "./Login.module.css";
 
-
-// Component definition
 const Login = () => {
-  // State for controlling password visibility
-  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
-  // JSX structure with styles applied using CSS Modules
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useState(false);
+
+  const handleLogin = () => {
+    if (!username.trim() || !password.trim()) {
+      toast.error("Please enter both username and password");
+      return;
+    }
+
+    // Simulating successful login
+    // Here you can replace this with your actual login authentication logic
+    console.log(
+      "Logging in with username:",
+      username,
+      "and password:",
+      password
+    );
+
+    // Set loginSuccess to true on successful login
+    setLoginSuccess(true);
+  };
+
+  useEffect(() => {
+    // Use the effect to handle successful login and navigation
+    if (loginSuccess) {
+      // Show toast for 2 seconds
+      toast.success("Login successful", { autoClose: 2000 });
+
+      // Navigate to /Customer/Account/ViewAccountBalance after 2 seconds
+      const timeoutId = setTimeout(() => {
+        navigate("/Customer/Account/ViewAccountBalance");
+      }, 2000);
+
+      // Cleanup the timeout to prevent unexpected behavior
+      return () => clearTimeout(timeoutId);
+    }
+  }, [loginSuccess, navigate]);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
-    <div className={styles.loginMain}>
+    <div className={styles.loginContainer}>
       <div className={styles.loginLeft}>
-        <img src={Image} alt="" className={styles.loginLeftImg} />
+        <img src={Image} alt="" className={styles.loginImage} />
       </div>
       <div className={styles.loginRight}>
-        <div className={styles.loginRightContainer}>
-          <div className={styles.loginLogo}>
-            <img src={Logo} alt="" className={styles.loginLogoImg} />
-          </div>
-          <div className={styles.loginCenter}>
-            <h2>Welcome back!</h2>
-            <p>Please enter your details</p>
-            <form>
+        <div className={styles.loginCenter}>
+          <h2>Welcome back!</h2>
+          <p>Please enter your details</p>
+          <form>
+            <input
+              type="text"
+              placeholder="Username"
+              className={`${styles.input} ${styles.customFont}`}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <div className={styles.passInputDiv}>
               <input
-                type="email"
-                placeholder="Email"
-                className={styles.input}
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                className={`${styles.input} ${styles.customFont}`}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
-              <div className={styles.passInputDiv}>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Password"
-                  className={styles.input}
-                />
-                {showPassword ? (
-                  <FaEyeSlash
-                    onClick={() => {
-                      setShowPassword(!showPassword);
-                    }}
-                    className={styles.eyeIcon}
-                  />
-                ) : (
-                  <FaEye
-                    onClick={() => {
-                      setShowPassword(!showPassword);
-                    }}
-                    className={styles.eyeIcon}
-                  />
-                )}
-              </div>
-              <div className={styles.loginCenterOptions}>
-                <div className={styles.rememberDiv}>
-                  <input type="checkbox" id="remember-checkbox" />
-                  <label htmlFor="remember-checkbox">
-                    Remember for 30 days
-                  </label>
-                </div>
-                <a href="." className={styles.forgotPassLink}>
-                  Forgot password?
+              <button
+                type="button"
+                className={styles.showPasswordButton}
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+            <div className={styles.loginCenterButtons}>
+              <button
+                type="button"
+                className={`btn btn-success ${styles.loginButton}`}
+                onClick={handleLogin}
+              >
+                Log In
+              </button>
+            </div>
+            <div className={styles.loginBottom}>
+              <p className={styles.loginBottomP}>
+                Don't have an account?{" "}
+                <a
+                  href="http://localhost:3000/Signup"
+                  className={styles.signUpLink}
+                >
+                  Sign Up
                 </a>
-              </div>
-              <div className={styles.loginCenterButtons}>
-                <button type="button" className={styles.loginButton}>
-                  Log In
-                </button>
-                <button type="button" className={styles.googleLoginButton}>
-                  <img src={GoogleSvg} alt="" className={styles.googleIcon} />
-                  Log In with Google
-                </button>
-              </div>
-            </form>
-          </div>
-          <p className={styles.loginBottomP}>
-            Don't have an account? <a href=".">Sign Up</a>
-          </p>
+              </p>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   );
 };
 
-// Exporting the component
 export default Login;

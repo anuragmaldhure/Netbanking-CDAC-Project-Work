@@ -40,6 +40,7 @@ import SearchCustomer48 from "./pages/Employee/SearchCustomer48";
 import SignUpForm from "./components/PublicPageComponents/SignUpForm";
 import TransferWithinBank23 from "./pages/Customer/TransferWithinBank23";
 import { Dashboard } from "@mui/icons-material";
+import ManagerHome from "./pages/Manager/Dashboard/ManagerHome";
 
 function App() {
   return (
@@ -162,19 +163,13 @@ function App() {
 
         {/* MANAGER SECTION */}
 
-
         {/* Manager Home section */}
-
-        <Route
-          path="/Manager/Home/Dashboard"
-          element={<Dashboard/>}
-        />
+{/* 
+        <Route path="/Manager/Home/Dashboard" element={<ManagerHome />} /> */}
 
         {/* Manager managemenet section for customer */}
 
         {/* Manager management section for employee */}
-
-
       </Routes>
       <ToastContainer />
     </div>

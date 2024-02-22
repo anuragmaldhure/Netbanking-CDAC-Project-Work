@@ -14,10 +14,10 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
     <BrowserRouter>
-      <React.StrictMode> 
+      {/* <React.StrictMode>  */}
         {/* <React.StrictMode>  => Will run the code twice, example :- useEffect will render twice -> used in development mode */}
         <App />
-      </React.StrictMode>
+      {/* </React.StrictMode> */}
     </BrowserRouter>
   </Provider>
 );

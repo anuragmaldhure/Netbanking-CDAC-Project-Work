@@ -43,14 +43,16 @@ const OffersAvailableForMe31 = () => {
     const fetchData = async () => {
       try {
         const customerId = 1; // Replace with actual customerId
-        const response = await axios.get(`http://localhost:8080/Customer/OtherServices/OffersAvailableForMe/${customerId}`);
+        const response = await axios.get(
+          `http://localhost:8080/Customer/OtherServices/OffersAvailableForMe/${customerId}`
+        );
         setOffers(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, []); 
+  }, []);
 
   return (
     <div>
@@ -80,10 +82,18 @@ const OffersAvailableForMe31 = () => {
                     }}
                   >
                     <CardContent>
-                      <Typography variant="h6"><strong>{offer.offerId}</strong></Typography>
+                      <Typography variant="h6">
+                        <strong>{offer.offerId}</strong>
+                      </Typography>
                       <Typography variant="h6">{offer.offerTitle}</Typography>
                       <Typography variant="h7">{offer.offerDetails}</Typography>
-                      <Typography> <strong>Minimum balance requirement : {offer.offerMinimumBalance}</strong></Typography>
+                      <Typography>
+                        {" "}
+                        <strong>
+                          Minimum balance requirement :{" "}
+                          {offer.offerMinimumBalance}
+                        </strong>
+                      </Typography>
                     </CardContent>
                   </Card>
                 </Grid>
@@ -96,9 +106,7 @@ const OffersAvailableForMe31 = () => {
       <Dialog open={openDialog} onClose={handleDialogClose}>
         <DialogTitle>{selectedOffer && selectedOffer.offerTitle}</DialogTitle>
         <DialogContent>
-          <Typography>
-            {selectedOffer && selectedOffer.offerDetails}
-          </Typography>
+          <Typography>{selectedOffer && selectedOffer.offerDetails}</Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleAvailOffer} color="primary">
