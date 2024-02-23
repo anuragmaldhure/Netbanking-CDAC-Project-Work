@@ -1,0 +1,137 @@
+/* Login.module.css */
+
+.loginContainer {
+  display: flex;
+  height: 100vh;
+  position: relative; /* Set position relative */
+}
+
+.loginContainer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 50%; /* Adjust as needed */
+  background-color: #313133; /* Background color for the right side */
+  z-index: -1; /* Ensure the pseudo-element is behind the content */
+}
+
+.loginLeft {
+  margin-top: 10vh;
+  flex: 1;
+}
+
+.loginImage {
+  width: 100%;
+  height: auto;
+}
+
+.loginRight {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30vh;
+  position: relative; /* Set position relative to allow z-index */
+  z-index: 1; /* Ensure content is above the pseudo-element */
+}
+
+.loginCenter {
+  text-align: center;
+  color: whitesmoke; /* Set text color */
+}
+
+.input {
+  width: calc(100% - 16px); /* Adjust for padding */
+  padding: 10px; /* Increased padding for better formatting */
+  margin-bottom: 20px; /* Increased margin for better spacing */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: black;
+  background-color: white; /* Set background color to white */
+}
+
+/* Adjust margin-right for username input */
+.input:first-child {
+  margin-right: 15px; /* Adjust as needed */
+}
+
+.passInputDiv {
+  position: relative;
+}
+
+.passwordInput {
+  width: calc(100% - 56px); /* Adjust for padding and button width */
+  padding: 10px; /* Increased padding for better formatting */
+  margin-bottom: 20px; /* Increased margin for better spacing */
+  padding-right: 40px;
+}
+
+.showPasswordButton {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.loginCenterButtons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  width: calc(100% - 16px); /* Adjust for padding */
+}
+
+/* Bootstrap classes */
+.loginButton,
+.googleLoginButton {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 40px;
+}
+
+/* Custom button styles */
+.loginButton {
+  background-color: rgb(40, 175, 40);
+  margin-right: 5px;
+}
+
+.googleLoginButton {
+  background-color: #4285f4;
+  color: #fff;
+  margin-left: 5px;
+}
+
+.googleIcon {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.loginBottom {
+  margin-top: 20px;
+}
+
+.loginBottomP {
+  font-size: 14px;
+  color:whitesmoke; /* Set text color */
+}
+
+.signUpLink {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.signUpLink:hover {
+  text-decoration: underline;
+}
+
+.customFont {
+  font-family: "Arial", sans-serif;
+}

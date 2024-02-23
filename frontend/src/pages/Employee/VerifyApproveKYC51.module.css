@@ -1,0 +1,83 @@
+/* SearchCustomer48.module.css */
+
+/* Add some overall styling to improve readability and appearance */
+.customerDetailsContainer {
+  width: 90vw;
+  height: 60vw;
+  padding: 20px;
+  margin: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff; /* Add a white background */
+}
+
+.customerDetailsContainer h2,
+.customerDetailsContainer h3 {
+  color: #007bff; /* Set heading colors to blue */
+  margin-bottom: 20px; /* Add space below headings */
+}
+
+.customerDetailsContainer strong {
+  color: #28a745; /* Set strong text color to green */
+}
+
+.customerDetailsContainer ul {
+  padding: 0;
+}
+
+.customerDetailsContainer li {
+  list-style: none;
+  margin-bottom: 10px; /* Add space between list items */
+}
+
+.customerDetailsContainer .list-group-item {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px; /* Add space between list items */
+  padding: 10px; /* Add padding for a cleaner look */
+}
+
+.customerDetailsContainer .btn-primary {
+  background-color: #007bff;
+  border: 1px solid #007bff;
+  padding: 10px 15px; /* Add padding to the button */
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  display: inline-block; /* Ensure buttons are inline-block elements */
+}
+
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.exportButton,
+.downloadButton {
+  margin-top: 10px;
+  margin-right: 5px; /* Add margin-right for space between buttons */
+}
+
+.exportButton:hover,
+.downloadButton:hover {
+  background-color: #0056b3;
+}
+
+.exportButton:active,
+.downloadButton:active {
+  transform: translateY(2px);
+}
+
+/* Add animation to the list items */
+.list-group-item {
+  transition: background-color 0.3s ease;
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
+/* Additional styling can be added based on your design preferences */

@@ -1,0 +1,80 @@
+/* CustomerTopNavigationBar.css */
+
+/* Overall container styles */
+.customer-top-navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: #112d32;
+  color: #fff; /* White text color */
+}
+
+/* Logo and Navigation Links styles */
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  color: #88bdbc;
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.nav-links-container {
+  display: flex;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #fff;
+  margin-right: 15px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #ffd700; /* Gold color on hover */
+} /* Search Bar styles */
+.search-bar {
+  display: flex;
+  background-color: #37474f; /* Dark background color */
+  border-radius: 3px;
+  margin-left: 15px;
+}
+
+.search-bar .search-input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background-color: transparent;
+  color: #fff;
+}
+
+.search-bar .search-input::placeholder {
+  color: #ddd; /* Light gray placeholder text */
+}
+
+.search-bar .search-icon {
+  padding: 10px;
+  color: #ddd; /* Light gray icon color */
+  cursor: pointer;
+} /* User Icons styles */
+.user-icons-container {
+  display: flex;
+  align-items: center;
+}
+
+.user-icon {
+  font-size: 20px;
+  color: #fff; /* Set default color to white */
+  margin-left: 10px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.user-icon:hover {
+  color: yellow; /* Set hover color to yellow */
+}
