@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -12,18 +12,37 @@ import {
   FormControl,
   InputLabel,
   Stack,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
-import { Edit as EditIcon, Save as SaveIcon } from "@mui/icons-material";
-import dayjs from "dayjs"; // Import dayjs for date manipulation
-
+import {
+  Edit as EditIcon,
+  Save as SaveIcon,
+  CloudUpload as CloudUploadIcon,
+} from "@mui/icons-material";
+import dayjs from "dayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-
 import CustomerSideNavigationMenu from "../../components/CustomerSideNavigationMenu";
 import CustomerTopNavigationBar from "../../components/CustomerTopNavigationBar";
+import axios from "axios";
 
 const KYCDetails12 = () => {
   const [isEditing, setIsEditing] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const openDialog = (image) => {
+    setSelectedImage(image);
+    setIsDialogOpen(true);
+  };
+
+  const closeDialog = () => {
+    setSelectedImage(null);
+    setIsDialogOpen(false);
+  };
   const [formData, setFormData] = useState({
     firstName: null,
     lastName: null,
@@ -40,8 +59,71 @@ const KYCDetails12 = () => {
     aadharCard: null,
     panCard: null,
     photo: null,
-    birthdate: dayjs(), // Initialize with the current date
+    birthdate: dayjs(),
   });
+
+  // New state to store image URLs
+  const [imageUrls, setImageUrls] = useState({
+    aadharCard: null,
+    panCard: null,
+    photo: null,
+  });
+  useEffect(() => {
+    const fetchCustomerImages = async () => {
+      try {
+        const [aadharCard, panCard, photo] = await Promise.all([
+          axios.get("http://localhost:8080/Customer/documents/aadhar/1", {
+            responseType: "arraybuffer",
+          }),
+          axios.get("http://localhost:8080/Customer/documents/pan/1", {
+            responseType: "arraybuffer",
+          }),
+          axios.get("http://localhost:8080/Customer/documents/photo/1", {
+            responseType: "arraybuffer",
+          }),
+        ]);
+
+        if (aadharCard.data && panCard.data && photo.data) {
+          setImageUrls({
+            aadharCard: URL.createObjectURL(new Blob([aadharCard.data])),
+            panCard: URL.createObjectURL(new Blob([panCard.data])),
+            photo: URL.createObjectURL(new Blob([photo.data])),
+          });
+        } else {
+          console.log("No files uploaded. Upload now!");
+        }
+      } catch (error) {
+        console.error("Error fetching customer images:", error);
+      }
+    };
+
+    fetchCustomerImages();
+  }, []);
+
+  useEffect(() => {
+    const fetchCustomerDetails = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/Customer/Account/1"
+        ); // Replace 1 with the actual customer ID
+        const customerData = response.data;
+
+        setFormData({
+          firstName: customerData.accountHolderFirstName || "",
+          lastName: customerData.accountHolderLastName || "",
+          occupation: customerData.occupation || "",
+          annualIncome: customerData.annualIncome || "",
+          birthdate: customerData.dateOfBirth || null,
+          mobileNumber: customerData.mobileNumber || "",
+          emailId: customerData.emailId || "",
+        });
+      } catch (error) {
+        console.error("Error fetching customer details:", error);
+      }
+    };
+
+    fetchCustomerDetails();
+  }, []);
 
   const handleInputChange = (field, value) => {
     setFormData((prevData) => ({
@@ -51,7 +133,6 @@ const KYCDetails12 = () => {
   };
 
   const handleFileUpload = (field, file) => {
-    // Handle file upload logic here
     setFormData((prevData) => ({
       ...prevData,
       [field]: file,
@@ -64,8 +145,16 @@ const KYCDetails12 = () => {
 
   const handleSaveClick = () => {
     setIsEditing(false);
-    // You can handle saving the form data (including file uploads) here
     console.log("Form data saved:", formData);
+    // Add logic to save formData to the database using a POST request
+    // You can use axios.post("/Account", formData) or your preferred method
+  };
+
+  const handleUploadClick = () => {
+    // Placeholder for file upload logic
+    console.log("File upload logic goes here");
+    // Add logic to upload files to the server using a POST request
+    // You can use axios.post("/UploadFiles", formData) or your preferred method
   };
 
   return (
@@ -106,7 +195,6 @@ const KYCDetails12 = () => {
                       variant="outlined"
                       margin="normal"
                     />
-                    
 
                     <TextField
                       label="Occupation"
@@ -236,7 +324,6 @@ const KYCDetails12 = () => {
                     />
                   </Stack>
                 </Grid>
-
                 <Grid item xs={12} md={6}>
                   <Stack spacing={2}>
                     <FormControl fullWidth variant="outlined" margin="normal">
@@ -244,7 +331,7 @@ const KYCDetails12 = () => {
                       <Select
                         label="Gender"
                         id="gender"
-                        value={formData.gender}
+                        value={formData.gender || ""}
                         onChange={(e) =>
                           handleInputChange("gender", e.target.value)
                         }
@@ -255,51 +342,165 @@ const KYCDetails12 = () => {
                         <MenuItem value="Other">Other</MenuItem>
                       </Select>
                     </FormControl>
-
-                    {/* Upload Aadhar Card */}
+                    {/* Display Images */}
                     <Stack spacing={1}>
-                      <Typography variant="body2">Aadhar Card</Typography>
-                      <input
-                        type="file"
-                        onChange={(e) =>
-                          handleFileUpload("aadharCard", e.target.files[0])
-                        }
-                        disabled={!isEditing}
-                      />
                       <Typography variant="caption">
-                        {formData.aadharCard?.name}
+                        AADHAAR-CARD :
+                        {formData.aadharCard && formData.aadharCard.name}
                       </Typography>
+                      <Button
+                        onClick={() => openDialog(imageUrls.aadharCard)}
+                        variant="contained"
+                        color="primary"
+                        sx={{
+                          backgroundColor: "#4CAF50",
+                          color: "white",
+                          "&:hover": {
+                            backgroundColor: "#45a049",
+                          },
+                        }}
+                      >
+                        {imageUrls.aadharCard
+                          ? "Show Image"
+                          : "No file uploaded"}
+                      </Button>
                     </Stack>
 
-                    {/* Upload PAN Card */}
                     <Stack spacing={1}>
-                      <Typography variant="body2">PAN Card</Typography>
-                      <input
-                        type="file"
-                        onChange={(e) =>
-                          handleFileUpload("panCard", e.target.files[0])
-                        }
-                        disabled={!isEditing}
-                      />
                       <Typography variant="caption">
-                        {formData.panCard?.name}
+                        PAN-CARD :{formData.panCard && formData.panCard.name}
                       </Typography>
+                      <Button
+                        onClick={() => openDialog(imageUrls.panCard)}
+                        variant="contained"
+                        color="primary"
+                        sx={{
+                          backgroundColor: "#4CAF50",
+                          color: "white",
+                          "&:hover": {
+                            backgroundColor: "#45a049",
+                          },
+                        }}
+                      >
+                        {imageUrls.panCard ? "Show Image" : "No file uploaded"}
+                      </Button>
                     </Stack>
 
-                    {/* Upload Photo */}
                     <Stack spacing={1}>
-                      <Typography variant="body2">Photo</Typography>
-                      <input
-                        type="file"
-                        onChange={(e) =>
-                          handleFileUpload("photo", e.target.files[0])
-                        }
-                        disabled={!isEditing}
-                      />
                       <Typography variant="caption">
-                        {formData.photo?.name}
+                        Profile Photo :{formData.photo && formData.photo.name}
                       </Typography>
+                      <Button
+                        onClick={() => openDialog(imageUrls.photo)}
+                        variant="contained"
+                        color="primary"
+                        sx={{
+                          backgroundColor: "#4CAF50",
+                          color: "white",
+                          "&:hover": {
+                            backgroundColor: "#45a049",
+                          },
+                        }}
+                      >
+                        {imageUrls.photo ? "Show Image" : "No file uploaded"}
+                      </Button>
                     </Stack>
+                  </Stack>
+                </Grid>
+                {/* Dialog for displaying the image */}
+                <Dialog open={isDialogOpen} onClose={closeDialog}>
+                  <DialogTitle>Uploaded Image</DialogTitle>
+                  <DialogContent>
+                    {selectedImage && (
+                      <img
+                        src={selectedImage}
+                        alt="Uploaded Img"
+                        style={{ maxWidth: "100%" }}
+                      />
+                    )}
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={closeDialog} color="primary">
+                      Close
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+                {/* File Upload Fields */}
+                <Grid item xs={12} md={6}>
+                  <Stack spacing={1}>
+                    <Typography variant="caption">
+                      AADHAAR-CARD:{" "}
+                      {formData.aadharCard && formData.aadharCard.name}
+                    </Typography>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <Button
+                        variant="contained"
+                        component="label"
+                        disabled={!isEditing}
+                      >
+                        Upload AADHAAR-CARD
+                        <input
+                          type="file"
+                          onChange={(e) =>
+                            handleFileUpload("aadharCard", e.target.files[0])
+                          }
+                          hidden
+                        />
+                      </Button>
+                    </div>
+                    <Typography variant="caption">
+                      {formData.aadharCard?.name}
+                    </Typography>
+                  </Stack>
+
+                  <Stack spacing={1}>
+                    <Typography variant="caption">
+                      PAN-CARD: {formData.panCard && formData.panCard.name}
+                    </Typography>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <Button
+                        variant="contained"
+                        component="label"
+                        disabled={!isEditing}
+                      >
+                        Upload PAN-CARD
+                        <input
+                          type="file"
+                          onChange={(e) =>
+                            handleFileUpload("panCard", e.target.files[0])
+                          }
+                          hidden
+                        />
+                      </Button>
+                    </div>
+                    <Typography variant="caption">
+                      {formData.panCard?.name}
+                    </Typography>
+                  </Stack>
+
+                  <Stack spacing={1}>
+                    <Typography variant="caption">
+                      PROFILE-PHOTO: {formData.photo && formData.photo.name}
+                    </Typography>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <Button
+                        variant="contained"
+                        component="label"
+                        disabled={!isEditing}
+                      >
+                        Upload PROFILE-PHOTO
+                        <input
+                          type="file"
+                          onChange={(e) =>
+                            handleFileUpload("photo", e.target.files[0])
+                          }
+                          hidden
+                        />
+                      </Button>
+                    </div>
+                    <Typography variant="caption">
+                      {formData.photo?.name}
+                    </Typography>
                   </Stack>
                 </Grid>
 
@@ -319,6 +520,17 @@ const KYCDetails12 = () => {
                     >
                       {isEditing ? "Save" : "Edit"}
                     </Button>
+                    {isEditing && (
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={handleUploadClick}
+                        sx={{ marginLeft: 1 }}
+                      >
+                        <CloudUploadIcon />
+                        Upload
+                      </Button>
+                    )}
                   </Box>
                 </Grid>
               </Grid>

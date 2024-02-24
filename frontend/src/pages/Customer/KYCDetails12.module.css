@@ -1,0 +1,28 @@
+/* styles.module.css */
+
+.content {
+  width: 100%;
+  display: flex;
+}
+
+.paper {
+  padding: 20px;
+}
+
+.dialogImage {
+  max-width: 100%;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.iconButton {
+  margin-right: 8px;
+}
+
+.actionButton {
+  margin-left: 8px;
+}
