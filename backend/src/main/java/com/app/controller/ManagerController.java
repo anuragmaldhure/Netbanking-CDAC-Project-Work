@@ -61,7 +61,7 @@ public class ManagerController {
 	public ManagerDetails getManagerDetails(){
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName(); // This gets the username
-		System.out.println("in get customer details INTERNALLY by username from Security Context, USERNAME ->" + username );
+		System.out.println("in get manager details INTERNALLY by username from Security Context, USERNAME ->" + username );
 		
 		Optional<ManagerDetails> managerDetails = managerService.getManagerByUsername(username);
 		System.out.println("in get manager id INTERNALLY by username, CustomerDetailsDTO ->" + managerDetails);

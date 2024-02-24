@@ -16,6 +16,7 @@ import com.app.dto.customer.CustomerAddressDTO;
 import com.app.dto.customer.CustomerDetailsDTO;
 import com.app.dto.customer.CustomerEssentialDataDTO;
 import com.app.dto.customer.CustomerNomineeDetailsDTO;
+import com.app.dto.customer.CustomerSavingAccountsDTO;
 import com.app.entities.*;
 import com.app.service.AccountTransactionsService;
 import com.app.service.CustomerAddressService;
@@ -267,6 +268,13 @@ public class CustomerController {
         }
 	}
 	
+	//KYC - Get address
+	@GetMapping("/KYC/address/{customerId}")
+    public Optional<CustomerAddressDTO> getAddress(@PathVariable Long customerId) {
+		System.out.println("in get customer address with customer id "+customerId);
+        return customerAddressService.getAddressDetails(customerId);
+	}
+
 	//KYC - Add nominee details
 	@PutMapping("/KYC/NomineeDetails/{customerId}")
     public ResponseEntity<String> addNomineeDetails(@PathVariable Long customerId,
@@ -281,6 +289,13 @@ public class CustomerController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in updating Account Related Details...");
         }
+	}
+	
+	//KYC - Get saving account details
+	@GetMapping("/Account/getAccountDetails/{customerId}")
+    public Optional<CustomerSavingAccountsDTO> getSavingAccountDetails(@PathVariable Long customerId) {
+		System.out.println("in get customer savings account details with customer id "+customerId);
+		return customerSavingsAccountService.getCustomerAccountDetails(customerId);
 	}
 	
 	//KYC - Add Customer Essentials Details
@@ -316,24 +331,6 @@ public class CustomerController {
 	        return ResponseEntity.badRequest().body("OTP Verification Failed");
 	    }
 	}
-	
-//	//Get account balance
-//	@GetMapping("/FundTransfer/SendMoney21/{customerId}")
-//	public ResponseEntity<String> sendOtpToCustomer(@PathVariable Long customerId) {
-//        Optional<CustomerDetails> customerDetails = customerService.getCustomerDetailsByCustomerId(customerId);
-//        if(!customerDetails.isEmpty()){
-//        	String email = customerDetails.get().getEmailId();
-//            System.out.println("Sending OTP as email to "+email);
-//            String otpSentToCustomer = emailService.sendOtp(email); 		//OTP generated : otpSentToCustomer 
-//            System.out.println("OTP sent to customer : "+ otpSentToCustomer);
-//            return ResponseEntity.ok("OTP sent successfully to " + email);
-//        }
-//        return ResponseEntity.ok("Customer not found!");
-//	}
-//	
-	//To get OTP on mobile/email and verify it
-//	@PostMapping("/FundTransfer/SendMoney22")
-
 	
 
 //	//Add Beneficiary
@@ -380,17 +377,5 @@ public class CustomerController {
 //		return beneficiaryService.deleteBenificiary(benId);
 //	}
 //
-////Page 29 =>  Customer/OtherServices/MessageAndEmailAlerts29 -> NEED TO IMPLEMENT AND REFACTOR DB
-//	
-
-	//Get Contact Details 
-//	@GetMapping("/OtherServices/ContactUs37")  -> NEED TO IMPLEMENT AND REFACTOR DB
-	
-	//Get Tutorials Video links 
-//	@GetMapping("/OtherServices/ContactUs37")  -> NEED TO IMPLEMENT AND REFACTOR DB
-
-	
-//			Page 39 =>  Customer/Logout39
-//			Page 40 =>  Customer/LogoutSuccess40
 
 }

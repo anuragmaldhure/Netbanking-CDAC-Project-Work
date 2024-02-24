@@ -80,7 +80,7 @@ public class EmployeeController {
 	public BankEmployeeDetails getMyDetails(){
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName(); // This gets the username
-		System.out.println("in get customer details INTERNALLY by username from Security Context, USERNAME ->" + username );
+		System.out.println("in get employee details INTERNALLY by username from Security Context, USERNAME ->" + username );
 		
 		Optional<BankEmployeeDetails> bankEmployeeDetails = employeeService.getEmployeeDetailsByUsername(username);
 		
@@ -236,40 +236,24 @@ public class EmployeeController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		} catch (Exception e) {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in depositing money...");
+		}
 	}
-}
-	
-	//To get OTP on mobile/email and verify it
-//	@PostMapping("/FundTransfer/DepositMoney44")
-//	public Optional<CustomerDetails> (@PathVariable Long customerId) {
-
-//	}
-	
-//	//Deposit transaction after getting amount and remarks from request
-//	//to //by
-//	@PostMapping("/FundTransfer/DepositMoney45/{customerId}/{employeeId}")
-//	public ResponseEntity<String> depositMoneyByEmployee (@PathVariable Long customerId, Long employeeId,
-//			@RequestBody Double amountToDepoosit, String remarks) {
-//		try {
-////			customerService.changeKYCstatusApproved(customerId);
-//			Optional<CustomerDetails> customer = customerService.getCustomerDetailsByCustomerId(customerId);
-//			
-//			accountTransactionsService.depositMoney(amountToDepoosit, customerId, employeeId, remarks);
-//			
-//			emailService.sendMoneyDepositMail(customer.get().getEmailId(), 
-//					customer.get().getAccountHolderFirstName(),
-//					customer.get().getAccountHolderLastName(),
-//					amountToDepoosit,
-//					employeeId
-//					);
-//			
-//			return ResponseEntity.ok("Successfully deposited " + amountToDepoosit + " in account of customer id : "+ customerId);
-//			} catch (EntityNotFoundException e) {
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//			} catch (RuntimeException e) {
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//			} catch (Exception e) {
-//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in depositing money...");
-//			}
-//	}
+		
+	//to
+	@PostMapping("/sendFeebackMail/{customerId}")
+	public ResponseEntity<String> sendFeedbackMail (@PathVariable Long customerId, @RequestParam String emailSubject, @RequestBody String emailBody) {
+		try {
+			Optional<CustomerDetailsDTO> customerDetailsDTO = customerService.getCustomerDetailsByCustomerId(customerId);
+			
+			emailService.sendFeedbackMailWithSubjectAndBody(customerDetailsDTO.get().getEmailId(), emailSubject, emailBody);
+			
+			return ResponseEntity.ok("Successfully sent feedbackto customer id : " + customerId);
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in sending feedback...");
+		}
+	}
 }

@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-//import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import com.app.service.CustomUserDetailsService;
 
@@ -55,7 +55,7 @@ public class SecurityConfig{
 //                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 ////        http.formLogin(Customizer.withDefaults());
 //        return http.build();
-//    	
+    	
 //      http.csrf(csrf -> csrf.disable())
 //      	.authorizeHttpRequests(auth -> auth
 //	            .mvcMatchers("/Manager/**").hasRole("MANAGER")
@@ -68,24 +68,24 @@ public class SecurityConfig{
 //	        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class));
 //    	return http.build();
 //    }
-//
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        return new CustomUserDetailsService();
-//    }
-//
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return NoOpPasswordEncoder.getInstance();
-//    }
-//
-//    @Bean
-//    public AuthenticationManager authenticationManager() {
-//        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-//        daoAuthenticationProvider.setUserDetailsService(userDetailsService());
-//        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-//        return new ProviderManager(daoAuthenticationProvider);
-//    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new CustomUserDetailsService();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService());
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(daoAuthenticationProvider);
+    }
     
 }
 

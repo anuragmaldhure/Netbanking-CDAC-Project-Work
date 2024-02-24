@@ -315,6 +315,29 @@ public class EmailService {
         }
         return null;
     }
+    
+    public String sendFeedbackMailWithSubjectAndBody(String userEmail, String emailSubject, String emailBody) {
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setTo(userEmail);
+            helper.setSubject("Aarna Bank : "+ emailSubject);
+            String messageString = emailBody 
+            		+"\n\n" + 
+            		"Happy Banking! 😊\n\n" +
+	    			"Best Regards,\n\n" +
+	    			"Aarna Bank";
+            helper.setText(messageString);
+            
+            javaMailSender.send(message);
+            return messageString;
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            // Handle exception
+        }
+        return null;
+    }
 
 //	public String sendMoneyMail(String emailId, String accountHolderFirstName, String accountHolderLastName,
 //            String beneficiaryFirstName, String beneficiaryLastName, CustomerDetails beneficiaryAccountNumber) {

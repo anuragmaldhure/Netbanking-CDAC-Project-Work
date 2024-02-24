@@ -58,6 +58,6 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
 	     
 		 // Save the updated address
 	     customerAddressDao.save(customerAddress);
-	}	
+	}
 
 }
