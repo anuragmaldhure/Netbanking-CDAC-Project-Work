@@ -22,7 +22,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaStreetView } from "react-icons/fa";
 import ViewAccountStatement9 from "./pages/Customer/ViewAccountStatement9";
-import KYCDetails12 from "./pages/Customer/KYCDetails12";
 
 import CloseAccount18 from "./pages/Customer/CloseAccount18";
 import AddBeneficiary24 from "./pages/Customer/AddBeneficiary24";
@@ -41,6 +40,7 @@ import SignUpForm from "./components/PublicPageComponents/SignUpForm";
 import TransferWithinBank23 from "./pages/Customer/TransferWithinBank23";
 import { Dashboard } from "@mui/icons-material";
 import ManagerHome from "./pages/Manager/Dashboard/ManagerHome";
+import KYCDetails12 from "./pages/Customer/KYC_DETAILS_FORM/KYCDetails12";
 
 function App() {
   return (
