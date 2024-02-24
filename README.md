@@ -115,5 +115,5 @@ We welcome contributions to enhance and improve the project. Please follow the g
 
 ## Contact
 
-For any inquiries, feedback, or support, please contact [Your Name] at [your.email@example.com].
+For any inquiries, feedback, or support, please contact at aarna.netbanking@gmail.com.
 
