@@ -55,14 +55,11 @@ Follow these steps to set up the project locally:
 
 3. **Install Dependencies:**
    ```bash
-   # Assuming you are using a specific package manager
-   # Include any specific commands or dependencies needed
-   ```
+   
 
 4. **Run the Application:**
    ```bash
-   # Provide instructions to run the application
-   ```
+  
 
 ## Usage
 
