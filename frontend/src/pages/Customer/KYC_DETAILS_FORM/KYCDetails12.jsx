@@ -17,13 +17,9 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import {
-  Edit as EditIcon,
-  Save as SaveIcon,
-  CloudUpload as CloudUploadIcon,
-} from "@mui/icons-material";
+import { Edit as EditIcon, Save as SaveIcon, CloudUpload as CloudUploadIcon } from "@mui/icons-material";
 import dayjs from "dayjs";
-import { toast, ToastContainer } from "react-toastify";
+import { toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import CustomerTopNavigationBar from "../../../components/CustomerTopNavigationBar";
@@ -52,7 +48,7 @@ const KYCDetails12 = () => {
     aadharCard: null,
     panCard: null,
     photo: null,
-    birthdate: dayjs(),
+    birthdate: dayjs().format("YYYY-MM-DD"),
   });
 
   const [imageUrls, setImageUrls] = useState({
@@ -61,6 +57,11 @@ const KYCDetails12 = () => {
     photo: null,
   });
 
+  useEffect(() => {
+    fetchCustomerImages();
+    fetchCustomerDetails();
+  }, []);
+
   const fetchCustomerDetails = async () => {
     try {
       const [personalDetailsResponse, addressResponse] = await Promise.all([
@@ -68,8 +69,8 @@ const KYCDetails12 = () => {
         axios.get("http://localhost:8080/Customer/KYC/address/1"),
       ]);
 
-      const personalDetails = personalDetailsResponse.data;
-      const addressDetails = addressResponse.data;
+      const { data: personalDetails } = personalDetailsResponse;
+      const { data: addressDetails } = addressResponse;
 
       setImageUrls({
         aadhar: addressDetails.aadharImageURL || null,
@@ -82,7 +83,7 @@ const KYCDetails12 = () => {
         lastName: personalDetails.accountHolderLastName || "",
         occupation: personalDetails.occupation || "",
         annualIncome: personalDetails.annualIncome || "",
-        birthdate: dayjs(personalDetails.dateOfBirth) || dayjs(),
+        birthdate: personalDetails.dateOfBirth ? dayjs(personalDetails.dateOfBirth).format("YYYY-MM-DD") : dayjs().format("YYYY-MM-DD"),
         mobileNumber: personalDetails.mobileNumber || "",
         emailId: personalDetails.emailId || "",
         address: addressDetails.address || "",
@@ -100,23 +101,13 @@ const KYCDetails12 = () => {
   const fetchCustomerImages = async () => {
     try {
       const [aadhar, pan, photo] = await Promise.all([
-        axios.get("http://localhost:8080/Customer/documents/aadhar/1", {
-          responseType: "arraybuffer",
-        }),
-        axios.get("http://localhost:8080/Customer/documents/pan/1", {
-          responseType: "arraybuffer",
-        }),
-        axios.get("http://localhost:8080/Customer/documents/photo/1", {
-          responseType: "arraybuffer",
-        }),
+        axios.get("http://localhost:8080/Customer/documents/aadhar/1", { responseType: "arraybuffer" }),
+        axios.get("http://localhost:8080/Customer/documents/pan/1", { responseType: "arraybuffer" }),
+        axios.get("http://localhost:8080/Customer/documents/photo/1", { responseType: "arraybuffer" }),
       ]);
 
       if (aadhar.data && pan.data && photo.data) {
-        const [aadharUrl, panUrl, photoUrl] = [
-          URL.createObjectURL(new Blob([aadhar.data])),
-          URL.createObjectURL(new Blob([pan.data])),
-          URL.createObjectURL(new Blob([photo.data])),
-        ];
+        const [aadharUrl, panUrl, photoUrl] = [URL.createObjectURL(new Blob([aadhar.data])), URL.createObjectURL(new Blob([pan.data])), URL.createObjectURL(new Blob([photo.data]))];
 
         setImageRefs(aadharUrl, panUrl, photoUrl);
 
@@ -134,11 +125,6 @@ const KYCDetails12 = () => {
     }
   };
 
-  useEffect(() => {
-    fetchCustomerImages();
-    fetchCustomerDetails();
-  }, []);
-
   const setImageRefs = (aadharUrl, panUrl, photoUrl) => {
     const imageRefs = {
       aadhar: new Image(),
@@ -153,13 +139,9 @@ const KYCDetails12 = () => {
     imageRefs.photo.onload = () => setImageLoading(false);
   };
 
-  const handleInputChange = (field, value) => {
-    setFormData((prevData) => ({ ...prevData, [field]: value }));
-  };
+  const handleInputChange = (field, value) => setFormData((prevData) => ({ ...prevData, [field]: value }));
 
-  const handleFileUpload = (field, file) => {
-    setFormData((prevData) => ({ ...prevData, [field]: file }));
-  };
+  const handleFileUpload = (field, file) => setFormData((prevData) => ({ ...prevData, [field]: file }));
 
   const handleEditClick = (e) => {
     e.stopPropagation();
@@ -180,15 +162,12 @@ const KYCDetails12 = () => {
         nationality: formData.nationality,
       });
 
-      await axios.put(
-        "http://localhost:8080/Customer/KYC/CustomerEssentialData/1",
-        {
-          occupation: formData.occupation,
-          annualIncome: formData.annualIncome,
-          dateOfBirth: formData.birthdate.format("YYYY-MM-DD"),
-          gender: formData.gender,
-        }
-      );
+      await axios.put("http://localhost:8080/Customer/KYC/CustomerEssentialData/1", {
+        occupation: formData.occupation,
+        annualIncome: formData.annualIncome,
+        dateOfBirth: dayjs(formData.birthdate).format("YYYY-MM-DD"),
+        gender: formData.gender,
+      });
 
       const successMessage = "Data saved successfully";
       console.log(successMessage);
@@ -212,10 +191,7 @@ const KYCDetails12 = () => {
 
         const uploadPromises = formDataArray.map(async (formData, index) => {
           const fileType = ["aadhar", "pan", "photo"][index];
-          await axios.put(
-            `http://localhost:8080/Customer/documents/${fileType}/1`,
-            formData
-          );
+          await axios.put(`http://localhost:8080/Customer/documents/${fileType}/1`, formData);
         });
 
         await Promise.all(uploadPromises);
@@ -238,10 +214,7 @@ const KYCDetails12 = () => {
         const formDataFile = new FormData();
         formDataFile.append("imageFile", formData[fileType]);
 
-        await axios.put(
-          `http://localhost:8080/Customer/documents/${fileType}/1`,
-          formDataFile
-        );
+        await axios.put(`http://localhost:8080/Customer/documents/${fileType}/1`, formDataFile);
 
         const successMessage = `${fileType.toUpperCase()} uploaded successfully`;
         console.log(successMessage);
@@ -286,12 +259,7 @@ const KYCDetails12 = () => {
                       ["lastName", "Last Name"],
                       ["occupation", "Occupation"],
                       ["annualIncome", "Annual Income"],
-                      [
-                        "birthdate",
-                        "Birthdate (YYYY-MM-DD)",
-                        "text",
-                        formData.birthdate.format("YYYY-MM-DD"),
-                      ],
+                      ["birthdate", "Birthdate (YYYY-MM-DD)", "text", formData.birthdate],
                       ["mobileNumber", "Mobile Number"],
                       ["emailId", "Email ID"],
                       ["address", "Address"],
@@ -305,9 +273,7 @@ const KYCDetails12 = () => {
                         label={label}
                         fullWidth
                         value={value || formData[field] || ""}
-                        onChange={(e) =>
-                          handleInputChange(field, e.target.value)
-                        }
+                        onChange={(e) => handleInputChange(field, e.target.value)}
                         disabled={!isEditing}
                         variant="outlined"
                         margin="normal"
@@ -320,9 +286,7 @@ const KYCDetails12 = () => {
                         label="Gender"
                         id="gender"
                         value={formData.gender || ""}
-                        onChange={(e) =>
-                          handleInputChange("gender", e.target.value)
-                        }
+                        onChange={(e) => handleInputChange("gender", e.target.value)}
                         disabled={!isEditing}
                       >
                         {["Male", "Female", "Other"].map((option) => (
@@ -339,16 +303,12 @@ const KYCDetails12 = () => {
                   {["aadhar", "pan", "photo"].map((fileType) => (
                     <Stack spacing={1} key={fileType}>
                       <Typography variant="caption">
-                        {`${fileType.toUpperCase()}: ${
-                          formData[fileType]?.name || ""
-                        }`}
+                        {`${fileType.toUpperCase()}: ${formData[fileType]?.name || ""}`}
                       </Typography>
                       <input
                         type="file"
                         accept="image/*"
-                        onChange={(e) =>
-                          handleFileUpload(fileType, e.target.files[0])
-                        }
+                        onChange={(e) => handleFileUpload(fileType, e.target.files[0])}
                         disabled={!isEditing}
                       />
                       <Button
@@ -361,9 +321,7 @@ const KYCDetails12 = () => {
                           "&:hover": { backgroundColor: "#45a049" },
                         }}
                       >
-                        {imageUrls[fileType]
-                          ? "Show Image"
-                          : "No file uploaded"}
+                        {imageUrls[fileType] ? "Show Image" : "No file uploaded"}
                       </Button>
                       <Button
                         variant="contained"
