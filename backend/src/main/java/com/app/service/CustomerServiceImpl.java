@@ -7,7 +7,8 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.modelmapper.ModelMapper;
@@ -37,8 +38,11 @@ public class CustomerServiceImpl implements CustomerService{
 	@Autowired
 	private EmailService emailService;
 	
-//    @Autowired
-//    private PasswordEncoder encoder;
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+	
+//	@Autowired
+//	private PasswordEncoder encoder;
 	
 	@Override
 	public CustomerDetails registerNewCustomer(CreateNewCustomerDTO customerDTO) {
@@ -46,8 +50,8 @@ public class CustomerServiceImpl implements CustomerService{
 		customer.setAccountHolderFirstName(customerDTO.getAccountHolderFirstName());
 		customer.setAccountHolderLastName(customerDTO.getAccountHolderLastName());
 		customer.setUsername(customerDTO.getUsername());
-//		customer.setPassword(encoder.encode(customerDTO.getPassword()));  //pwd : encrypted using SHA
-		customer.setPassword(customerDTO.getPassword());  //pwd : encrypted using SHA
+		customer.setPassword(encoder.encode(customerDTO.getPassword()));  //pwd : Encode the raw password. Generally, a good encoding algorithm applies a SHA-1 or greater hash combined with an 8-byte or greater randomly generated salt.
+//		customer.setPassword(customerDTO.getPassword());
 //		System.out.println(customer.getPassword());
 		customer.setEmailId(customerDTO.getEmailId());
 		customer.setMobileNumber(customerDTO.getMobileNumber());

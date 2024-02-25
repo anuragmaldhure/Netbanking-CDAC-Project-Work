@@ -16,6 +16,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+//import javax.persistence.Temporal;
+//import javax.persistence.TemporalType;
+//
+//import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "customer_details")
@@ -61,6 +65,9 @@ public class CustomerDetails {
     @Column(name = "annual_income")
     private Double annualIncome;
 
+    
+//    @Temporal(TemporalType.DATE)
+//    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
 

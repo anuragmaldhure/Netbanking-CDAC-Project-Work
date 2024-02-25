@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dto.BankEmployeeDTO;
+import com.app.dto.NewManagerDTO;
 import com.app.dto.customer.CustomerDetailsDTO;
 import com.app.dto.customer.CustomerSavingAccountsDTO;
 import com.app.entities.BankEmployeeDetails;
@@ -106,18 +107,18 @@ public class ManagerController {
 	// Payload : emp details
 	@PostMapping("/Employees/AddNewEmployee")
 	public ResponseEntity<?> addEmpDetails(@RequestBody BankEmployeeDTO empDetails) {
-    try {
-        System.out.println("Adding new employee: " + empDetails);
-        // Call service method to add employee
-        BankEmployeeDetails savedEmployee = employeeService.addEmpDetails(empDetails);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedEmployee);
-    } catch (Exception e) {
-        // Log the error
-        System.out.println("Error adding new employee: " + e.getMessage());
-        // Return error response
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding new employee: " + e.getMessage());
-    }
-}
+	    try {
+	        System.out.println("Adding new employee: " + empDetails);
+	        // Call service method to add employee
+	        BankEmployeeDetails savedEmployee = employeeService.addEmpDetails(empDetails);
+	        return ResponseEntity.status(HttpStatus.CREATED).body(savedEmployee);
+	    } catch (Exception e) {
+	        // Log the error
+	        System.out.println("Error adding new employee: " + e.getMessage());
+	        // Return error response
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding new employee: " + e.getMessage());
+	    }
+	}
 
 	// URL : http://host:port/employees/{empId}, method : DELETE
 	// delete emp details by id
@@ -131,4 +132,23 @@ public class ManagerController {
 	            .header("Custom-Header", headerValue)
 	            .body("Employee deleted successfully");
 	}
+	
+	// URL : http://localhost:8080/AddNewManager
+	// Method : POST
+	// Payload : manager details
+	@PostMapping("/AddNewManager")   															//Excluded from Authentication and Authorization
+	public ResponseEntity<?> addManagerDetails(@RequestBody NewManagerDTO managerDetailsDTO) {
+	    try {
+	        System.out.println("Adding new manager dto: " + managerDetailsDTO);
+	        // Call service method to add manaegr
+	        ManagerDetails savedManagerDetails = managerService.addManagerDetails(managerDetailsDTO);
+	        return ResponseEntity.status(HttpStatus.CREATED).body(savedManagerDetails);
+	    } catch (Exception e) {
+	        // Log the error
+	        System.out.println("Error adding new manager: " + e.getMessage());
+	        // Return error response
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding new manager: " + e.getMessage());
+	    }
+	}
+
 }

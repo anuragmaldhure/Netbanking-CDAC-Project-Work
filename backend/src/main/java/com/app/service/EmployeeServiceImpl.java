@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,9 @@ import com.app.entities.Role;
 public class EmployeeServiceImpl implements EmployeeService{
 	@Autowired
 	private EmployeeDao empDao;
+	
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 	
 	@Override
 	public Optional<BankEmployeeDetails> getEmpDetails(Long empId) {
@@ -35,7 +39,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 		employee.setMobileNumber(empDetails.getMobileNumber());
 		employee.setEmailId(empDetails.getEmailId());
 		employee.setUsername(empDetails.getUsername());
-		employee.setPassword(empDetails.getPassword());
+		employee.setPassword(encoder.encode(empDetails.getPassword()));  //pwd : Encode the raw password. Generally, a good encoding algorithm applies a SHA-1 or greater hash combined with an 8-byte or greater randomly generated salt.
+//		employee.setPassword(empDetails.getPassword());
 		employee.setDateOfBirth(empDetails.getDateOfBirth());
 		employee.setJoiningTimestamp(new Date());
 		return empDao.save(employee);

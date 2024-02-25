@@ -43,6 +43,10 @@ public class ManagerDetails {
     @Temporal(TemporalType.TIMESTAMP)
     private Date managerCreationTimestamp;
     
+    @Column(name = "Last_Login")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastLogin;
+    
     
     public ManagerDetails(Long managerId, Role role, String managerFirstName, String managerLastName, String username,
 			String password, Date managerCreationTimestamp) {

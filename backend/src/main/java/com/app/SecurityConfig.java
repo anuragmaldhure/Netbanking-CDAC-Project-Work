@@ -9,12 +9,12 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+//import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import com.app.service.CustomUserDetailsService;
 
@@ -22,61 +22,42 @@ import com.app.service.CustomUserDetailsService;
 @EnableWebSecurity
 public class SecurityConfig{
 
-//    @Autowired
-//    private JwtAuthenticationFilter jwtFilter;
+    @Autowired
+    private JwtAuthenticationFilter jwtFilter;
 	
-	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-	    http.csrf(csrf -> csrf.disable())
-	            .authorizeHttpRequests(auth -> auth
-	                    .mvcMatchers("/**").permitAll() // Authorize everyone for all links
-	                    .mvcMatchers("/swagger-ui/**", "/v*/api-doc*/**").permitAll()
-	                    .mvcMatchers("/public", "/signup", "/signin").permitAll())
-	            .logout(logout -> logout.disable()) // Disable logout
-	            .formLogin(form -> form.disable()) // Disable form login
-	            .httpBasic(httpBasic -> httpBasic.disable()); // Disable HTTP Basic authentication
-	    return http.build();
-	}
 
 
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//
-//        http.csrf(csrf -> csrf.disable())
-//                .authorizeHttpRequests(auth -> auth
-//                        .mvcMatchers("/Manager").hasRole("MANAGER")
-//                        .mvcMatchers("/Employee").hasRole("EMPLOYEE")
-//                        .mvcMatchers("/Customer").hasRole("CUSTOMER")
-////                        .mvcMatchers("/users/signup", "/users/signin", "/cities", "/flights").permitAll()
-//                        .mvcMatchers("/swagger-ui/**","/v*/api-doc*/**").permitAll()
-//
-//                        .mvcMatchers("/public", "/signup", "/signin").permitAll()
-//                        .anyRequest().authenticated())
-//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-////        http.formLogin(Customizer.withDefaults());
-//        return http.build();
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        http.csrf(csrf -> csrf.disable()) // Disable CSRF protection for simplicity
+                .authorizeHttpRequests(auth -> auth
+//                    .antMatchers("/**").permitAll() // Allow all requests, I have used for testing endpoints without authorization
+                      	.mvcMatchers("/signup", "/signin", "/public", "/logout", "/Manager/AddNewManager").permitAll()
+                        .mvcMatchers("/Manager/**").hasAuthority("MANAGER")
+                        .mvcMatchers("/Employee/**").hasAuthority("EMPLOYEE")
+                        .mvcMatchers("/Customer/**").hasAuthority("CUSTOMER")
+                        .mvcMatchers("/swagger-ui/**","/v*/api-doc*/**").permitAll()
+                        .anyRequest().authenticated()
+                	.and()
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class));
+        return http.build();
+    }
     	
-//      http.csrf(csrf -> csrf.disable())
-//      	.authorizeHttpRequests(auth -> auth
-//	            .mvcMatchers("/Manager/**").hasRole("MANAGER")
-//	            .mvcMatchers("/Employee/**").hasRole("EMPLOYEE")
-//	            .mvcMatchers("/Customer/**").hasRole("CUSTOMER")
-//	            .mvcMatchers("/public", "/signup", "/signin").permitAll()
-//	            .mvcMatchers("/swagger-ui/**", "/v*/api-doc*/**").permitAll()
-//	            .anyRequest().authenticated()
-//	        .and()
-//	        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class));
-//    	return http.build();
-//    }
 
     @Bean
     public UserDetailsService userDetailsService() {
         return new CustomUserDetailsService();
     }
 
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return NoOpPasswordEncoder.getInstance();ß
+//    }
+    
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+    public BCryptPasswordEncoder passwordEncoder() {
+    	return new BCryptPasswordEncoder();
     }
 
     @Bean
