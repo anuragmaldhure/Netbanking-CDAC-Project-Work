@@ -98,12 +98,12 @@ function EmployeeSideNavigationMenu() {
           >
             <div className="accordion-body">
               <div className="list-group">
-                <a
-                  href="."
-                  className="list-group-item list-group-item-action list-group-item-danger"
-                >
-                  Log Out
-                </a>
+                <Link
+                    to="/logout"
+                    className="list-group-item list-group-item-action list-group-item-danger"
+                  >
+                    Log Out
+                </Link>
               </div>
             </div>
           </div>
