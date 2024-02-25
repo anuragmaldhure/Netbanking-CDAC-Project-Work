@@ -23,11 +23,8 @@ import {
   CloudUpload as CloudUploadIcon,
 } from "@mui/icons-material";
 import dayjs from "dayjs";
-import { useRef } from "react";
-
-import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import moment from "moment";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import CustomerTopNavigationBar from "../../../components/CustomerTopNavigationBar";
 import CustomerSideNavigationMenu from "../../../components/CustomerSideNavigationMenu";
@@ -36,24 +33,8 @@ const KYCDetails12 = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [imageLoading, setImageLoading] = useState(true); // New state for image loading
-
-  const imageRefs = useRef({
-    aadharCard: null,
-    panCard: null,
-    photo: null,
-  });
-
-
-  const openDialog = (image) => {
-    setSelectedImage(image);
-    setIsDialogOpen(true);
-  };
-
-  const closeDialog = () => {
-    setSelectedImage(null);
-    setIsDialogOpen(false);
-  };
+  const [imageLoading, setImageLoading] = useState(true);
+  const notify = (message) => toast.success(message);
 
   const [formData, setFormData] = useState({
     firstName: null,
@@ -75,26 +56,24 @@ const KYCDetails12 = () => {
   });
 
   const [imageUrls, setImageUrls] = useState({
-    aadharCard: null,
-    panCard: null,
+    aadhar: null,
+    pan: null,
     photo: null,
   });
 
   const fetchCustomerDetails = async () => {
     try {
-      const personalDetailsResponse = await axios.get(
-        "http://localhost:8080/Customer/Account/1"
-      );
-      const personalDetails = personalDetailsResponse.data;
+      const [personalDetailsResponse, addressResponse] = await Promise.all([
+        axios.get("http://localhost:8080/Customer/Account/1"),
+        axios.get("http://localhost:8080/Customer/KYC/address/1"),
+      ]);
 
-      const addressResponse = await axios.get(
-        "http://localhost:8080/Customer/KYC/address/1"
-      );
+      const personalDetails = personalDetailsResponse.data;
       const addressDetails = addressResponse.data;
 
       setImageUrls({
-        aadharCard: addressDetails.aadharCardImageURL || null,
-        panCard: addressDetails.panCardImageURL || null,
+        aadhar: addressDetails.aadharImageURL || null,
+        pan: addressDetails.panImageURL || null,
         photo: addressDetails.photoImageURL || null,
       });
 
@@ -103,7 +82,7 @@ const KYCDetails12 = () => {
         lastName: personalDetails.accountHolderLastName || "",
         occupation: personalDetails.occupation || "",
         annualIncome: personalDetails.annualIncome || "",
-        birthdate: personalDetails.dateOfBirth || null,
+        birthdate: dayjs(personalDetails.dateOfBirth) || dayjs(),
         mobileNumber: personalDetails.mobileNumber || "",
         emailId: personalDetails.emailId || "",
         address: addressDetails.address || "",
@@ -118,39 +97,105 @@ const KYCDetails12 = () => {
     }
   };
 
+  const fetchCustomerImages = async () => {
+    try {
+      const [aadhar, pan, photo] = await Promise.all([
+        axios.get("http://localhost:8080/Customer/documents/aadhar/1", {
+          responseType: "arraybuffer",
+        }),
+        axios.get("http://localhost:8080/Customer/documents/pan/1", {
+          responseType: "arraybuffer",
+        }),
+        axios.get("http://localhost:8080/Customer/documents/photo/1", {
+          responseType: "arraybuffer",
+        }),
+      ]);
+
+      if (aadhar.data && pan.data && photo.data) {
+        const [aadharUrl, panUrl, photoUrl] = [
+          URL.createObjectURL(new Blob([aadhar.data])),
+          URL.createObjectURL(new Blob([pan.data])),
+          URL.createObjectURL(new Blob([photo.data])),
+        ];
+
+        setImageRefs(aadharUrl, panUrl, photoUrl);
+
+        setImageUrls({
+          aadhar: aadharUrl,
+          pan: panUrl,
+          photo: photoUrl,
+        });
+        setSelectedImage(photoUrl);
+      } else {
+        console.log("No files uploaded. Upload now!");
+      }
+    } catch (error) {
+      console.error("Error fetching customer images:", error);
+    }
+  };
+
   useEffect(() => {
+    fetchCustomerImages();
     fetchCustomerDetails();
   }, []);
 
-  const handleInputChange = (field, value) => {
-    if (field === "birthdate") {
-      value = value ? moment(value) : null;
-    }
+  const setImageRefs = (aadharUrl, panUrl, photoUrl) => {
+    const imageRefs = {
+      aadhar: new Image(),
+      pan: new Image(),
+      photo: new Image(),
+    };
 
-    setFormData((prevData) => ({
-      ...prevData,
-      [field]: value,
-    }));
+    imageRefs.aadhar.src = aadharUrl;
+    imageRefs.pan.src = panUrl;
+    imageRefs.photo.src = photoUrl;
+
+    imageRefs.photo.onload = () => setImageLoading(false);
+  };
+
+  const handleInputChange = (field, value) => {
+    setFormData((prevData) => ({ ...prevData, [field]: value }));
   };
 
   const handleFileUpload = (field, file) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [field]: file,
-    }));
+    setFormData((prevData) => ({ ...prevData, [field]: file }));
   };
 
-  const handleEditClick = () => {
+  const handleEditClick = (e) => {
+    e.stopPropagation();
     setIsEditing(true);
   };
 
-  const handleSaveClick = async () => {
+  const handleSaveClick = async (e) => {
+    e.stopPropagation();
     setIsEditing(false);
     console.log("Form data saved:", formData);
 
     try {
-      await axios.put("http://localhost:8080/Customer/Account/1", formData);
-      await handleUploadClick();
+      await axios.put("http://localhost:8080/Customer/KYC/address/1", {
+        address: formData.address,
+        city: formData.city,
+        state: formData.state,
+        pinCode: formData.pincode,
+        nationality: formData.nationality,
+      });
+
+      await axios.put(
+        "http://localhost:8080/Customer/KYC/CustomerEssentialData/1",
+        {
+          occupation: formData.occupation,
+          annualIncome: formData.annualIncome,
+          dateOfBirth: formData.birthdate.format("YYYY-MM-DD"),
+          gender: formData.gender,
+        }
+      );
+
+      const successMessage = "Data saved successfully";
+      console.log(successMessage);
+      notify(successMessage);
+
+      await fetchCustomerDetails();
+      await fetchCustomerImages();
     } catch (error) {
       console.error("Error saving data:", error);
     }
@@ -159,84 +204,66 @@ const KYCDetails12 = () => {
   const handleUploadClick = async () => {
     if (isEditing) {
       try {
-        const formDataAadhar = new FormData();
-        const formDataPan = new FormData();
-        const formDataPhoto = new FormData();
+        const formDataArray = [new FormData(), new FormData(), new FormData()];
 
-        formDataAadhar.append("imageFile", formData.aadharCard);
-        formDataPan.append("imageFile", formData.panCard);
-        formDataPhoto.append("imageFile", formData.photo);
+        formDataArray[0].append("imageFile", formData.aadhar);
+        formDataArray[1].append("imageFile", formData.pan);
+        formDataArray[2].append("imageFile", formData.photo);
 
-        await axios.put(
-          "http://localhost:8080/Customer/documents/aadhar/1",
-          formDataAadhar
-        );
-        await axios.put(
-          "http://localhost:8080/Customer/documents/pan/1",
-          formDataPan
-        );
-        await axios.put(
-          "http://localhost:8080/Customer/documents/photo/1",
-          formDataPhoto
-        );
+        const uploadPromises = formDataArray.map(async (formData, index) => {
+          const fileType = ["aadhar", "pan", "photo"][index];
+          await axios.put(
+            `http://localhost:8080/Customer/documents/${fileType}/1`,
+            formData
+          );
+        });
+
+        await Promise.all(uploadPromises);
+
+        const successMessage = "All files uploaded successfully";
+        console.log(successMessage);
+        notify(successMessage);
 
         await fetchCustomerDetails();
+        await fetchCustomerImages();
       } catch (error) {
         console.error("Error uploading files:", error);
       }
     }
   };
-  // Inside the useEffect for fetching customer images
-  useEffect(() => {
-    const fetchCustomerImages = async () => {
+
+  const handleUploadClicked = async (fileType) => {
+    if (isEditing) {
       try {
-        const [aadharCard, panCard, photo] = await Promise.all([
-          axios.get("http://localhost:8080/Customer/documents/aadhar/1", {
-            responseType: "arraybuffer",
-          }),
-          axios.get("http://localhost:8080/Customer/documents/pan/1", {
-            responseType: "arraybuffer",
-          }),
-          axios.get("http://localhost:8080/Customer/documents/photo/1", {
-            responseType: "arraybuffer",
-          }),
-        ]);
+        const formDataFile = new FormData();
+        formDataFile.append("imageFile", formData[fileType]);
 
-        if (aadharCard.data && panCard.data && photo.data) {
-          const aadharCardUrl = URL.createObjectURL(new Blob([aadharCard.data]));
-          const panCardUrl = URL.createObjectURL(new Blob([panCard.data]));
-          const photoUrl = URL.createObjectURL(new Blob([photo.data]));
+        await axios.put(
+          `http://localhost:8080/Customer/documents/${fileType}/1`,
+          formDataFile
+        );
 
-          imageRefs.current = {
-            aadharCard: new Image(),
-            panCard: new Image(),
-            photo: new Image(),
-          };
+        const successMessage = `${fileType.toUpperCase()} uploaded successfully`;
+        console.log(successMessage);
+        notify(successMessage);
 
-          imageRefs.current.aadharCard.src = aadharCardUrl;
-          imageRefs.current.panCard.src = panCardUrl;
-          imageRefs.current.photo.src = photoUrl;
-
-          // Set the loading indicator to false when all images are loaded
-          imageRefs.current.photo.onload = () => setImageLoading(false);
-
-          setImageUrls({
-            aadharCard: aadharCardUrl,
-            panCard: panCardUrl,
-            photo: photoUrl,
-          });
-
-          setSelectedImage(photoUrl);
-        } else {
-          console.log("No files uploaded. Upload now!");
-        }
+        await fetchCustomerDetails();
+        await fetchCustomerImages();
       } catch (error) {
-        console.error("Error fetching customer images:", error);
+        console.error(`Error uploading ${fileType} file:`, error);
       }
-    };
+    }
+  };
 
-    fetchCustomerImages();
-  }, []);
+  const openDialog = (image) => {
+    setSelectedImage(image);
+    setIsDialogOpen(true);
+  };
+
+  const closeDialog = () => {
+    setSelectedImage(null);
+    setIsDialogOpen(false);
+  };
 
   return (
     <div>
@@ -254,158 +281,39 @@ const KYCDetails12 = () => {
               <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
                   <Stack spacing={2}>
-                    <TextField
-                      label="First Name"
-                      fullWidth
-                      value={formData.firstName || ""}
-                      onChange={(e) =>
-                        handleInputChange("firstName", e.target.value)
-                      }
-                      disabled={!isEditing}
-                      variant="outlined"
-                      margin="normal"
-                    />
-
-                    <TextField
-                      label="Last Name"
-                      fullWidth
-                      value={formData.lastName || ""}
-                      onChange={(e) =>
-                        handleInputChange("lastName", e.target.value)
-                      }
-                      disabled={!isEditing}
-                      variant="outlined"
-                      margin="normal"
-                    />
-
-                    <TextField
-                      label="Occupation"
-                      fullWidth
-                      value={formData.occupation || ""}
-                      onChange={(e) =>
-                        handleInputChange("occupation", e.target.value)
-                      }
-                      disabled={!isEditing}
-                      variant="outlined"
-                      margin="normal"
-                    />
-
-                    <TextField
-                      label="Annual Income"
-                      fullWidth
-                      value={formData.annualIncome || ""}
-                      onChange={(e) =>
-                        handleInputChange("annualIncome", e.target.value)
-                      }
-                      disabled={!isEditing}
-                      variant="outlined"
-                      margin="normal"
-                    />
-
-                    <LocalizationProvider dateAdapter={AdapterMoment}>
-                      <DatePicker
-                        label="Birthdate"
-                        value={
-                          formData.birthdate ? moment(formData.birthdate) : null
+                    {[
+                      ["firstName", "First Name"],
+                      ["lastName", "Last Name"],
+                      ["occupation", "Occupation"],
+                      ["annualIncome", "Annual Income"],
+                      [
+                        "birthdate",
+                        "Birthdate (YYYY-MM-DD)",
+                        "text",
+                        formData.birthdate.format("YYYY-MM-DD"),
+                      ],
+                      ["mobileNumber", "Mobile Number"],
+                      ["emailId", "Email ID"],
+                      ["address", "Address"],
+                      ["city", "City"],
+                      ["state", "State"],
+                      ["pincode", "Pincode"],
+                      ["nationality", "Nationality"],
+                    ].map(([field, label, type = "text", value]) => (
+                      <TextField
+                        key={field}
+                        label={label}
+                        fullWidth
+                        value={value || formData[field] || ""}
+                        onChange={(e) =>
+                          handleInputChange(field, e.target.value)
                         }
-                        onChange={(date) =>
-                          handleInputChange("birthdate", date)
-                        }
-                        TextFieldComponent={(props) => (
-                          <TextField
-                            {...props}
-                            fullWidth
-                            variant="outlined"
-                            margin="normal"
-                          />
-                        )}
                         disabled={!isEditing}
+                        variant="outlined"
+                        margin="normal"
+                        type={type}
                       />
-                    </LocalizationProvider>
-
-                    <TextField
-                      label="Mobile Number"
-                      fullWidth
-                      value={formData.mobileNumber || ""}
-                      onChange={(e) =>
-                        handleInputChange("mobileNumber", e.target.value)
-                      }
-                      disabled={!isEditing}
-                      variant="outlined"
-                      margin="normal"
-                    />
-
-                    <TextField
-                      label="Email ID"
-                      fullWidth
-                      value={formData.emailId || ""}
-                      onChange={(e) =>
-                        handleInputChange("emailId", e.target.value)
-                      }
-                      disabled={!isEditing}
-                      variant="outlined"
-                      margin="normal"
-                    />
-
-                    <TextField
-                      label="Address"
-                      fullWidth
-                      value={formData.address || ""}
-                      onChange={(e) =>
-                        handleInputChange("address", e.target.value)
-                      }
-                      disabled={!isEditing}
-                      variant="outlined"
-                      margin="normal"
-                    />
-
-                    <TextField
-                      label="City"
-                      fullWidth
-                      value={formData.city || ""}
-                      onChange={(e) =>
-                        handleInputChange("city", e.target.value)
-                      }
-                      disabled={!isEditing}
-                      variant="outlined"
-                      margin="normal"
-                    />
-
-                    <TextField
-                      label="State"
-                      fullWidth
-                      value={formData.state || ""}
-                      onChange={(e) =>
-                        handleInputChange("state", e.target.value)
-                      }
-                      disabled={!isEditing}
-                      variant="outlined"
-                      margin="normal"
-                    />
-
-                    <TextField
-                      label="Pincode"
-                      fullWidth
-                      value={formData.pincode || ""}
-                      onChange={(e) =>
-                        handleInputChange("pincode", e.target.value)
-                      }
-                      disabled={!isEditing}
-                      variant="outlined"
-                      margin="normal"
-                    />
-
-                    <TextField
-                      label="Nationality"
-                      fullWidth
-                      value={formData.nationality || ""}
-                      onChange={(e) =>
-                        handleInputChange("nationality", e.target.value)
-                      }
-                      disabled={!isEditing}
-                      variant="outlined"
-                      margin="normal"
-                    />
+                    ))}
                     <FormControl fullWidth variant="outlined" margin="normal">
                       <InputLabel htmlFor="gender">Gender</InputLabel>
                       <Select
@@ -417,147 +325,57 @@ const KYCDetails12 = () => {
                         }
                         disabled={!isEditing}
                       >
-                        <MenuItem value="Male">Male</MenuItem>
-                        <MenuItem value="Female">Female</MenuItem>
-                        <MenuItem value="Other">Other</MenuItem>
+                        {["Male", "Female", "Other"].map((option) => (
+                          <MenuItem key={option} value={option}>
+                            {option}
+                          </MenuItem>
+                        ))}
                       </Select>
                     </FormControl>
                   </Stack>
                 </Grid>
 
-                {/* Dialog for displaying the image */}
-                <Dialog open={isDialogOpen} onClose={closeDialog}>
-                  <DialogTitle>Uploaded Image</DialogTitle>
-                  <DialogContent>
-                    {selectedImage && (
-                      <img
-                        src={selectedImage}
-                        alt="Uploaded Img"
-                        style={{ maxWidth: "100%" }}
-                      />
-                    )}
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={closeDialog} color="primary">
-                      Close
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-                {/* File Upload Fields */}
                 <Grid item xs={12} md={6}>
-                  <Stack spacing={1}>
-                    <Typography variant="caption">
-                      AADHAAR-CARD:{" "}
-                      {formData.aadharCard && formData.aadharCard.name}
-                    </Typography>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) =>
-                        handleFileUpload("aadharCard", e.target.files[0])
-                      }
-                      disabled={!isEditing}
-                    />
-                    <Button
-                      onClick={() => openDialog(imageUrls.aadharCard)}
-                      variant="contained"
-                      color="primary"
-                      sx={{
-                        backgroundColor: "#4CAF50",
-                        color: "white",
-                        "&:hover": {
-                          backgroundColor: "#45a049",
-                        },
-                      }}
-                    >
-                      {imageUrls.aadharCard ? "Show Image" : "No file uploaded"}
-                    </Button>
-
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => handleUploadClick("aadharCard")}
-                      sx={{ marginTop: 1 }}
-                      disabled={!isEditing}
-                    >
-                      Upload AADHAAR-CARD
-                    </Button>
-                  </Stack>
-
-                  <Stack spacing={1}>
-                    <Typography variant="caption">
-                      PAN-CARD: {formData.panCard && formData.panCard.name}
-                    </Typography>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) =>
-                        handleFileUpload("panCard", e.target.files[0])
-                      }
-                      disabled={!isEditing}
-                    />
-                    <Button
-                      onClick={() => openDialog(imageUrls.panCard)}
-                      variant="contained"
-                      color="primary"
-                      sx={{
-                        backgroundColor: "#4CAF50",
-                        color: "white",
-                        "&:hover": {
-                          backgroundColor: "#45a049",
-                        },
-                      }}
-                    >
-                      {imageUrls.panCard ? "Show Image" : "No file uploaded"}
-                    </Button>
-
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => handleUploadClick("panCard")}
-                      sx={{ marginTop: 1 }}
-                      disabled={!isEditing}
-                    >
-                      Upload PAN-CARD
-                    </Button>
-                  </Stack>
-
-                  <Stack spacing={1}>
-                    <Typography variant="caption">
-                      PROFILE-PHOTO: {formData.photo && formData.photo.name}
-                    </Typography>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) =>
-                        handleFileUpload("photo", e.target.files[0])
-                      }
-                      disabled={!isEditing}
-                    />
-                    <Button
-                      onClick={() => openDialog(imageUrls.photo)}
-                      variant="contained"
-                      color="primary"
-                      sx={{
-                        backgroundColor: "#4CAF50",
-                        color: "white",
-                        "&:hover": {
-                          backgroundColor: "#45a049",
-                        },
-                      }}
-                    >
-                      {imageUrls.photo ? "Show Image" : "No file uploaded"}
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => handleUploadClick("photo")}
-                      sx={{ marginTop: 1 }}
-                      disabled={!isEditing}
-                    >
-                      Upload PROFILE-PHOTO
-                    </Button>
-                  </Stack>
+                  {["aadhar", "pan", "photo"].map((fileType) => (
+                    <Stack spacing={1} key={fileType}>
+                      <Typography variant="caption">
+                        {`${fileType.toUpperCase()}: ${
+                          formData[fileType]?.name || ""
+                        }`}
+                      </Typography>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) =>
+                          handleFileUpload(fileType, e.target.files[0])
+                        }
+                        disabled={!isEditing}
+                      />
+                      <Button
+                        onClick={() => openDialog(imageUrls[fileType])}
+                        variant="contained"
+                        color="primary"
+                        sx={{
+                          backgroundColor: "#4CAF50",
+                          color: "white",
+                          "&:hover": { backgroundColor: "#45a049" },
+                        }}
+                      >
+                        {imageUrls[fileType]
+                          ? "Show Image"
+                          : "No file uploaded"}
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => handleUploadClicked(fileType)}
+                        sx={{ marginTop: 1 }}
+                        disabled={!isEditing}
+                      >
+                        Upload {fileType.toUpperCase()}
+                      </Button>
+                    </Stack>
+                  ))}
                 </Grid>
 
                 <Grid item xs={12}>
@@ -584,7 +402,7 @@ const KYCDetails12 = () => {
                         sx={{ marginLeft: 1 }}
                       >
                         <CloudUploadIcon />
-                        Upload
+                        Upload All
                       </Button>
                     )}
                   </Box>
@@ -594,6 +412,25 @@ const KYCDetails12 = () => {
           </Paper>
         </Box>
       </div>
+
+      {/* Dialog for displaying the image */}
+      <Dialog open={isDialogOpen} onClose={closeDialog}>
+        <DialogTitle>Uploaded Image</DialogTitle>
+        <DialogContent>
+          {selectedImage && (
+            <img
+              src={selectedImage}
+              alt="Uploaded Img"
+              style={{ maxWidth: "100%" }}
+            />
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeDialog} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
