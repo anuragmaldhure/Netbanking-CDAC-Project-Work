@@ -70,12 +70,13 @@
 
 .showPasswordButton {
   position: absolute;
-  top: 50%;
-  right: 10px;
+  top: 40%;
+  right: 18px;
   transform: translateY(-50%);
   background-color: transparent;
   border: none;
   cursor: pointer;
+  color: blue;
 }
 
 .loginCenterButtons {

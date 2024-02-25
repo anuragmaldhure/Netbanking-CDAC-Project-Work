@@ -6,6 +6,7 @@ import { Route, Routes } from "react-router-dom";
 import PublicPage from "./pages/Public/PublicPage";
 import Login from "./pages/Public/Login";
 import Register from "./pages/Public/Register";
+import Logout from "./pages/Public/Logout";
 
 import ViewAccountBalance5 from "./pages/Customer/ViewAccountBalance5";
 import WithdrawMoney6 from "./pages/Customer/WithdrawMoney6";
@@ -49,6 +50,7 @@ function App() {
         <Route path="/public" element={<PublicPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/logout" element={< Logout/>} />
 
         {/* Public Page Routes */}
         <Route path="/Signup" element={<SignUpForm />} />

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import Image from "../../assets/images/obj.jpg";
 import styles from "./Login.module.css";
 
@@ -11,42 +12,50 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [loginSuccess, setLoginSuccess] = useState(false);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!username.trim() || !password.trim()) {
       toast.error("Please enter both username and password");
       return;
     }
 
-    // Simulating successful login
-    // Here you can replace this with your actual login authentication logic
-    console.log(
-      "Logging in with username:",
-      username,
-      "and password:",
-      password
-    );
+    try {
+      const response = await axios.post("http://localhost:8080/signin", {
+        username: username,
+        password: password,
+      });
+      const token = response.data.jwt;
+      const role = response.data.role;
 
-    // Set loginSuccess to true on successful login
-    setLoginSuccess(true);
-  };
+      sessionStorage.setItem("jwt", token);
 
-  useEffect(() => {
-    // Use the effect to handle successful login and navigation
-    if (loginSuccess) {
-      // Show toast for 2 seconds
-      toast.success("Login successful", { autoClose: 2000 });
+      const responseUser = await axios.get("http://localhost:8080/Customer/User/GetMyDetails", {
+      });
+      sessionStorage.setItem("user", responseUser);
 
-      // Navigate to /Customer/Account/ViewAccountBalance after 2 seconds
-      const timeoutId = setTimeout(() => {
-        navigate("/Customer/Account/ViewAccountBalance");
-      }, 2000);
+      toast.success(response.data.mesg);
 
-      // Cleanup the timeout to prevent unexpected behavior
-      return () => clearTimeout(timeoutId);
+      switch (role) {
+        case "CUSTOMER":
+          navigate("/Customer/Account/ViewAccountBalance");
+          break;
+        case "EMPLOYEE":
+          navigate("/employee-dashboard");
+          break;
+        case "MANAGER":
+          navigate("/manager-dashboard");
+          break;
+        default:
+          navigate("/"); // Redirect to default page for unknown roles
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        toast.error("Invalid username or password");
+      } else {
+        toast.error("An error occurred. Please try again later.");
+      }
     }
-  }, [loginSuccess, navigate]);
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -97,10 +106,7 @@ const Login = () => {
             <div className={styles.loginBottom}>
               <p className={styles.loginBottomP}>
                 Don't have an account?{" "}
-                <a
-                  href="http://localhost:3000/Signup"
-                  className={styles.signUpLink}
-                >
+                <a href="http://localhost:3000/Signup" className={styles.signUpLink}>
                   Sign Up
                 </a>
               </p>

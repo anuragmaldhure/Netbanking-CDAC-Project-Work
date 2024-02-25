@@ -8,19 +8,19 @@ const SignUpForm = () => {
   const navigate = useNavigate();
 
   const [formValues, setFormValues] = useState({
-    fName: "",
-    lName: "",
-    email: "",
-    phone: "",
+    accountHolderFirstName: "",
+    accountHolderLastName: "",
+    username: "",
     password: "",
-    confirmPassword: "",
+    emailId: "",
+    mobileNumber: ""
   });
 
   // Add state for animation classes
   const [animationClasses, setAnimationClasses] = useState({
     cardContainer: "",
     formContainer: "",
-    outroOverlay: "",
+    outroOverlay: ""
   });
 
   useEffect(() => {
@@ -43,21 +43,46 @@ const SignUpForm = () => {
 
     setFormValues((prevValues) => ({
       ...prevValues,
-      [fieldName]: value,
+      [fieldName]: value
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+        // Check if passwords match
+        if (formValues.password !== formValues.confirmPassword) {
+          toast.error("Passwords do not match");
+          return;
+        }
+
+    toast.info("Processing ... Please wait!");
+
     // Perform the desired action on successful form submission
     console.log("Form submitted successfully");
 
-    // Trigger animation classes on form submission
-    setAnimationClasses({
-      cardContainer: styles.UpAnimationClass,
-      formContainer: styles.RightAnimationClass,
-      outroOverlay: styles.UpAnimationClass,
-    });
+    try {
+      const response = await fetch("http://localhost:8080/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formValues)
+      });
+
+      if (response.ok) {
+        // Trigger animation classes on form submission
+        setAnimationClasses({
+          cardContainer: styles.UpAnimationClass,
+          formContainer: styles.RightAnimationClass,
+          outroOverlay: styles.UpAnimationClass
+        });
+      } else {
+        throw new Error("Failed to create account");
+      }
+    } catch (error) {
+      console.error("Error creating account:", error);
+    }
   };
 
   return (
@@ -75,7 +100,7 @@ const SignUpForm = () => {
             alt=""
           />
           <p className={styles.quote}>
-            Sign up today to get exciting offers..!
+            Sign up today to get exciting offers and best in-class banking experience!
           </p>
           <a href="#btm" className={styles.mobileBtmNav}>
             <img src="../../assets/images/dbl-arrow.png" alt="" />
@@ -91,29 +116,35 @@ const SignUpForm = () => {
               {
                 label: "First name",
                 type: "text",
-                name: "fName",
-                id: "f-name",
+                name: "accountHolderFirstName",
+                id: "f-name"
               },
               {
                 label: "Last name",
                 type: "text",
-                name: "lName",
-                id: "l-name",
+                name: "accountHolderLastName",
+                id: "l-name"
               },
-              { label: "E-mail", type: "email", name: "email", id: "mail" },
-              { label: "Phone", type: "tel", name: "phone", id: "phone" },
+              {
+                label: "Username",
+                type: "text",
+                name: "username",
+                id: "username"
+              },
+              { label: "E-mail", type: "email", name: "emailId", id: "mail" },
               {
                 label: "Password",
                 type: "password",
                 name: "password",
-                id: "user-password",
+                id: "user-password"
               },
               {
                 label: "Confirm Password",
                 type: "password",
                 name: "confirmPassword",
-                id: "user-password-confirm",
+                id: "user-password-confirm"
               },
+              { label: "Phone", type: "tel", name: "mobileNumber", id: "phone" }
             ].map((inputField, index) => (
               <div className={styles.inputContainer} key={index}>
                 <label htmlFor={inputField.id}></label>
@@ -161,14 +192,6 @@ const SignUpForm = () => {
           alt=""
           className={`${styles.signedUpIllustration} ${animationClasses.RightAnimationClass}`}
         />
-
-        <div className={styles.authorLink}>
-          &copy;&nbsp;
-          <a href="https://www.0xabdulkhalid.ml/">0xabdulkhalid</a> |
-          <a href="https://www.github.com/0xabdulkhalid/basket-sign-up-form/">
-            Source Code
-          </a>
-        </div>
       </section>
     </div>
   );
