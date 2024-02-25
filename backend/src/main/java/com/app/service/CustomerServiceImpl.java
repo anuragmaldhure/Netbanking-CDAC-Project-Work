@@ -129,12 +129,19 @@ public class CustomerServiceImpl implements CustomerService{
 
         // Perform any necessary validations or checks before updating the password
         // Check if the old password matches the user's current password
-        if (!customer.getPassword().equals(currentPassword)) {
+        
+//		  Verify the encoded password obtained from storage matches the submitted raw password after 
+//        it too is encoded. Returns true if the passwords match, false if they do not. 
+//        The stored password itself is never decoded.
+
+//        if (!customer.getPassword().equals(currentPassword)) {
+        
+        if(!encoder.matches(currentPassword, customer.getPassword())) {
             throw new RuntimeException("Your current password does not match!");
         }
 
         // Update the password
-        customer.setPassword(newPassword);
+        customer.setPassword(encoder.encode(newPassword));
 
         // Save the updated customer
         customerDao.save(customer);
