@@ -44,4 +44,13 @@ public class ManagerService {
 		newManager.setManagerCreationTimestamp(new Date());
 		return managerDao.save(newManager);
 	}
+
+	public void updateLastLogin(Long managerId) {
+		ManagerDetails manager = managerDao.findById(managerId)
+                .orElseThrow(() -> new EntityNotFoundException("Manager not found with ID: " + managerId));
+		
+		manager.setLastLogin(new Date(System.currentTimeMillis()));
+		// Save the updated entity
+		managerDao.save(manager);		
+	}
 }

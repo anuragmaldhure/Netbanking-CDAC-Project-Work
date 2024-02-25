@@ -76,6 +76,22 @@ public class CustomerController {
 		System.out.println("in ctor of " + getClass());
 	}
 	
+//  put last login -> needs to be called from Frontend everytime user logs in
+	@PutMapping("/updateLastLogin/{customerId}")
+	public  ResponseEntity<String>  updateLastLogin(@PathVariable Long customerId) {
+		System.out.println("in put last login of logged in customer "+ customerId);	
+		try {
+			customerService.updateLastLogin(customerId);		
+			return ResponseEntity.ok("Successfully updated last login of customer id: " + customerId );
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in updating last login ...");
+		}
+	}
+	
 //  register a new customer
 	@PostMapping("/CreateNewAccount")
 	public CustomerDetails registerNewCustomer(@RequestBody CreateNewCustomerDTO customerDTO) {

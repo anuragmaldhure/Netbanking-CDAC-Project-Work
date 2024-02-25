@@ -121,6 +121,15 @@ public class ManagerDetails {
     public void setManagerCreationTimestamp(Date managerCreationTimestamp) {
         this.managerCreationTimestamp = managerCreationTimestamp;
     }
+    
+
+	public Date getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(Date lastLogin) {
+		this.lastLogin = lastLogin;
+	}
 
 	@Override
 	public String toString() {
@@ -128,7 +137,8 @@ public class ManagerDetails {
 		builder.append("ManagerDetails [managerId=").append(managerId).append(", role=").append(role)
 				.append(", managerFirstName=").append(managerFirstName).append(", managerLastName=")
 				.append(managerLastName).append(", username=").append(username).append(", password=").append(password)
-				.append(", managerCreationTimestamp=").append(managerCreationTimestamp).append("]");
+				.append(", managerCreationTimestamp=").append(managerCreationTimestamp).append(", lastLogin=")
+				.append(lastLogin).append("]");
 		return builder.toString();
 	}
 }

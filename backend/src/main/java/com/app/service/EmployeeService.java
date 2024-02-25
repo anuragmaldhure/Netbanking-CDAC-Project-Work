@@ -17,5 +17,7 @@ public interface EmployeeService {
 	List<BankEmployeeDetails> getAllEmployeeDetails();
 
 	Optional<BankEmployeeDetails> getEmployeeDetailsByUsername(String username);
+
+	void updateLastLogin(Long employeeId);
     
 }

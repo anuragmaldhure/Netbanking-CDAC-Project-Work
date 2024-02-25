@@ -74,4 +74,14 @@ public class EmployeeServiceImpl implements EmployeeService{
 	        throw new EntityNotFoundException("Employee not found with username: " + username);
 	    }
 	}
+
+	@Override
+	public void updateLastLogin(Long employeeId) {
+		BankEmployeeDetails bankEmployee = empDao.findById(employeeId)
+                .orElseThrow(() -> new EntityNotFoundException("Employee not found with ID: " + employeeId));
+		
+		bankEmployee.setLastLogin(new Date(System.currentTimeMillis()));
+		// Save the updated entity
+	    empDao.save(bankEmployee);		
+	}
 }

@@ -35,5 +35,7 @@ public interface CustomerService {
 
 	Optional<CustomerDetailsDTO> getCustomerDetailsByUsername(String username);
 
+	void updateLastLogin(Long customerId);
+
 //	Optional<CustomerDetails> findByCustomerId(Long customerId);
 }

@@ -278,11 +278,14 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 
-//	@Override
-//	public Optional<CustomerDetails> findByCustomerId(Long customerId) {
-//		CustomerDetails customer = customerDao.findById(customerId)
-//                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
-//		return Optional.of(customer);
-//	}
+	@Override
+	public void updateLastLogin(Long customerId) {
+		CustomerDetails customer = customerDao.findById(customerId)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
+		
+		customer.setLastLoginTimestamp(new Date(System.currentTimeMillis()));
+		 // Save the updated entity
+	     customerDao.save(customer);	
+	}
 
 }

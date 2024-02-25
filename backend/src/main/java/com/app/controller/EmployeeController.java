@@ -62,6 +62,22 @@ public class EmployeeController {
 		System.out.println("in ctor of " + getClass());
 	}
 	
+//  put last login -> needs to be called from Frontend everytime user logs in
+	@PutMapping("/updateLastLogin/{employeeId}")
+	public  ResponseEntity<String>  updateLastLogin(@PathVariable Long employeeId) {
+		System.out.println("in put last login of logged in employee "+ employeeId);	
+		try {
+			employeeService.updateLastLogin(employeeId);		
+			return ResponseEntity.ok("Successfully updated last login of employee id: " + employeeId );
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in updating last login ...");
+		}
+	}
+	
 	//	Get logged in employee's employeeId from Spring Security Security Context
 	@GetMapping("/User")
 	public Long getEmployeeID(){

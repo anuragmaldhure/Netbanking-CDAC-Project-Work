@@ -10,16 +10,22 @@ public class BankEmployeeDTO {
 	    private String username;
 	    private String password;
 	    private Date dateOfBirth;
+ 	    private Date lastLogin;
 	    
+ 	    
+ 	    
 		@Override
 		public String toString() {
 			StringBuilder builder = new StringBuilder();
 			builder.append("BankEmployeeDTO [employeeFirstName=").append(employeeFirstName)
 					.append(", employeeLastName=").append(employeeLastName).append(", mobileNumber=")
 					.append(mobileNumber).append(", emailId=").append(emailId).append(", username=").append(username)
-					.append(", password=").append(password).append(", dateOfBirth=").append(dateOfBirth).append("]");
+					.append(", password=").append(password).append(", dateOfBirth=").append(dateOfBirth)
+					.append(", lastLogin=").append(lastLogin).append("]");
 			return builder.toString();
 		}
+		
+		
 		public String getEmployeeFirstName() {
 			return employeeFirstName;
 		}
@@ -62,10 +68,14 @@ public class BankEmployeeDTO {
 		public void setDateOfBirth(Date dateOfBirth) {
 			this.dateOfBirth = dateOfBirth;
 		}
-	    
+		public Date getLastLogin() {
+			return lastLogin;
+		}
+		public void setLastLogin(Date lastLogin) {
+			this.lastLogin = lastLogin;
+		}
+		
 //	    private Long employeeId;
-//		private Role role;
-//	    private Date lastLogin;
-	    
-	    
+//		private Role role;	 
+		
 }
