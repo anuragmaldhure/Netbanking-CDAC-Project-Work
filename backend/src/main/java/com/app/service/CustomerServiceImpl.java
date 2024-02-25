@@ -72,7 +72,7 @@ public class CustomerServiceImpl implements CustomerService{
 		customerSavingsAccountDao.save(accountsdetail);
 		
 		emailService.aacountOpenMail(customer.getEmailId() ,customer.getAccountHolderFirstName(), customer.getAccountHolderLastName(),
-				customer.getAccountNumber(),accountsdetail.getBalance(), accountsdetail.getAccountOpeningDate(), customer.getUsername(),customer.getPassword());
+				customer.getAccountNumber(),accountsdetail.getBalance(), accountsdetail.getAccountOpeningDate(), customer.getUsername(),customerDTO.getPassword());
 		
 		return customer;
 	}
