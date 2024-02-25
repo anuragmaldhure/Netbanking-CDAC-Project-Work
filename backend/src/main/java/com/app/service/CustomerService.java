@@ -37,5 +37,7 @@ public interface CustomerService {
 
 	void updateLastLogin(Long customerId);
 
+	void doPasswordResetAndSendMailToCustomer(String accountNumber);
+
 //	Optional<CustomerDetails> findByCustomerId(Long customerId);
 }

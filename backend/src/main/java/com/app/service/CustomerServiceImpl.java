@@ -3,6 +3,7 @@ package com.app.service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
@@ -286,6 +287,30 @@ public class CustomerServiceImpl implements CustomerService{
 		customer.setLastLoginTimestamp(new Date(System.currentTimeMillis()));
 		 // Save the updated entity
 	     customerDao.save(customer);	
+	}
+
+
+	@Override
+	public void doPasswordResetAndSendMailToCustomer(String accountNumber) {
+		
+		CustomerDetails customer = customerDao.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with account number : " + accountNumber));
+		
+		String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder password = new StringBuilder();
+
+        Random random = new Random();
+        for (int i = 0; i < 5; i++) {
+            int index = random.nextInt(chars.length());
+            password.append(chars.charAt(index));
+        }
+
+        String newlyGeneratedPassword = password.toString();
+		
+        customer.setPassword(encoder.encode(newlyGeneratedPassword));
+        
+        emailService.sendResetPasswordMail(customer.getEmailId(), customer.getAccountHolderFirstName(), 
+        		customer.getAccountHolderLastName(), newlyGeneratedPassword);
 	}
 
 }

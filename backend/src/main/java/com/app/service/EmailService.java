@@ -339,6 +339,37 @@ public class EmailService {
         return null;
     }
 
+	public String sendResetPasswordMail(String userEmail, String accountHolderFirstName, String accountHolderLastName,
+			String newlyGeneratedPassword) {
+			
+		try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setTo(userEmail);
+            helper.setSubject("Aarna Bank : Your netbanking password has been reset!");
+            String messageString = "Dear "+ accountHolderFirstName + " "+ accountHolderLastName +", Your netbanking login password is successfully reset. "
+            		+ "Please use this password :: "+newlyGeneratedPassword+" :: to login to your account. Please change password after login in Other Services"
+            				+ " / Change Password. "
+            		+ " This action is either taken as per your request. "
+            		+"Please contact us via contact details given in Other Services / Contact Us section for further assistance if required. "
+            		+"\n\n" + 
+            		"Happy Banking! 😊\n\n" +
+	    			"Best Regards,\n\n" +
+	    			"Aarna Bank";
+            
+            helper.setText(messageString);
+
+            javaMailSender.send(message);
+            return messageString;
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            // Handle exception
+        }
+        return null;
+		
+	}
+
 //	public String sendMoneyMail(String emailId, String accountHolderFirstName, String accountHolderLastName,
 //            String beneficiaryFirstName, String beneficiaryLastName, CustomerDetails beneficiaryAccountNumber) {
 //			try {
