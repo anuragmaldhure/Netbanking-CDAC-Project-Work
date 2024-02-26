@@ -15,5 +15,16 @@ public class SigninResponse {
     
     private String mesg;
     
+    private Long userId;
+    
+    private String role;
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("SigninResponse [jwt=").append(jwt).append(", mesg=").append(mesg).append(", userId=")
+				.append(userId).append(", role=").append(role).append("]");
+		return builder.toString();
+	}
 }
 

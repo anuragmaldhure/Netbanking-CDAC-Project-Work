@@ -14,12 +14,12 @@ import com.app.JwtUtils;
 import com.app.dto.SigninRequest;
 import com.app.dto.SigninResponse;
 import com.app.dto.customer.CreateNewCustomerDTO;
+import com.app.entities.CustomUserDetails;
 import com.app.service.CustomerService;
 
 
 @RestController
 @RequestMapping("/")
-@CrossOrigin
 public class UserSigninSignupController {
 	
     @Autowired
@@ -56,8 +56,26 @@ public class UserSigninSignupController {
                 .authenticate(new UsernamePasswordAuthenticationToken
                         (reqDTO.getUsername(), reqDTO.getPassword()));
         System.out.println(verifiedAuth.getClass());// Custom user details
+        
+        
+        CustomUserDetails principal = (CustomUserDetails) verifiedAuth.getPrincipal();
+        String role = principal.getAuthorities().stream().findFirst().orElseThrow().getAuthority();
+
+        Long id;
+        
+        if(role == "CUSTOMER") {
+        	id = principal.getCustomerDetails().getCustomerId();
+        }
+        else if(role == "EMPLOYEE") {
+        	id = principal.getBankEmployeeDetails().getEmployeeId();
+        }
+        else {
+        	id = principal.getManagerDetails().getManagerId();
+        }
+ 
         // => auth success
         return ResponseEntity
-                .ok(new SigninResponse(utils.generateJwtToken(verifiedAuth), "Successful Authentication!!!"));
+                .ok(new SigninResponse(utils.generateJwtToken(verifiedAuth), "Successful Authentication!!!", id, role));              
     }
+
 }

@@ -349,7 +349,7 @@ public class EmailService {
             helper.setTo(userEmail);
             helper.setSubject("Aarna Bank : Your netbanking password has been reset!");
             String messageString = "Dear "+ accountHolderFirstName + " "+ accountHolderLastName +", Your netbanking login password is successfully reset. "
-            		+ "Please use this password :: "+newlyGeneratedPassword+" :: to login to your account. Please change password after login in Other Services"
+            		+ "Please use this auto-generated 6 characters long password ::: "+newlyGeneratedPassword+" ::: to login to your account. Please change password after login in Other Services"
             				+ " / Change Password. "
             		+ " This action is either taken as per your request. "
             		+"Please contact us via contact details given in Other Services / Contact Us section for further assistance if required. "

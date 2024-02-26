@@ -24,9 +24,10 @@ public class SecurityConfig{
 
     @Autowired
     private JwtAuthenticationFilter jwtFilter;
+    
+    @Autowired
+    private com.app.CorsFilter corsFilter;
 	
-
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -40,7 +41,9 @@ public class SecurityConfig{
                         .mvcMatchers("/swagger-ui/**","/v*/api-doc*/**").permitAll()
                         .anyRequest().authenticated()
                 	.and()
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class));
+                //inserting Jwt filter betore sec filter
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class));
         return http.build();
     }
     	
