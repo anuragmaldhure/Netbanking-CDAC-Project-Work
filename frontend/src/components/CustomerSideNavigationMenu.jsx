@@ -126,7 +126,7 @@ function CustomerSideNavigationMenu() {
     },
     {
       heading: "Logout",
-      links: [{ to: "/logout", label: "Log Out" }],
+      links: [{ to: "/", label: "Log Out" }],
     },
   ];
 

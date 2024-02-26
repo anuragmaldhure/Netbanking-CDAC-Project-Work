@@ -40,6 +40,12 @@ function EmployeeSideNavigationMenu() {
                 >
                   Verify / Approve KYC
                 </Link>
+                <Link
+                  to="/Employee/Accounts/VerifyApproveKYC50"
+                  className="list-group-item list-group-item-action list-group-item-success"
+                >
+                  Freeze Account
+                </Link>
               </div>
             </div>
           </div>
@@ -98,12 +104,12 @@ function EmployeeSideNavigationMenu() {
           >
             <div className="accordion-body">
               <div className="list-group">
-                <Link
-                    to="/logout"
-                    className="list-group-item list-group-item-action list-group-item-danger"
-                  >
-                    Log Out
-                </Link>
+                <a
+                  href="."
+                  className="list-group-item list-group-item-action list-group-item-danger"
+                >
+                  Log Out
+                </a>
               </div>
             </div>
           </div>

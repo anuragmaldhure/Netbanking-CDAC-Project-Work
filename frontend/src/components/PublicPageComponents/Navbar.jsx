@@ -1,23 +1,16 @@
 import React, { useState } from "react";
 import { Link as ScrollLink } from "react-scroll";
-import { useNavigate } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import styles from "./Navbar.module.css";
 
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const Navbar = () => {
-
-  const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleNavbar = () => {
     setIsExpanded(!isExpanded);
-  };
-
-  const handleLoginClick = () => {
-    // Navigate to the "/login" route
-    navigate("/login");
   };
 
   return (
@@ -102,9 +95,9 @@ const Navbar = () => {
 
           <button
             className={`btn btn-success text-dark ${styles.signInBtn}`}
-            type="button" onClick={handleLoginClick}
+            type="submit"
           >
-            Log in
+            Sign In
           </button>
         </div>
       </div>

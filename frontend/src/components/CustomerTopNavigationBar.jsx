@@ -19,12 +19,7 @@ function CustomerTopNavigationBar() {
     const fetchCustomerData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/Customer/User/GetMyDetails`,
-          { 
-            headers: {
-              Authorization: `Bearer ${sessionStorage.getItem("jwt")}`
-            }
-          }
+          `http://localhost:8080/Manager/ViewCustomerDetails/${customerId}`
         );
         setCustomerData(response.data);
       } catch (error) {

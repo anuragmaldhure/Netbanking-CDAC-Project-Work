@@ -5,7 +5,7 @@ import { Route, Routes } from "react-router-dom";
 
 import PublicPage from "./pages/Public/PublicPage";
 import Login from "./pages/Public/Login";
-import Logout from "./pages/Public/Logout";
+import Register from "./pages/Public/Register";
 
 import ViewAccountBalance5 from "./pages/Customer/ViewAccountBalance5";
 import WithdrawMoney6 from "./pages/Customer/WithdrawMoney6";
@@ -41,6 +41,7 @@ import TransferWithinBank23 from "./pages/Customer/TransferWithinBank23";
 import { Dashboard } from "@mui/icons-material";
 import ManagerHome from "./pages/Manager/Dashboard/ManagerHome";
 import KYCDetails12 from "./pages/Customer/KYC_DETAILS_FORM/KYCDetails12";
+import ForgotPasswordForm from "./components/PublicPageComponents/ForgotPasswordForm";
 
 function App() {
   return (
@@ -48,11 +49,16 @@ function App() {
       <Routes>
         <Route path="/public" element={<PublicPage />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/logout" element={< Logout/>} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/reset" element={<ForgotPasswordForm/>} />
 
-        {/* Public Page Routes */}
+      
         <Route path="/Signup" element={<SignUpForm />} />
+
+
         {/* CUSTOMER SECTION */}
+
+
         {/* customer account section */}
         <Route
           path="/Customer/Account/ViewAccountBalance"
