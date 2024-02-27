@@ -21,6 +21,14 @@ const OffersAvailableForMe31 = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [offers, setOffers] = useState([]);
 
+  const BASE_URL = "http://localhost:8080";
+
+  // setting a default authorization header for Axios requests
+  axios.defaults.headers.common[
+    "Authorization"
+  ] = `Bearer ${sessionStorage.getItem("jwt")}`;
+  axios.defaults.headers.post["Content-Type"] = "application/json";
+
   const handleCardClick = (offer) => {
     setSelectedOffer(offer);
     setOpenDialog(true);
@@ -42,15 +50,23 @@ const OffersAvailableForMe31 = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const customerId = 1; // Replace with actual customerId
-        const response = await axios.get(
-          `http://localhost:8080/Customer/OtherServices/OffersAvailableForMe/${customerId}`
+        const userResponse = await axios.get(BASE_URL + `/Customer/User`);
+        const customerId = userResponse.data;
+
+        if (!customerId) {
+          console.error("Customer ID not found");
+          return;
+        }
+
+        const offersResponse = await axios.get(
+          BASE_URL + `/Customer/OtherServices/OffersAvailableForMe/${customerId}`
         );
-        setOffers(response.data);
+        setOffers(offersResponse.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
+
     fetchData();
   }, []);
 
@@ -88,10 +104,8 @@ const OffersAvailableForMe31 = () => {
                       <Typography variant="h6">{offer.offerTitle}</Typography>
                       <Typography variant="h7">{offer.offerDetails}</Typography>
                       <Typography>
-                        {" "}
                         <strong>
-                          Minimum balance requirement :{" "}
-                          {offer.offerMinimumBalance}
+                          Minimum balance requirement : {offer.offerMinimumBalance}
                         </strong>
                       </Typography>
                     </CardContent>

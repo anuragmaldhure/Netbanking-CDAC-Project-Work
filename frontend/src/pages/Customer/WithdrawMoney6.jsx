@@ -1,6 +1,6 @@
 import CustomerSideNavigationMenu from '../../components/CustomerSideNavigationMenu'
 import CustomerTopNavigationBar from '../../components/CustomerTopNavigationBar'
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 
 // import { Link, useNavigate } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
@@ -8,25 +8,53 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 //react redux
-import { useDispatch, useSelector} from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { updateWithdrawMoney } from '../../features/WithdrawMoneyInfoSlice';
+import axios from "axios";
 
 // import { Link } from 'react-router-dom';
 
 const WithdrawMoney6 = () => {
-
     // get the navigation object
     const navigate = useNavigate()
-
     //react redux
     const dispatch = useDispatch();
-
-    // get the current state from redux
-    const withdrawMoneyRR = useSelector((state) => state.withdrawMoney);
-
     const [withdrawMoney, setWithdrawMoney] = useState({ amount: "", confirmAmount: "", remarks: "" });
+    // const [balance, setBalance] = useState({balanceAmount : 12345});
+    const [balance, setBalance] = useState();
 
-    const [balance, setBalance] = useState({balanceAmount : 12345});
+    const BASE_URL = "http://localhost:8080";
+
+    // setting a default authorization header for Axios requests
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${sessionStorage.getItem("jwt")}`;
+    axios.defaults.headers.post["Content-Type"] = "application/json";
+
+    useEffect(() => {
+        const fetchDataFromDatabase = async () => {
+          try {
+            const response = await axios.get(
+              BASE_URL + `/Customer/User`
+            );
+
+            const customerId = response.data; // Use response.data to get customerId
+            const response2 = await axios.get(
+              BASE_URL + `/Customer/Account/balanceAndAccountNumber/${customerId}`
+            );
+
+            // Assuming the API response contains an array with two elements: [balance, accountNumber]
+            // Set the state with the fetched account details
+            setBalance(response2.data[0]);
+            // console.log(response2.data[0])
+
+          } catch (error) {
+            console.error("Error fetching data from database:", error);
+          }
+        };
+    
+        fetchDataFromDatabase(); // Call fetchDataFromDatabase
+      }, []); // Empty dependency array ensures useEffect runs only once
 
     const handleChange = (e) => {
         setWithdrawMoney({...withdrawMoney, [e.target.name]: e.target.value})
@@ -54,7 +82,7 @@ const WithdrawMoney6 = () => {
                         //transition: Bounce,
                         });
                 }else{
-                    if(withdrawMoney.amount > balance.balanceAmount){
+                    if(withdrawMoney.amount > balance){
                         toast.error('🦄 You do not have enough balance! Try again', {
                             position: "top-center",
                             autoClose: 5000,
@@ -119,7 +147,7 @@ const WithdrawMoney6 = () => {
                     <div style={{ justifyContent: 'center', alignItems: 'center'}}>
                         <div>
                             <br/>
-                            <h2><strong>Net Balance Available : ₹ {(balance.balanceAmount)}</strong></h2>
+                            <h2><strong>Net Balance Available : ₹ {(balance)}</strong></h2>
                             <br/>
                         </div>
                     </div>

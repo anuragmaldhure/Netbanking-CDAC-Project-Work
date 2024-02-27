@@ -1,207 +1,138 @@
-/* LoginForm.module.css */
+/* Login.module.css */
 
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap");
-
-:local .cardContainer {
-  display: grid;
-  grid-template-columns: calc(100% - 60%) auto;
+.loginContainer {
+  display: flex;
   height: 100vh;
+  position: relative; /* Set position relative */
+}
+
+.loginContainer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 50%; /* Adjust as needed */
+  background-color: #313133; /* Background color for the right side */
+  z-index: -1; /* Ensure the pseudo-element is behind the content */
+}
+
+.loginLeft {
+  margin-top: 10vh;
+  flex: 1;
+}
+
+.loginImage {
   width: 100%;
-  overflow: hidden;
-  background-color: #1d2b3a;
+  height: auto;
 }
 
-:local .formContainer {
-  width: 50vw;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 45px;
-  padding: 50px;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-:local .formHeader {
-  grid-column: 1 / -1;
-  letter-spacing: 0.06em;
-  margin-bottom: 30px;
-  font-size: 40px;
-  color: white;
-}
-
-:local input {
-  display: block;
-  border-radius: 4px;
-  border: 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-  padding: 6px 6px 6px 10px;
-  margin-top: 5px;
-  background-color: rgba(255, 255, 255, 0);
-  transition: all 0.5s ease-in;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-:local input::placeholder {
-  content: none;
-}
-
-:local span {
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  font-size: 15px;
-  transition: all 0.4s;
-}
-
-:local .submitBtn {
-  width: 100%; /* Make the button take full width */
-  border: 0;
-  background-color: rgb(6, 170, 94);
-  color: white;
-  padding: 15px 0; /* Increase padding for a more prominent button */
-  letter-spacing: 0.05em;
-  border-radius: 5px;
-  margin-top: 20px;
-  font-size: 17px;
-  outline: none;
-  cursor: pointer;
-}
-
-:local .buttonContainer {
+.loginRight {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 30vh;
+  position: relative; /* Set position relative to allow z-index */
+  z-index: 1; /* Ensure content is above the pseudo-element */
 }
 
-:local a {
-  color: #6a7a90;
-  text-decoration: none;
-  margin-top: 10px;
+.loginCenter {
+  text-align: center;
+  color: whitesmoke; /* Set text color */
+}
+
+.input {
+  width: calc(100% - 16px); /* Adjust for padding */
+  padding: 10px; /* Increased padding for better formatting */
+  margin-bottom: 20px; /* Increased margin for better spacing */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: black;
+  background-color: white; /* Set background color to white */
+}
+
+/* Adjust margin-right for username input */
+.input:first-child {
+  margin-right: 15px; /* Adjust as needed */
+}
+
+.passInputDiv {
+  position: relative;
+}
+
+.passwordInput {
+  width: calc(100% - 56px); /* Adjust for padding and button width */
+  padding: 10px; /* Increased padding for better formatting */
+  margin-bottom: 20px; /* Increased margin for better spacing */
+  padding-right: 40px;
+}
+
+.showPasswordButton {
+  position: absolute;
+  top: 40%;
+  right: 18px;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: blue;
+}
+
+.loginCenterButtons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  width: calc(100% - 16px); /* Adjust for padding */
+}
+
+/* Bootstrap classes */
+.loginButton,
+.googleLoginButton {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 40px;
+}
+
+/* Custom button styles */
+.loginButton {
+  background-color: rgb(40, 175, 40);
+  margin-right: 5px;
+}
+
+.googleLoginButton {
+  background-color: #4285f4;
+  color: #fff;
+  margin-left: 5px;
+}
+
+.googleIcon {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.loginBottom {
+  margin-top: 20px;
+}
+
+.loginBottomP {
   font-size: 14px;
+  color:whitesmoke; /* Set text color */
 }
 
-:local a:hover {
+.signUpLink {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.signUpLink:hover {
   text-decoration: underline;
 }
 
-:local form {
-  width: auto;
-  display: grid;
-  place-items: center;
-}
-
-:local .imageContainer {
-  display: grid;
-  place-items: center;
-  background-color: rgb(6, 170, 94);
-  color: white;
-}
-
-:local .imageContainer > img {
-  width: calc(90%);
-  margin-top: -20px; /* Adjust this value to move the illustration higher */
-}
-
-:local .company,
-:local .imageContainer > .quote {
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  font-size: 19px;
-}
-
-:local .company {
-  font-size: 34px;
-  text-align: left;
-  height: 70px;
-  align-self: flex-start;
-  padding: 2% 0 0 5%;
-}
-
-:local .UpAnimationClass {
-  animation: 1.3s 1 forwards cubic-bezier(0.36, -0.01, 0.5, 1.38) slideUp;
-  animation-delay: 0s;
-}
-
-:local .RightAnimationClass {
-  animation: 1.3s 1 forwards cubic-bezier(0.36, -0.01, 0.5, 1.38) slideRight;
-  animation-delay: 0s;
-}
-
-@keyframes slideUp {
-  0% {
-    transform: translateY(100%);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideRight {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-@media only screen and (max-width: 540px) {
-  :local .body {
-    width: 100%;
-    overflow: visible;
-  }
-
-  :local .imageContainer > [class] {
-    transform: scale(1);
-  }
-
-  :local .quote {
-    margin-top: -50px;
-  }
-
-  :local .cardContainer {
-    grid-template-rows: 100vh minmax(100vh, auto);
-    grid-template-columns: none;
-    overflow: hidden;
-    height: auto;
-  }
-
-  :local .imageContainer {
-    width: 100%;
-    position: relative;
-  }
-
-  :local .imageContainer > img {
-    width: calc(110%);
-    margin-top: -20px; /* Adjust this value to move the illustration higher */
-  }
-
-  :local .error {
-    font-size: 13px;
-  }
-
-  :local .formContainer {
-    display: grid;
-    place-items: center;
-    grid-template-columns: none;
-    grid-template-rows: none;
-    gap: 20px;
-    width: 100%;
-    gap: 45px;
-    padding: 0;
-    color: rgba(255, 255, 255, 0.5);
-  }
-
-  :local .mobileBtmNav {
-    display: block;
-    position: absolute;
-    bottom: 0;
-    display: block;
-    animation: float 1s cubic-bezier(0.59, 0.575, 0.565, 1) infinite;
-  }
-
-  :local .form {
-    padding: 50px;
-    display: flex;
-    align-items: center;
-  }
+.customFont {
+  font-family: "Arial", sans-serif;
 }

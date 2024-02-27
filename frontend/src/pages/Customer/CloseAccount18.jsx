@@ -28,7 +28,7 @@ const CloseAccount18 = () => {
   const handleConfirmCloseAccount = () => {
     // Implement your logic to close the account here
     // You can also use the 'feedback' state here
-    console.log("Account Closed!");
+    console.log("Account freezed!");
     console.log("Feedback:", feedback);
     handleCloseCloseAccount();
   };
@@ -80,7 +80,8 @@ const CloseAccount18 = () => {
               <DialogContent>
                 <DialogContentText>
                   We regret to inform you that deactivating your account will result in all transactions
-                  from and to your account being blocked effective immediately.
+                  from and to your account being blocked effective immediately. Please contact our bank employees for the same as soon as possible.
+                  Contact details are mentioned in Other Services / Contact Us Section.
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
@@ -92,7 +93,7 @@ const CloseAccount18 = () => {
                   color="primary"
                   variant="contained"
                 >
-                  Confirm Deactivation
+                  I understood
                 </Button>
               </DialogActions>
             </Dialog>

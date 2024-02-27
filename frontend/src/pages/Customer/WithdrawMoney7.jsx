@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 import CustomerSideNavigationMenu from "../../components/CustomerSideNavigationMenu";
 import CustomerTopNavigationBar from "../../components/CustomerTopNavigationBar";
@@ -8,6 +9,15 @@ import CustomerTopNavigationBar from "../../components/CustomerTopNavigationBar"
 const WithdrawMoney7 = () => {
   const navigate = useNavigate();
   const [otp, setOtp] = useState({ otpValue: "" });
+  const [customerData, setCustomerData] = useState(null);
+
+  const BASE_URL = "http://localhost:8080";
+
+  // setting a default authorization header for Axios requests
+  axios.defaults.headers.common[
+    "Authorization"
+  ] = `Bearer ${sessionStorage.getItem("jwt")}`;
+  axios.defaults.headers.post["Content-Type"] = "application/json";
 
   useEffect(() => {
     toast.info("🦄 OTP sent! Please enter the OTP below", {
@@ -20,6 +30,22 @@ const WithdrawMoney7 = () => {
       progress: undefined,
       theme: "light",
     });
+
+    const fetchCustomerData = async () => {
+      try {
+        const response = await axios.get(
+          BASE_URL + `/Customer/User/GetMyDetails`
+        );
+        setCustomerData(response.data);
+      } catch (error) {
+        console.error("Error fetching customer data:", error);
+      }
+    };
+
+    fetchCustomerData();
+
+    console.log(customerData);
+
   }, []);
 
   const handleChange = (e) => {
@@ -28,15 +54,15 @@ const WithdrawMoney7 = () => {
 
   const verifyOTP = async () => {
     try {
-      // Static customer ID
-      const customerId = 1;
+      //customer ID
+      const customerId = customerData.customerId;
   
       // Use static data directly in the function
       const amountToWithdraw = 20; // Replace with your static amount
       const remarks = "demo"; // Replace with your static remarks
   
       // Append query parameters to the URL
-      const url = `http://localhost:8080/Customer/FundTransfer/WithdrawMoney/${customerId}?amountToWithdraw=${amountToWithdraw}&remarks=${remarks}`;
+      const url = BASE_URL + `/Customer/FundTransfer/WithdrawMoney/${customerId}?amountToWithdraw=${amountToWithdraw}&remarks=${remarks}`;
   
       // Log the URL to the console
       console.log("Request URL:", url);
@@ -115,9 +141,8 @@ const WithdrawMoney7 = () => {
               width: "50%",
             }}
           >
-            OTP has been sent to your registered mobile number :{" "}
-            <strong>91xxxxxxxx71</strong> and email id :{" "}
-            <strong>abcd@gmail.com</strong>. Please enter the OTP below to
+            OTP has been sent to your registered email id :{" "}
+            <strong> </strong>. Please enter the OTP below to
             complete the transaction
           </div>
           <br />

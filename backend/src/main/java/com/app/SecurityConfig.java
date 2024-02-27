@@ -34,7 +34,7 @@ public class SecurityConfig{
         http.csrf(csrf -> csrf.disable()) // Disable CSRF protection for simplicity
                 .authorizeHttpRequests(auth -> auth
 //                    .antMatchers("/**").permitAll() // Allow all requests, I have used for testing endpoints without authorization
-                      	.mvcMatchers("/signup", "/signin", "/Manager/AddNewManager").permitAll()
+                      	.mvcMatchers("/signup", "/signin", "/Manager/AddNewManager", "/reset").permitAll()
                         .mvcMatchers("/Manager/**").hasAuthority("MANAGER")
                         .mvcMatchers("/Employee/**").hasAuthority("EMPLOYEE")
                         .mvcMatchers("/Customer/**").hasAuthority("CUSTOMER")

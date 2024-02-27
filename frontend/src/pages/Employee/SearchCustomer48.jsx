@@ -1,3 +1,4 @@
+// Import necessary libraries and components
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -8,23 +9,30 @@ import EmployeeSideNavigationMenu from "../../components/EmployeeSideNavigationM
 import styles from "./SearchCustomer48.module.css";
 
 const SearchCustomer48 = () => {
+  // Use the useParams hook to get the customer ID from the URL parameter
   const { customerId } = useParams();
 
+  // State variables to manage modal visibility and selected document
   const [showModal, setShowModal] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
-  const [customerDetails, setCustomerDetails] = useState(null);
-  const [customerAddress, setCustomerAddress] = useState(null);
-  const [uploadedDocuments, setUploadedDocuments] = useState([]);
-  const [currentBalance, setCurrentBalance] = useState(null); // New state for current balance
 
+  // State variables to store customer details and uploaded documents
+  const [customerDetails, setCustomerDetails] = useState(null);
+  const [uploadedDocuments, setUploadedDocuments] = useState([]);
+
+  // Fetch customer details and uploaded documents based on the customer ID
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Make an API call to get all customer details
         const response = await axios.get(
           "http://localhost:8080/Employee/Accounts/GetAllCustomerDetails"
         );
 
+        // Extract the data from the response
         const data = response.data;
+
+        // Map the data to the required format
         const mappedData = data.map((customer) => ({
           id: customer.customerId,
           accountNumber: customer.accountNumber,
@@ -36,72 +44,36 @@ const SearchCustomer48 = () => {
           birthDate: customer.dateOfBirth,
           mobileNumber: customer.mobileNumber,
           emailID: customer.emailId,
+          address: customer.address,
+          city: customer.city,
+          state: customer.state,
+          pincode: customer.pincode,
+          nationality: customer.nationality,
         }));
 
+        // Find the customer details based on the customer ID
         const foundCustomer = mappedData.find(
           (customer) => customer.id === Number(customerId)
         );
 
+        // Set the customer details and uploaded documents in the state
         setCustomerDetails(foundCustomer);
-
         setUploadedDocuments([
-          { id: 1, name: "AADHAR CARD", type: "aadhar" },
-          { id: 2, name: "PAN CARD", type: "pan" },
-          { id: 3, name: "PROFILE PHOTO", type: "photo" },
+          { id: 1, name: "AADHAR CARD", link: "/path/to/document1.pdf" },
+          { id: 2, name: "PAN CARD", link: "/path/to/document2.pdf" },
+          { id: 3, name: "PROFILE PHOTO", link: "/path/to/document3.pdf" },
+          // Add more documents as needed
         ]);
       } catch (error) {
         console.error("Error fetching customer data:", error);
       }
     };
 
+    // Call the fetchData function when the component mounts or the customerId changes
     fetchData();
   }, [customerId]);
 
-  useEffect(() => {
-    const fetchCustomerAddress = async () => {
-      try {
-        const addressResponse = await axios.get(
-          `http://localhost:8080/Customer/KYC/address/${customerId}`
-        );
-        console.log("Address Response:", addressResponse.data);
-
-        const addressData = addressResponse.data;
-
-        setCustomerAddress({
-          address: addressData.address || "",
-          city: addressData.city || "",
-          state: addressData.state || "",
-          pincode: addressData.pinCode || "",
-          nationality: addressData.nationality || "",
-        });
-      } catch (error) {
-        console.error("Error fetching customer address:", error);
-      }
-    };
-
-    fetchCustomerAddress();
-  }, [customerId]);
-
-  useEffect(() => {
-    const fetchCurrentBalance = async () => {
-      try {
-        const balanceResponse = await axios.get(
-          `http://localhost:8080/Customer/Account/balanceAndAccountNumber/${customerId}`
-        );
-        console.log("Balance Response:", balanceResponse.data);
-
-        const [balance, accountNumber] = balanceResponse.data;
-
-        // Update the state with the current balance
-        setCurrentBalance({ balance, accountNumber });
-      } catch (error) {
-        console.error("Error fetching current balance:", error);
-      }
-    };
-
-    fetchCurrentBalance();
-  }, [customerId]);
-
+  // Handle the export button click
   const handleExport = () => {
     // Construct the CSV content based on customer details
     const csvContent =
@@ -109,7 +81,7 @@ const SearchCustomer48 = () => {
       [customerDetails] // Wrap customerDetails in an array
         .map(
           (customer) =>
-            `${customer.id},${customer.accountNumber},"${customer.customerName}",${customer.balance},"${customer.occupation}",${customer.annualIncome},"${customer.gender}",${customer.birthDate},${customer.mobileNumber},${customer.emailID}`
+            `${customer.id},${customer.accountNumber},"${customer.customerName}",${customer.balance},"${customer.occupation}",${customer.annualIncome},"${customer.gender}",${customer.birthDate},${customer.mobileNumber},${customer.emailID},"${customer.address}","${customer.city}","${customer.state}",${customer.pincode},"${customer.nationality}"`
         )
         .join("\n");
 
@@ -147,31 +119,22 @@ const SearchCustomer48 = () => {
 
   // Handle the click on a document to view
   const handleDocumentClick = (document) => {
+    // Set the selected document and show the modal
     setSelectedDocument(document);
     setShowModal(true);
   };
 
+  // Handle the modal close
   const handleCloseModal = () => {
+    // Close the modal
     setShowModal(false);
   };
 
-  const handleDownloadDocument = async () => {
+  // Handle the download button click inside the modal
+  const handleDownloadDocument = () => {
+    // Implement logic to download the document
     if (selectedDocument) {
-      try {
-        const downloadResponse = await axios.get(
-          `http://localhost:8080/Customer/documents/${selectedDocument.type}/${customerId}`,
-          { responseType: "blob" }
-        );
-
-        const blob = new Blob([downloadResponse.data]);
-        const link = document.createElement("a");
-
-        link.href = window.URL.createObjectURL(blob);
-        link.download = `${selectedDocument.name.toLowerCase()}_${customerId}.png`;
-        link.click();
-      } catch (error) {
-        console.error("Error downloading document:", error);
-      }
+      console.log("Downloading document:", selectedDocument.name);
     }
   };
 
@@ -196,7 +159,7 @@ const SearchCustomer48 = () => {
                 <strong>Name :</strong> {customerDetails?.customerName}
               </div>
               <div className="mb-3">
-                <strong>Balance :</strong> {currentBalance?.balance}
+                <strong>Balance :</strong> {customerDetails?.balance}
               </div>
 
               <div className="mb-3">
@@ -218,22 +181,20 @@ const SearchCustomer48 = () => {
                 <strong>Email Id :</strong> {customerDetails?.emailID}
               </div>
             </div>
-          </div>
-          <div className="col-md-6">
             <div className="mb-3">
-              <strong>Address :</strong> {customerAddress?.address}
+              <strong>Address :</strong> {customerDetails?.address}
             </div>
             <div className="mb-3">
-              <strong>City :</strong> {customerAddress?.city}
+              <strong>City :</strong> {customerDetails?.city}
             </div>
             <div className="mb-3">
-              <strong>State :</strong> {customerAddress?.state}
+              <strong>State :</strong> {customerDetails?.state}
             </div>
             <div className="mb-3">
-              <strong>Pincode :</strong> {customerAddress?.pincode}
+              <strong>Pincode :</strong> {customerDetails?.pincode}
             </div>
             <div className="mb-3">
-              <strong>Nationality :</strong> {customerAddress?.nationality}
+              <strong>Nationality :</strong> {customerDetails?.nationality}
             </div>
           </div>
 
@@ -258,22 +219,17 @@ const SearchCustomer48 = () => {
             ))}
           </ul>
 
-           {/* Document Modal */}
-           <Modal show={showModal} onHide={handleCloseModal}>
+          {/* Document Modal */}
+          <Modal show={showModal} onHide={handleCloseModal}>
             <Modal.Header closeButton>
               <Modal.Title>
                 {selectedDocument && selectedDocument.name}
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              {/* Display the document as an image */}
-              {selectedDocument && (
-                <img
-                  src={`http://localhost:8080/Customer/documents/${selectedDocument.type}/${customerId}`}
-                  alt={selectedDocument.name}
-                  className="img-fluid"
-                />
-              )}
+              {/* Embed a PDF viewer or an iframe to display the document */}
+              {/* Example: */}
+              {/* <iframe src={selectedDocument && selectedDocument.link} title="Document Viewer" width="100%" height="500px"></iframe> */}
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleCloseModal}>

@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Build-Jdk-Spec: 17
-Implementation-Title: spring_boot_backend_security_jwt_template
+Implementation-Title: Aarna Bank Feb 23
 Implementation-Version: 0.0.1
 Created-By: Maven Integration for Eclipse
 

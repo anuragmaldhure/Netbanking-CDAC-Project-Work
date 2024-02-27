@@ -1,5 +1,6 @@
 package com.app.controller;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +78,19 @@ public class UserSigninSignupController {
         return ResponseEntity
                 .ok(new SigninResponse(utils.generateJwtToken(verifiedAuth), "Successful Authentication!!!", id, role));              
     }
-
+    
+	
+	@PostMapping("/reset")
+	public ResponseEntity<String> resetCustomerPassword(@RequestBody String accountNumber){
+		try {
+			customerService.doPasswordResetAndSendMailToCustomer(accountNumber);			
+			return ResponseEntity.ok("Successfully sent reset password of customer a/c number : " + accountNumber);
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in sending feedback...");
+		}
+	}
 }
