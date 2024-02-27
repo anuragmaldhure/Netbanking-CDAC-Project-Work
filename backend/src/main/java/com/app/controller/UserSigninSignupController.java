@@ -21,6 +21,7 @@ import com.app.service.CustomerService;
 
 @RestController
 @RequestMapping("/")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserSigninSignupController {
 	
     @Autowired
@@ -44,7 +45,7 @@ public class UserSigninSignupController {
      * success : Auth Resp DTO : mesg + JWT token + SC 200 IN case of failure : SC
      * 401
      */
-    @PostMapping("signin")
+    @PostMapping("login")
     public ResponseEntity<?> signinUser(@RequestBody @Valid SigninRequest reqDTO) {
         System.out.println("in signin " + reqDTO);
         // simply invoke authenticate(...) on AuthMgr

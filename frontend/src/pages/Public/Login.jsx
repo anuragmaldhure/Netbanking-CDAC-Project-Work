@@ -9,48 +9,61 @@ import styles from "./Login.module.css";
 const Login = () => {
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [usernameInput, setUsername] = useState("");
+  const [passwordInput, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const BASE_URL = "http://localhost:8080";
 
-  //clear if any previous data
-  if (sessionStorage.getItem("jwt") && sessionStorage.getItem("role")) {
+  // clear if any previous data
+  if (sessionStorage.getItem("jwt") || sessionStorage.getItem("role")) {
     sessionStorage.clear();
   }
 
   const handleLogin = async () => {
-    if (!username.trim() || !password.trim()) {
+    if (!usernameInput.trim() || !passwordInput.trim()) {
       toast.error("Please enter both username and password");
       return;
     }
 
     try {
-      const response = await axios.post(BASE_URL + "/signin", {
-        username: username,
-        password: password,
-      });
+
+      // console.log(usernameInput);
+      // console.log(passwordInput);
+
+      axios.defaults.headers.post["Content-Type"] = "application/json";
+
+      // console.log(BASE_URL + "/login");
+      // console.log(axios.defaults.headers);
+      const response = await axios.post(BASE_URL + "/login" 
+      ,{
+        "username": usernameInput,
+        "password": passwordInput
+      }
+      );
+
+      // console.log(response);
 
       const token = response.data.jwt;
-      const userId = response.data.userId;
       const role = response.data.role;
+
+      // console.log(token);
+      // console.log(role);
 
       const setAuthToken = (token) => {
         if (token) {
           sessionStorage.setItem("jwt", token);
-          // sessionStorage.setItem("id", userId);
           sessionStorage.setItem("role", role);
         }
       };
 
       setAuthToken(token);
 
-      // setting a default authorization header for Axios requests
-      axios.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${sessionStorage.getItem("jwt")}`;
-      axios.defaults.headers.post["Content-Type"] = "application/json";
+      // // setting a default authorization header for Axios requests
+      // axios.defaults.headers.common[
+      //   "Authorization"
+      // ] = `Bearer ${sessionStorage.getItem("jwt")}`;
+      // axios.defaults.headers.post["Content-Type"] = "application/json";
 
       toast.success(" Welcome dear " + role + "..." + response.data.mesg);
 
@@ -95,7 +108,7 @@ const Login = () => {
               type="text"
               placeholder="Username"
               className={`${styles.input} ${styles.customFont}`}
-              value={username}
+              value={usernameInput}
               onChange={(e) => setUsername(e.target.value)}
             />
             <div className={styles.passInputDiv}>
@@ -103,7 +116,7 @@ const Login = () => {
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 className={`${styles.input} ${styles.customFont}`}
-                value={password}
+                value={passwordInput}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <button

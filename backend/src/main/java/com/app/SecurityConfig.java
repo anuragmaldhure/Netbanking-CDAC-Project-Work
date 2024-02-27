@@ -3,6 +3,7 @@ package com.app;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -32,9 +33,10 @@ public class SecurityConfig{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.csrf(csrf -> csrf.disable()) // Disable CSRF protection for simplicity
+                // Exclude /login from CSRF protection
                 .authorizeHttpRequests(auth -> auth
 //                    .antMatchers("/**").permitAll() // Allow all requests, I have used for testing endpoints without authorization
-                      	.mvcMatchers("/signup", "/signin", "/Manager/AddNewManager", "/reset").permitAll()
+                      	.mvcMatchers(HttpMethod.POST, "/signup", "/login", "/Manager/AddNewManager", "/reset").permitAll()
                         .mvcMatchers("/Manager/**").hasAuthority("MANAGER")
                         .mvcMatchers("/Employee/**").hasAuthority("EMPLOYEE")
                         .mvcMatchers("/Customer/**").hasAuthority("CUSTOMER")

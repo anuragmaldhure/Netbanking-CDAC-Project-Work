@@ -36,6 +36,16 @@ public class JwtUtils {
         System.out.println(key.toString());
     }
 
+//    // Hardcoded SECRET_KEY
+//    private static final String SECRET_KEY = "1uORMccTFcTWQvjupAGxGapKFtcSRb4IPAaUJpfxbQoXuHutABXbNdt74yAg4SvofyvqSY6MXcbwoTXp7gk2Q3jIjOjsaUAUz4xA+7OHU4w=";
+//
+//    private SecretKey key;
+//
+//    public JwtUtils() {
+//        this.key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+//        System.out.println(key.toString());
+//    }
+
     public String generateJwtToken(Authentication authentication) {
         CustomUserDetails principalUser = (CustomUserDetails) authentication.getPrincipal();
 

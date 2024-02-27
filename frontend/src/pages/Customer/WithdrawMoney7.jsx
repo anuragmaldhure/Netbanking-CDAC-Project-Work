@@ -6,47 +6,56 @@ import axios from "axios";
 import CustomerSideNavigationMenu from "../../components/CustomerSideNavigationMenu";
 import CustomerTopNavigationBar from "../../components/CustomerTopNavigationBar";
 
+import { useSelector } from 'react-redux';
+
 const WithdrawMoney7 = () => {
   const navigate = useNavigate();
   const [otp, setOtp] = useState({ otpValue: "" });
+  // const [generatedOtp, setGeneratedOtp] = useState({ otpValue: "" });
   const [customerData, setCustomerData] = useState(null);
 
   const BASE_URL = "http://localhost:8080";
 
-  // setting a default authorization header for Axios requests
+  // Setting a default authorization header for Axios requests
   axios.defaults.headers.common[
     "Authorization"
   ] = `Bearer ${sessionStorage.getItem("jwt")}`;
   axios.defaults.headers.post["Content-Type"] = "application/json";
 
-  useEffect(() => {
-    toast.info("🦄 OTP sent! Please enter the OTP below", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+  // React Redux
+  const withdrawMoney = useSelector(state => state.amount);
+  const remarks = useSelector(state => state.remarks);
 
+  console.log("1 " + withdrawMoney);
+  console.log("2" +remarks);
+
+  useEffect(() => {
     const fetchCustomerData = async () => {
       try {
         const response = await axios.get(
           BASE_URL + `/Customer/User/GetMyDetails`
         );
         setCustomerData(response.data);
+
+        // Once customerData is set, call generateOTP
+        generateOTP(response.data.customerId);
       } catch (error) {
         console.error("Error fetching customer data:", error);
       }
     };
 
     fetchCustomerData();
-
-    console.log(customerData);
-
   }, []);
+
+  const generateOTP = async (customerId) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/Customer/transaction/otp/generate?customerId=${customerId}`);
+      // setGeneratedOtp(response.data); 
+    } catch (error) {
+      console.error('Error generating OTP:', error);
+      throw error; // Handle error as needed
+    }
+  };
 
   const handleChange = (e) => {
     setOtp((prevOtp) => ({ ...prevOtp, otpValue: e.target.value }));
@@ -54,33 +63,45 @@ const WithdrawMoney7 = () => {
 
   const verifyOTP = async () => {
     try {
-      //customer ID
+      if (!customerData) {
+        toast.error(
+          "🦄 Customer data is not available. Please try again later.",
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
+        return;
+      }
+
       const customerId = customerData.customerId;
+      const amountToWithdraw = withdrawMoney; 
+      const remark = remarks; 
+
+      const response = await axios.post(`${BASE_URL}/Customer/transaction/otp/verify?customerId=${customerId}&otp=${otp.otpValue}`);
+      console.log(response.data); 
   
-      // Use static data directly in the function
-      const amountToWithdraw = 20; // Replace with your static amount
-      const remarks = "demo"; // Replace with your static remarks
+      const url = BASE_URL + `/Customer/FundTransfer/WithdrawMoney/${customerId}?amountToWithdraw=${amountToWithdraw}&remarks=${remark}`;
   
-      // Append query parameters to the URL
-      const url = BASE_URL + `/Customer/FundTransfer/WithdrawMoney/${customerId}?amountToWithdraw=${amountToWithdraw}&remarks=${remarks}`;
-  
-      // Log the URL to the console
       console.log("Request URL:", url);
   
-      // API call to withdraw money using fetch
-      const response = await fetch(url, {
+      const fetchResponse = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
       });
   
-      if (response.ok) {
-        // If the API call is successful, navigate to the next page
+      if (fetchResponse.ok) {
         navigate("/Customer/FundTransfer/WithdrawMoney8");
       } else {
-        // Handle error response from the server
-        console.error("Failed to withdraw money:", response.statusText);
+        console.error("Failed to withdraw money:", fetchResponse.statusText);
         toast.error(
           "🦄 An error occurred while withdrawing money. Please try again!",
           {
@@ -113,6 +134,10 @@ const WithdrawMoney7 = () => {
     }
   };
   
+  if (!customerData) {
+    return null; // Or render a loading indicator
+  }
+
   return (
     <div>
       <CustomerTopNavigationBar />
@@ -142,8 +167,8 @@ const WithdrawMoney7 = () => {
             }}
           >
             OTP has been sent to your registered email id :{" "}
-            <strong> </strong>. Please enter the OTP below to
-            complete the transaction
+            <strong>{customerData.emailId}</strong>. Please enter the OTP below to
+            complete the transaction (OTP is only valid for 2 minutes)
           </div>
           <br />
           <br />

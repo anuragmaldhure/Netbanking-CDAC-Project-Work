@@ -25,7 +25,7 @@ public class Application {
 														// mapping
 				.setPropertyCondition(Conditions.isNotNull()); // only non null properties will be transferred from src
 																// --> dest , during the mapping
-		return modelMapper; //configured model mapper instance reted to SC
+		return modelMapper; //configured model mapper instance related to SC
 	}
 
 }
