@@ -68,7 +68,7 @@ const TransferWithinBank22 = () => {
       await axios.get(`${BASE_URL}/Customer/transaction/otp/generate?customerId=${customerId}`);
     } catch (error) {
       toast.error(
-        "🦄 Error generating OTP:", error,
+        "🦄 Error generating OTP"+ error,
         {
           position: "top-center",
           autoClose: 5000,
@@ -119,7 +119,7 @@ const TransferWithinBank22 = () => {
             });
           } else {
             toast.error(
-              "🦄 Error generating OTP:", response.statusText,
+              "🦄 "+response.statusText,
               {
                 position: "top-center",
                 autoClose: 5000,
@@ -135,7 +135,7 @@ const TransferWithinBank22 = () => {
           }
         } catch (error) {
           toast.error(
-            "🦄 Error generating OTP:", error.message,
+            "🦄 " + error.message,
             {
               position: "top-center",
               autoClose: 5000,
@@ -153,7 +153,7 @@ const TransferWithinBank22 = () => {
     } catch (error) {
       setIsLoading(false);
       toast.error(
-        "🦄 Error generating OTP:", error.message,
+        "🦄 " + error.message,
         {
           position: "top-center",
           autoClose: 5000,

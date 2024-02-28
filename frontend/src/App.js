@@ -14,14 +14,15 @@ import WithdrawMoney7 from "./pages/Customer/WithdrawMoney7";
 import WithdrawMoney8 from "./pages/Customer/WithdrawMoney8";
 
 import SeachCustomer47 from "./pages/Employee/SearchCustomer47";
+import FreezeAccount from "./pages/Employee/FreezeAccount"
 import DepositMoney43 from "./pages/Employee/DepositMoney43";
-import DepositMoney44 from "./pages/Employee/DepositMoney44";
+// import DepositMoney44 from "./pages/Employee/DepositMoney44";
 import DepositMoney45 from "./pages/Employee/DepositMoney45";
 
 //React-toastify
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaStreetView } from "react-icons/fa";
+// import { FaStreetView } from "react-icons/fa";
 import ViewAccountStatement9 from "./pages/Customer/ViewAccountStatement9";
 
 import CloseAccount18 from "./pages/Customer/CloseAccount18";
@@ -148,6 +149,10 @@ function App() {
           path="/Employee/Accounts/VerifyApproveKYC51/:customerId"
           element={<VerifyApproveKYC51 />}
         />
+        <Route
+          path="/Employee/Accounts/FreezeAccount"
+          element={<FreezeAccount/>}
+        />
 
         {/* employee fund transfer section */}
 
@@ -155,10 +160,10 @@ function App() {
           path="/Employee/FundTransfer/DepositMoney43"
           element={<DepositMoney43 />}
         />
-        <Route
+        {/* <Route
           path="/Employee/FundTransfer/DepositMoney44"
           element={<DepositMoney44 />}
-        />
+        /> */}
         <Route
           path="/Employee/FundTransfer/DepositMoney45"
           element={<DepositMoney45 />}

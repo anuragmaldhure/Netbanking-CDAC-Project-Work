@@ -1,4 +1,3 @@
-// Import necessary libraries and components
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaSearch, FaFileExport, FaPrint } from "react-icons/fa";
@@ -132,12 +131,11 @@ function SearchCustomer47() {
 
   return (
     <>
-      {/* Header section */}
       <EmployeeTopNavigationBar />
       <div className="d-flex">
         <EmployeeSideNavigationMenu />
         <div className="customer-list-container">
-          {/* Updated Header section */}
+       
           <Navbar bg="light" variant="light">
             <Row className="align-items-center">
               <Col>

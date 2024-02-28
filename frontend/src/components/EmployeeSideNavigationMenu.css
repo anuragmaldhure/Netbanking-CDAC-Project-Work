@@ -2,3 +2,8 @@
   width: 200px;
   overflow: auto;
 }
+
+.outerEmpSide{
+  background-color: lightgray;
+  grid-column: 1 / -1;
+}

@@ -172,4 +172,10 @@ public class ManagerController {
 	    }
 	}
 
+	//get all customer details details
+	@GetMapping("/GetAllCustomerDetails")
+	public List<CustomerDetailsDTO> getAllCustomerDetails() {
+		System.out.println("in get all customers details by manager id in Employee");
+		return customerService.getAllCustomerDetails();
+	}
 }

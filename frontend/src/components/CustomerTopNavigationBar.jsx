@@ -59,7 +59,7 @@ function CustomerTopNavigationBar() {
           </Link>
           <div style={{marginRight : '30px', marginLeft : '30px'}}>
             {customerData &&
-              `:: Last login : ${customerData.lastLoginTimestamp}`}
+              `:: Last login : ${customerData.lastLoginTimestamp.split('T')[0]} : ${customerData.lastLoginTimestamp.slice(11, 19)}`}
           </div>
         </div>
       </div>

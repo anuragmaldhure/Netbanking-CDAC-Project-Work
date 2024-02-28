@@ -240,10 +240,10 @@ public class EmployeeController {
 	
 	//from to
 	@PostMapping("/FundTransfer/DepositMoney/{employeeId}/{accountNumber}")
-	public ResponseEntity<String> depositMoneyDetails44 (@PathVariable Long employeeId, @PathVariable String accountNumber,
-		@RequestBody String remarks, @RequestParam Double amountToDeposit) {
+	public ResponseEntity<String> depositMoneyDetails44 (@PathVariable String employeeId, @PathVariable String accountNumber,
+			@RequestParam String amountToDeposit, @RequestParam String remarks) {
 		try {
-			accountTransactionsService.depositMoney(employeeId, accountNumber, amountToDeposit, remarks);
+			accountTransactionsService.depositMoney(Long.valueOf(employeeId), accountNumber,Double.valueOf(amountToDeposit), remarks);
 			
 		return ResponseEntity.ok("Successfully deposited " + amountToDeposit + " in account of customer account number: "+ accountNumber);
 		} catch (EntityNotFoundException e) {

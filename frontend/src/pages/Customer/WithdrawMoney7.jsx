@@ -84,7 +84,8 @@ const WithdrawMoney7 = () => {
       const amountToWithdraw = withdrawMoney; 
       const remark = remarks; 
 
-      const response = await axios.post(`${BASE_URL}/Customer/transaction/otp/verify?customerId=${customerId}&otp=${otp.otpValue}`);
+      // const response = 
+      await axios.post(`${BASE_URL}/Customer/transaction/otp/verify?customerId=${customerId}&otp=${otp.otpValue}`);
       // console.log(response.data); 
   
       const url = BASE_URL + `/Customer/FundTransfer/WithdrawMoney/${customerId}?amountToWithdraw=${amountToWithdraw}&remarks=${remark}`;

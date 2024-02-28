@@ -5,7 +5,7 @@ import "./EmployeeSideNavigationMenu.css"; // Import your custom CSS file
 
 function EmployeeSideNavigationMenu() {
   return (
-    <div>
+    <div className="outerEmpSide">
       <div className="accordion" id="accordionExample">
         <div className="accordion-item">
           <h2 className="accordion-header" id="headingOne">
@@ -41,8 +41,8 @@ function EmployeeSideNavigationMenu() {
                   Verify / Approve KYC
                 </Link>
                 <Link
-                  to="/Employee/Accounts/VerifyApproveKYC50"
-                  className="list-group-item list-group-item-action list-group-item-success"
+                  to="/Employee/Accounts/FreezeAccount"
+                  className="list-group-item list-group-item-action list-group-item-danger"
                 >
                   Freeze Account
                 </Link>
