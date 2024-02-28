@@ -1,0 +1,61 @@
+/* SearchEmployeeStyles.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Arial", sans-serif;
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.bodies {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.searchInput {
+  margin: 20px 0 20px 20px;
+  width: calc(100% - 40px);
+  padding: 15px;
+
+  transition: background-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.tableContainer {
+  width: calc(90vw - 60px);
+  max-height: 60vh;
+  padding: 20px;
+  margin: 20px 0; /* Adjusted margin */
+  overflow-y: auto;
+  border: 1px solid #2d8de7;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #0d9c93;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0; /* Adjusted margin */
+}
+
+.button {
+  padding: 15px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #4caf50;
+  color: white;
+}

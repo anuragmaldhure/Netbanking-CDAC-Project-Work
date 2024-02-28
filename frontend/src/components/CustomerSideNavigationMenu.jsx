@@ -82,7 +82,7 @@ function CustomerSideNavigationMenu() {
           label: "Account Statement",
         },
         { to: "/Customer/Account/KYCDetails12", label: "KYC Details" },
-        { to: "/Customer/Account/CloseAccount18", label: "FREEZE / DEACTIVATE ACCOUNT" },
+        { to: "/Customer/Account/CloseAccount18", label: "Close Account" },
       ],
     },
     {
@@ -126,7 +126,7 @@ function CustomerSideNavigationMenu() {
     },
     {
       heading: "Logout",
-      links: [{ to: "/logout", label: "Log Out" }],
+      links: [{ to: "/", label: "Log Out" }],
     },
   ];
 

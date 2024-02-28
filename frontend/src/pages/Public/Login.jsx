@@ -1,162 +1,90 @@
+// LoginForm.jsx
 import React, { useState } from "react";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
-import Image from "../../assets/images/obj.jpg";
+import { Link } from "react-router-dom"; // Assuming you are using React Router
 import styles from "./Login.module.css";
+import illustration from "../../assets/images/undraw_login_re_4vu2.svg";
 
-const Login = () => {
-  const navigate = useNavigate();
+const LoginForm = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [usernameInput, setUsername] = useState("");
-  const [passwordInput, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-
-  const BASE_URL = "http://localhost:8080";
-
-  // clear if any previous data
-  if (sessionStorage.getItem("jwt") || sessionStorage.getItem("role")) {
-    sessionStorage.clear();
-  }
-
-  const handleLogin = async () => {
-    if (!usernameInput.trim() || !passwordInput.trim()) {
-      toast.error("Please enter both username and password");
-      return;
-    }
-
-    try {
-
-      // console.log(usernameInput);
-      // console.log(passwordInput);
-
-      axios.defaults.headers.post["Content-Type"] = "application/json";
-
-      // console.log(BASE_URL + "/login");
-      // console.log(axios.defaults.headers);
-      const response = await axios.post(BASE_URL + "/login" 
-      ,{
-        "username": usernameInput,
-        "password": passwordInput
-      }
-      );
-
-      // console.log(response);
-
-      const token = response.data.jwt;
-      const role = response.data.role;
-
-      // console.log(token);
-      // console.log(role);
-
-      const setAuthToken = (token) => {
-        if (token) {
-          sessionStorage.setItem("jwt", token);
-          sessionStorage.setItem("role", role);
-        }
-      };
-
-      setAuthToken(token);
-
-      // // setting a default authorization header for Axios requests
-      // axios.defaults.headers.common[
-      //   "Authorization"
-      // ] = `Bearer ${sessionStorage.getItem("jwt")}`;
-      // axios.defaults.headers.post["Content-Type"] = "application/json";
-
-      toast.success(" Welcome dear " + role + "..." + response.data.mesg);
-
-      switch (role) {
-        case "CUSTOMER":
-          navigate("/Customer/Account/ViewAccountBalance");
-          break;
-        case "EMPLOYEE":
-          navigate("/Employee/Accounts/SearchCustomer47");
-          break;
-        case "MANAGER":
-          navigate("/Manager/Dashboard/ManagerHome");
-          break;
-        default:
-          navigate("/public"); // Redirect to default page for unknown roles
-      }
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        toast.error("Invalid username or password");
-      } else {
-        // toast.error("An error occurred. Please try again later.");
-        toast.error("An error occurred. Please try again later.");
-      }
-    }
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
   };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    // Add authentication logic here
+    toast.success("Login successful", {
+      autoClose: 2000,
+    });
+  };
+
+  console.log("Rendering LoginForm");
 
   return (
-    <div className={styles.loginContainer}>
-      <div className={styles.loginLeft}>
-        <img src={Image} alt="" className={styles.loginImage} />
-      </div>
-      <div className={styles.loginRight}>
-        <div className={styles.loginCenter}>
-          <h2>Welcome back!</h2>
-          <p>Please enter your details</p>
-          <form>
-            <input
-              type="text"
-              placeholder="Username"
-              className={`${styles.input} ${styles.customFont}`}
-              value={usernameInput}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <div className={styles.passInputDiv}>
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                className={`${styles.input} ${styles.customFont}`}
-                value={passwordInput}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <button
-                type="button"
-                className={styles.showPasswordButton}
-                onClick={togglePasswordVisibility}
-              >
-                {showPassword ? "Hide" : "Show"}
-              </button>
-            </div>
-            <div className={styles.loginCenterButtons}>
-              <button
-                type="button"
-                className={`btn btn-success ${styles.loginButton}`}
-                onClick={handleLogin}
-              >
-                Log In
-              </button>
-            </div>
-            <div className={styles.loginBottom}>
-              <p className={styles.loginBottomP}>
-                Don't have an account?{" "}
-                <a href="http://localhost:3000/Signup" className={styles.signUpLink}>
-                  Sign Up
-                </a>
-              </p>
-              <p className={styles.loginBottomP}>
-                Go to {" "}
-                <Link className={styles.btmTextHighlighted} to="/public"> Bank Home Page</Link>
-              </p>
-              <p className={styles.loginBottomP}>
-                Forgot Password? {" "}
-                <Link className={styles.btmTextHighlighted} to="/reset"> Reset Password</Link>
-              </p>
-            </div>
-          </form>
+    <div>
+      <main className={`${styles.cardContainer} ${styles.UpAnimationClass}`}>
+        <div className={styles.imageContainer}>
+          <h1 className={styles.company}>
+            AARNA BANK <sup>&trade;</sup>
+          </h1>
+          <img
+            src={illustration}
+            className={`${styles.illustration} ${styles.illustrationLogin}`}
+            alt=""
+          />
+          <p className={styles.quote}>
+            Enter your credentials to login.
+          </p>
         </div>
-      </div>
+        <form onSubmit={handleLogin}>
+          <div
+            className={`${styles.formContainer} ${styles.RightAnimationClass}`}
+          >
+            <h1 className={styles.formHeader}>Login</h1>
+            <div className={styles.inputContainer}>
+              <label htmlFor="username"></label>
+              <input
+                type="text"
+                name="username"
+                id="username"
+                required
+                value={username}
+                onChange={handleUsernameChange}
+              />
+              <span>Username</span>
+            </div>
+            <div className={styles.inputContainer}>
+              <label htmlFor="password"></label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                required
+                value={password}
+                onChange={handlePasswordChange}
+              />
+              <span>Password</span>
+            </div>
+            <div className={styles.buttonContainer}>
+              <button type="submit" className={styles.submitBtn}>
+                Login
+              </button>
+              <Link to="/">Back to Homepage</Link>
+              <Link to="/forgot-password">Forgot Password?</Link>
+            </div>
+          </div>
+        </form>
+      </main>
     </div>
   );
 };
 
-export default Login;
+export default LoginForm;

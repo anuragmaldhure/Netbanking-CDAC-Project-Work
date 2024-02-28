@@ -27,16 +27,7 @@ const renderTypeCell = (params) => {
 
 const ViewAccountStatement9 = () => {
   const theme = useTheme();
-  // const [customerData, setCustomerData] = useState(null);
   const [rows, setRows] = useState([]);
-
-  const BASE_URL = "http://localhost:8080";
-
-  // setting a default authorization header for Axios requests
-  axios.defaults.headers.common[
-    "Authorization"
-  ] = `Bearer ${sessionStorage.getItem("jwt")}`;
-  axios.defaults.headers.post["Content-Type"] = "application/json";
 
   const colors = tokens(theme.palette.mode);
 
@@ -93,42 +84,59 @@ const ViewAccountStatement9 = () => {
     },
   ];
 
+  const fetchDataFromDatabase = async () => {
+    try {
+      const customerId = 1;
+      const response = await axios.get(
+        `http://localhost:8080/Customer/Account/getAllTransactions/${customerId}`
+      );
+
+      // Map over the response data and use 'transactionId' as the unique 'id' property for each row
+      const data = response.data.map((row) => ({
+        id: row.transactionId,
+        transaction_id: row.transactionId,
+        current_balance: row.currentBalance,
+        recipient_id: row.recipientId,
+        transaction_amount: row.transactionAmount,
+        transaction_by_id: row.transactionById,
+        transaction_remarks: row.transactionRemarks,
+        transaction_timestamp: row.transactionTimestamp,
+        transaction_type: row.transactionType,
+      }));
+
+      // Log the fetched data to the console
+      console.log("Fetched data:", data);
+
+      return data;
+    } catch (error) {
+      console.error("Error fetching data from database:", error);
+      return [];
+    }
+  };
+
   useEffect(() => {
-    const fetchDataFromDatabase = async () => {
+    let isMounted = true;
+
+    const fetchAndSetData = async () => {
       try {
-        const response = await axios.get(
-          BASE_URL + `/Customer/User`
-        );
-        // setCustomerData(response.data); // Set customerData here
-        const customerId = response.data; // Use response.data to get customerId
-        const transactionsResponse = await axios.get(
-          BASE_URL + `/Customer/Account/getAllTransactions/${customerId}`
-        );
-
-        // Map over the response data and use 'transactionId' as the unique 'id' property for each row
-        const data = transactionsResponse.data.map((row) => ({
-          id: row.transactionId,
-          transaction_id: row.transactionId,
-          current_balance: row.currentBalance,
-          recipient_id: row.recipientId,
-          transaction_amount: row.transactionAmount,
-          transaction_by_id: row.transactionById,
-          transaction_remarks: row.transactionRemarks,
-          transaction_timestamp: row.transactionTimestamp,
-          transaction_type: row.transactionType,
-        }));
-
-        // Log the fetched data to the console
-        console.log("Fetched data:", data);
-
-        setRows(data); // Set rows after fetching data
+        const data = await fetchDataFromDatabase();
+        if (isMounted) {
+          setRows(data);
+        }
       } catch (error) {
         console.error("Error fetching data from database:", error);
+        if (isMounted) {
+          setRows([]);
+        }
       }
     };
 
-    fetchDataFromDatabase(); // Call fetchDataFromDatabase
-  }, []); // Empty dependency array ensures useEffect runs only once
+    fetchAndSetData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <div>

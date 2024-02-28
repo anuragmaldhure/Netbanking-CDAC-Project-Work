@@ -18,19 +18,11 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "bootstrap/dist/css/bootstrap.min.css"; // Include Bootstrap CSS
 
 import CustomerSideNavigationMenu from "../../components/CustomerSideNavigationMenu";
 import CustomerTopNavigationBar from "../../components/CustomerTopNavigationBar";
-
-const BASE_URL = "http://localhost:8080";
-
-// setting a default authorization header for Axios requests
-axios.defaults.headers.common[
-  "Authorization"
-] = `Bearer ${sessionStorage.getItem("jwt")}`;
-axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const TransferWithinBank22 = () => {
   const theme = useTheme();
@@ -40,59 +32,33 @@ const TransferWithinBank22 = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const transferredData = location.state?.transferredData || null;
+  const customerId = 1;
   const receiverAccountNumber = transferredData?.accountNumber || null;
 
-  const [customerData, setCustomerData] = useState(null);
-
   useEffect(() => {
-    const fetchCustomerData = async () => {
+    const fetchOTP = async () => {
       try {
-        const response = await axios.get(
-          BASE_URL + `/Customer/User/GetMyDetails`
+        const otpResponse = await axios.get(
+          `http://localhost:8080/Customer/transaction/otp/generate?customerId=${customerId}`
         );
-        setCustomerData(response.data);
 
-        // Once customerData is set, call generateOTP
-        generateOTP(response.data.customerId);
+        const receivedOtp = otpResponse.data;
+        
       } catch (error) {
-        console.error("Error fetching customer data:", error);
+        console.error("Error fetching OTP:", error.message);
       }
     };
 
-    fetchCustomerData();
-  }, []);
-
-
-  const generateOTP = async (customerId) => {
-    try {
-      await axios.get(`${BASE_URL}/Customer/transaction/otp/generate?customerId=${customerId}`);
-    } catch (error) {
-      toast.error(
-        "🦄 Error generating OTP"+ error,
-        {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
-      throw error; // Handle error as needed
-    }
-  };
+    fetchOTP();
+  }, [customerId]);
 
   const handleOtpValidation = async () => {
     try {
       setIsLoading(true);
 
-      const customerId = customerData.customerId;
       const verifyOtpResponse = await axios.post(
-        BASE_URL+`/Customer/transaction/otp/verify?customerId=${customerId}&otp=${userInputOtp}`
+        `http://localhost:8080/Customer/transaction/otp/verify?customerId=${customerId}&otp=${userInputOtp}`
       );
-      console.log(verifyOtpResponse);
 
       setIsLoading(false);
 
@@ -110,71 +76,37 @@ const TransferWithinBank22 = () => {
         console.log("Receiver Account Number:", receiverAccountNumber);
 
         try {
-          const response = await axios.post(
-            `${BASE_URL}/Customer/FundTransfer/SendMoney/${customerId}/${receiverAccountNumber}?amountToSend=${transferData.amount}&remarks=${remarksValue}`
+          const response = await fetch(
+            `http://localhost:8080/Customer/FundTransfer/SendMoney/${customerId}/${receiverAccountNumber}?amountToSend=${transferData.amount}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: remarksValue,
+            }
           );
-          if (response.status === 200) {
+
+          if (response.ok) {
             navigate("/Customer/FundTransfer/TransferWithinBank23", {
               state: { transferData },
             });
           } else {
-            toast.error(
-              "🦄 "+response.statusText,
-              {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              }
-            );
-            // console.error("Failed to send money:", response.statusText);
+            console.error("Failed to send money:", response.statusText);
           }
         } catch (error) {
-          toast.error(
-            "🦄 " + error.message,
-            {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            }
-          );
-          // console.error("Error while sending money:", error.message);
+          console.error("Error while sending money:", error.message);
         }
       }
     } catch (error) {
       setIsLoading(false);
-      toast.error(
-        "🦄 " + error.message,
-        {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
+      console.error("Error verifying OTP:", error.message);
     }
   };
 
   const handleBack = () => {
     navigate(-1);
   };
-
-  if (!customerData) {
-    return null; // Or render a loading indicator
-  }
 
   return (
     <div>
@@ -226,9 +158,9 @@ const TransferWithinBank22 = () => {
               Enter OTP
             </Typography>
             <Typography>
-            OTP has been sent to your registered email id :{" "}
-            <strong>{customerData.emailId}</strong>. Please enter the OTP below to
-            complete the transaction (OTP is only valid for 2 minutes)
+              OTP has been sent to your registered mobile number:{" "}
+              <strong>91xxxxxxxx71</strong> and email id:{" "}
+              <strong>abcd@gmail.com</strong>.
             </Typography>
             <TextField
               label="Enter OTP"

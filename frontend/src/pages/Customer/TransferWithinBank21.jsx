@@ -44,8 +44,6 @@ const TransferWithinBank21 = () => {
     }
   };
 
-
-
   const handleConfirmTransfer = () => {
     setOpenDialog(false);
 
@@ -64,19 +62,17 @@ const TransferWithinBank21 = () => {
     });
   };
 
-
-
   const validateFields = () => {
-    const accountNumberRegex = /^[a-zA-Z0-9]{1,8}$/;
-    const amountRegex = /^\d{1,5}$/;
+    const accountNumberRegex = /^[a-zA-Z0-9]{1,12}$/;
+    const amountRegex = /^\d{1,7}$/;
 
     if (!accountNumberRegex.test(accountNumber)) {
-      toast.error("Account number should be alpha numeric and 6 characters long !");
+      toast.error("Account number should be numeric and up to 12 digits.");
       return false;
     }
 
     if (!amountRegex.test(amount)) {
-      toast.error("Amount should be numeric and up to 5 digits. (< 1,00,000) !");
+      toast.error("Amount should be numeric and up to 7 digits.");
       return false;
     }
 
@@ -93,12 +89,8 @@ const TransferWithinBank21 = () => {
     return true;
   };
 
-
-
   const [openDialog, setOpenDialog] = useState(false);
 
-
-  
   return (
     <div>
       <CustomerTopNavigationBar />

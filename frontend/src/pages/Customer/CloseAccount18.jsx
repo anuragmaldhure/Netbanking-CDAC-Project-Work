@@ -10,16 +10,12 @@ import {
 } from "@mui/material";
 import { Box, Container } from "@mui/system";
 
-import { useNavigate } from 'react-router-dom';
-
 import CustomerSideNavigationMenu from "../../components/CustomerSideNavigationMenu";
 import CustomerTopNavigationBar from "../../components/CustomerTopNavigationBar";
 
 const CloseAccount18 = () => {
   const [isCloseAccountOpen, setCloseAccountOpen] = useState(false);
   const [feedback, setFeedback] = useState("");
-
-  const navigate = useNavigate();
 
   const handleOpenCloseAccount = () => {
     setCloseAccountOpen(true);
@@ -30,7 +26,10 @@ const CloseAccount18 = () => {
   };
 
   const handleConfirmCloseAccount = () => {
-    navigate('/Customer/OtherServices/ContactUs37');
+    // Implement your logic to close the account here
+    // You can also use the 'feedback' state here
+    console.log("Account Closed!");
+    console.log("Feedback:", feedback);
     handleCloseCloseAccount();
   };
   
@@ -55,8 +54,8 @@ const CloseAccount18 = () => {
                 "Deactivate Account" button below.
               </h2>
             </Box>
-            <hr/>
-            {/* Feedback input field
+
+            {/* Feedback input field */}
             <TextField
               label="Feedback (optional)"
               variant="outlined"
@@ -64,7 +63,7 @@ const CloseAccount18 = () => {
               fullWidth
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
-            /> */}
+            />
 
             {/* Button to open the CloseAccount modal */}
             <Button
@@ -81,19 +80,20 @@ const CloseAccount18 = () => {
               <DialogContent>
                 <DialogContentText>
                   We regret to inform you that deactivating your account will result in all transactions
-                  from and to your account being blocked effective immediately. Please contact our bank employees for the same as soon as possible.
-                  Contact details are mentioned in Contact Us section.
+                  from and to your account being blocked effective immediately.
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
-              <Button
-                onClick={handleConfirmCloseAccount}
-                color="primary"
-                variant="contained"
-              >
-                I understood, contact bank representative
-              </Button>
-
+                <Button onClick={handleCloseCloseAccount} color="primary">
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleConfirmCloseAccount}
+                  color="primary"
+                  variant="contained"
+                >
+                  Confirm Deactivation
+                </Button>
               </DialogActions>
             </Dialog>
           </Box>

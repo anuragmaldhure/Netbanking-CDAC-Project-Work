@@ -10,19 +10,10 @@ import {
 } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
+import Axios from "axios";
 
 import CustomerSideNavigationMenu from "../../components/CustomerSideNavigationMenu";
 import CustomerTopNavigationBar from "../../components/CustomerTopNavigationBar";
-
-
-const BASE_URL = "http://localhost:8080";
-
-// setting a default authorization header for Axios requests
-axios.defaults.headers.common[
-  "Authorization"
-] = `Bearer ${sessionStorage.getItem("jwt")}`;
-axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const ChangePassword30 = () => {
   const [fetchedPassword, setFetchedPassword] = useState("");
@@ -34,14 +25,8 @@ const ChangePassword30 = () => {
   useEffect(() => {
     const fetchCustomerDetails = async () => {
       try {
-
-        const response1 = await axios.get(
-          BASE_URL + `/Customer/User`
-        );
-        const customerId = response1.data; // Use response.data to get customerId
-
-        const response = await axios.get(
-          BASE_URL + `/Customer/Account/`+ customerId
+        const response = await Axios.get(
+          `http://localhost:8080/Customer/Account/1`
         );
         setFetchedPassword(response.data.password);
         console.log("Fetched Password:", response.data.password);
@@ -57,8 +42,10 @@ const ChangePassword30 = () => {
     setOpenDialog(false);
   };
 
-
   const handleSubmit = async () => {
+    // Assuming you have the necessary state variables like customerId
+    const customerId = 1; // replace with the actual value or get it from your state
+
     // Validate that newPassword and confirmPassword match
     if (newPassword !== confirmPassword) {
       toast.error("New password and confirm password do not match");
@@ -66,14 +53,8 @@ const ChangePassword30 = () => {
     }
 
     try {
-
-      const response1 = await axios.get(
-        BASE_URL + `/Customer/User`
-      );
-      const customerId = response1.data; // Use response.data to get customerId
-      
-      const response = await axios.put(
-        BASE_URL + `/Customer/OtherServices/ChangePassword30/${customerId}`,
+      const response = await Axios.put(
+        `http://localhost:8080/Customer/OtherServices/ChangePassword30/${customerId}`,
         null, // Set to null for the request body
         {
           params: {

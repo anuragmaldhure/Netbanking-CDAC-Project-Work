@@ -1,0 +1,83 @@
+/* ManagerSideNavigationBar.module.css */
+
+.manager-side-navbar-container {
+  background-color: #1f5156;
+  color: #fff;
+  padding: 15px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  color: #f5b921;
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.nav-links-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #fff;
+  margin-bottom: 15px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #ffdd40;
+}
+
+.search-bar {
+  display: flex;
+  background-color: #1f5156;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+.search-bar .search-input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background-color: transparent;
+  color: #fff;
+}
+
+.search-bar .search-input::placeholder {
+  color: #ddd;
+}
+
+.search-bar .search-icon {
+  padding: 10px;
+  color: #ddd;
+  cursor: pointer;
+}
+
+.user-icons-container {
+  display: flex;
+  align-items: center;
+}
+
+.user-icon {
+  font-size: 20px;
+  color: #fff;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.user-icon:hover {
+  color: #ffdd40;
+}

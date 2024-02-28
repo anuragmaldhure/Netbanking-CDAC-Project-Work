@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-// import { Badge, IconButton, InputBase, useTheme } from "@mui/material";
-// import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
+import { Badge, IconButton, InputBase, useTheme } from "@mui/material";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
+import SearchIcon from "@mui/icons-material/Search";
 import axios from "axios";
 import "./CustomerTopNavigationBar.css";
 
 function CustomerTopNavigationBar() {
+  const customerId = 1;
+  const theme = useTheme();
   const [customerData, setCustomerData] = useState(null);
-
-  const BASE_URL = "http://localhost:8080";
 
   useEffect(() => {
     const fetchCustomerData = async () => {
       try {
         const response = await axios.get(
-          BASE_URL + `/Customer/User/GetMyDetails`,
-          { 
-            headers: {
-              Authorization: `Bearer ${sessionStorage.getItem("jwt")}`
-            }
-          }
+          `http://localhost:8080/Manager/ViewCustomerDetails/${customerId}`
         );
         setCustomerData(response.data);
       } catch (error) {
@@ -34,10 +34,10 @@ function CustomerTopNavigationBar() {
       <div className="logo-container">
         <div className="nav-links-container">
           <span className="logo">Aarna Bank</span>
-          <div style={{marginRight : '30px', marginLeft : '30px'}}>
+          <span>
             {customerData &&
-              `${customerData.accountHolderFirstName} ${customerData.accountHolderLastName} [${customerData.accountNumber}]  ::`}
-          </div>
+              `Welcome : ${customerData.accountHolderFirstName} ${customerData.accountHolderLastName} (A/C no. : ${customerData.accountNumber})      |  `}
+          </span>
           <span></span>
           <Link to="/Customer/Account/ViewAccountBalance" className="nav-link">
             Home
@@ -57,17 +57,30 @@ function CustomerTopNavigationBar() {
           <Link to="/Customer/OtherServices/ContactUs37" className="nav-link">
             Contact Us
           </Link>
-          <div style={{marginRight : '30px', marginLeft : '30px'}}>
-            {customerData &&
-              `:: Last login : ${customerData.lastLoginTimestamp.split('T')[0]} : ${customerData.lastLoginTimestamp.slice(11, 19)}`}
-          </div>
         </div>
       </div>
-      {/* <div className="user-icons-container">
+      <div className="search-bar">
+        <InputBase placeholder="Search" className="search-input" />
+        <IconButton type="button" className="search-icon">
+          <SearchIcon />
+        </IconButton>
+      </div>
+      <div className="user-icons-container">
+        {/* <IconButton className="user-icon">
+          {theme.palette.mode === "dark" ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />}
+        </IconButton> */}
+        {/* <IconButton className="user-icon">
+          <Badge variant="dot" color="secondary">
+            <NotificationsOutlinedIcon />
+          </Badge>
+        </IconButton>
+        <IconButton className="user-icon">
+          <SettingsOutlinedIcon />
+        </IconButton> */}
         <IconButton className="user-icon">
           <PersonOutlinedIcon />
         </IconButton>
-      </div> */}
+      </div>
     </div>
   );
 }

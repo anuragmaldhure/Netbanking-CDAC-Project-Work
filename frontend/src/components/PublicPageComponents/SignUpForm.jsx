@@ -1,26 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styles from "./SignUpForm.module.css";
-import { Link } from "react-router-dom";
-import axios from "axios";
-
 
 const SignUpForm = () => {
   const navigate = useNavigate();
-  const BASE_URL = "http://localhost:8080";
 
   const [formValues, setFormValues] = useState({
     fName: "",
     lName: "",
     email: "",
     phone: "",
-    username: "", 
     password: "",
     confirmPassword: "",
   });
 
+  // Add state for animation classes
   const [animationClasses, setAnimationClasses] = useState({
     cardContainer: "",
     formContainer: "",
@@ -29,57 +25,40 @@ const SignUpForm = () => {
 
   useEffect(() => {
     if (animationClasses.outroOverlay === styles.UpAnimationClass) {
+      // Show toast for 2 seconds
       toast.success("Account created successfully", { autoClose: 2000 });
+
+      // Navigate to /login after 2 seconds
       const timeoutId = setTimeout(() => {
         navigate("/login");
       }, 2000);
+
+      // Cleanup the timeout to prevent unexpected behavior
       return () => clearTimeout(timeoutId);
     }
   }, [animationClasses.outroOverlay, navigate]);
 
   const handleInputChange = (e, fieldName) => {
     const { value } = e.target;
+
     setFormValues((prevValues) => ({
       ...prevValues,
       [fieldName]: value,
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (formValues.password !== formValues.confirmPassword) {
-      toast.error("Passwords do not match");
-      return;
-    }
+    // Perform the desired action on successful form submission
+    console.log("Form submitted successfully");
 
-    try {
-      const response = await axios.post(BASE_URL + "/signup", {
-        accountHolderFirstName: formValues.fName,
-        accountHolderLastName: formValues.lName,
-        username: formValues.username,
-        password: formValues.password,
-        emailId: formValues.email,
-        mobileNumber: formValues.phone,
-      });
-  
-      // Check if the response status is 201 (Created) or not
-      if (response.status === 201) {
-        console.log("Account created successfully:", response.data);
-        toast.success("Account created successfully");
-        // Redirect to login page after successful signup
-        navigate("/login");
-      } else {
-        // Handle other response status codes if needed
-      }
-    } catch (error) {
-      // Handle error
-      console.error("Error creating account:", error);
-      // Display error message
-      toast.error("Error creating account. Please try again later.");
-    }
+    // Trigger animation classes on form submission
+    setAnimationClasses({
+      cardContainer: styles.UpAnimationClass,
+      formContainer: styles.RightAnimationClass,
+      outroOverlay: styles.UpAnimationClass,
+    });
   };
-
-  
 
   return (
     <div>
@@ -95,7 +74,9 @@ const SignUpForm = () => {
             className={styles.illustration}
             alt=""
           />
-          <p className={styles.quote}>Sign up today to get exciting offers..!</p>
+          <p className={styles.quote}>
+            Sign up today to get exciting offers..!
+          </p>
           <a href="#btm" className={styles.mobileBtmNav}>
             <img src="../../assets/images/dbl-arrow.png" alt="" />
           </a>
@@ -105,6 +86,7 @@ const SignUpForm = () => {
             className={`${styles.formContainer} ${animationClasses.formContainer}`}
           >
             <h1 className={styles.formHeader}>Get started</h1>
+            {/* Mapping over input fields */}
             {[
               {
                 label: "First name",
@@ -120,7 +102,6 @@ const SignUpForm = () => {
               },
               { label: "E-mail", type: "email", name: "email", id: "mail" },
               { label: "Phone", type: "tel", name: "phone", id: "phone" },
-              { label: "Username", type: "text", name: "username", id: "username" }, // Add username field
               {
                 label: "Password",
                 type: "password",
@@ -147,6 +128,7 @@ const SignUpForm = () => {
                 <div className={styles.error}></div>
               </div>
             ))}
+
             <div id="btm">
               <button
                 type="submit"
@@ -156,11 +138,7 @@ const SignUpForm = () => {
               </button>
               <p className={styles.btmText}>
                 Already have an account..?{" "}
-                <Link to="/login" className={styles.btmTextHighlighted}>Log in</Link>
-              </p>
-              <p className={styles.btmText}>
-                Go back to {" "}
-                <Link to="/public" className={styles.btmTextHighlighted}>Bank HomePage</Link>
+                <span className={styles.btmTextHighlighted}>Log in</span>
               </p>
             </div>
           </div>
@@ -183,6 +161,14 @@ const SignUpForm = () => {
           alt=""
           className={`${styles.signedUpIllustration} ${animationClasses.RightAnimationClass}`}
         />
+
+        <div className={styles.authorLink}>
+          &copy;&nbsp;
+          <a href="https://www.0xabdulkhalid.ml/">0xabdulkhalid</a> |
+          <a href="https://www.github.com/0xabdulkhalid/basket-sign-up-form/">
+            Source Code
+          </a>
+        </div>
       </section>
     </div>
   );

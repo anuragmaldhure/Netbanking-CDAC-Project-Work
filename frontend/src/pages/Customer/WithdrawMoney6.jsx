@@ -1,71 +1,38 @@
 import CustomerSideNavigationMenu from '../../components/CustomerSideNavigationMenu'
 import CustomerTopNavigationBar from '../../components/CustomerTopNavigationBar'
-import { useState, useEffect} from 'react';
+import { useState } from 'react';
 
+// import { Link, useNavigate } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 
 import { toast } from 'react-toastify'
 
 //react redux
-import { useDispatch} from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 import { updateWithdrawMoney } from '../../features/WithdrawMoneyInfoSlice';
-import axios from "axios";
 
 // import { Link } from 'react-router-dom';
 
 const WithdrawMoney6 = () => {
+
     // get the navigation object
     const navigate = useNavigate()
+
     //react redux
     const dispatch = useDispatch();
+
+    // get the current state from redux
+    const withdrawMoneyRR = useSelector((state) => state.withdrawMoney);
+
     const [withdrawMoney, setWithdrawMoney] = useState({ amount: "", confirmAmount: "", remarks: "" });
-    // const [balance, setBalance] = useState({balanceAmount : 12345});
-    const [balance, setBalance] = useState();
 
-    const BASE_URL = "http://localhost:8080";
-
-    // setting a default authorization header for Axios requests
-    axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${sessionStorage.getItem("jwt")}`;
-    axios.defaults.headers.post["Content-Type"] = "application/json";
-
-    useEffect(() => {
-        const fetchDataFromDatabase = async () => {
-          try {
-            const response = await axios.get(
-              BASE_URL + `/Customer/User`
-            );
-
-            const customerId = response.data; // Use response.data to get customerId
-            const response2 = await axios.get(
-              BASE_URL + `/Customer/Account/balanceAndAccountNumber/${customerId}`
-            );
-
-            // Assuming the API response contains an array with two elements: [balance, accountNumber]
-            // Set the state with the fetched account details
-            setBalance(response2.data[0]);
-            // console.log(response2.data[0])
-
-          } catch (error) {
-            console.error("Error fetching data from database:", error);
-          }
-        };
-    
-        fetchDataFromDatabase(); // Call fetchDataFromDatabase
-      }, []); // Empty dependency array ensures useEffect runs only once
+    const [balance, setBalance] = useState({balanceAmount : 12345});
 
     const handleChange = (e) => {
-        // setWithdrawMoney({...withdrawMoney, [e.target.name]: e.target.value})
-        // console.log(withdrawMoney)
-        // //react redux
-        // dispatch(updateWithdrawMoney({[e.target.name]: e.target.value }));
-        // Trim the input value to remove leading and trailing white spaces
-        const trimmedValue = e.target.value.trim();
-        setWithdrawMoney({...withdrawMoney, [e.target.name]: trimmedValue});
-        console.log(withdrawMoney);
+        setWithdrawMoney({...withdrawMoney, [e.target.name]: e.target.value})
+        console.log(withdrawMoney)
         //react redux
-        dispatch(updateWithdrawMoney({[e.target.name]: trimmedValue }));
+        dispatch(updateWithdrawMoney({[e.target.name]: e.target.value }));
     }
 
     const inputDataAndAmountValidation = () => {
@@ -87,7 +54,7 @@ const WithdrawMoney6 = () => {
                         //transition: Bounce,
                         });
                 }else{
-                    if(withdrawMoney.amount > balance){
+                    if(withdrawMoney.amount > balance.balanceAmount){
                         toast.error('🦄 You do not have enough balance! Try again', {
                             position: "top-center",
                             autoClose: 5000,
@@ -152,7 +119,7 @@ const WithdrawMoney6 = () => {
                     <div style={{ justifyContent: 'center', alignItems: 'center'}}>
                         <div>
                             <br/>
-                            <h2><strong>Net Balance Available : ₹ {(balance)}</strong></h2>
+                            <h2><strong>Net Balance Available : ₹ {(balance.balanceAmount)}</strong></h2>
                             <br/>
                         </div>
                     </div>
@@ -174,7 +141,7 @@ const WithdrawMoney6 = () => {
                     </div>
 
                     <div className="input-group mb-3" style={{ width: '50%' }} >
-                        <span className="input-group-text">Confirm Amount</span>
+                        <span className="input-group-text">Amount</span>
                         <div className="form-floating">
                             <input 
                                 type="number" 
@@ -185,7 +152,7 @@ const WithdrawMoney6 = () => {
                                 placeholder="Username" 
                                 onChange={handleChange}
                             />
-                            <label htmlFor="floatingInputGroup2">Confirm Amount to withdraw here</label>
+                            <label htmlFor="floatingInputGroup2">Enter Amount to withdraw here</label>
                         </div>
                     </div>
 

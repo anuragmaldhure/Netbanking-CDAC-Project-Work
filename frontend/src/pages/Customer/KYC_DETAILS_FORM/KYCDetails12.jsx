@@ -25,15 +25,6 @@ import axios from "axios";
 import CustomerTopNavigationBar from "../../../components/CustomerTopNavigationBar";
 import CustomerSideNavigationMenu from "../../../components/CustomerSideNavigationMenu";
 
-
-const BASE_URL = "http://localhost:8080";
-
-// setting a default authorization header for Axios requests
-axios.defaults.headers.common[
-  "Authorization"
-] = `Bearer ${sessionStorage.getItem("jwt")}`;
-axios.defaults.headers.post["Content-Type"] = "application/json";
-
 const KYCDetails12 = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -66,17 +57,16 @@ const KYCDetails12 = () => {
     photo: null,
   });
 
+  useEffect(() => {
+    fetchCustomerImages();
+    fetchCustomerDetails();
+  }, []);
+
   const fetchCustomerDetails = async () => {
     try {
-
-      const response1 = await axios.get(
-        BASE_URL + `/Customer/User`
-      );
-      const customerId = response1.data; // Use response.data to get customerId
-
       const [personalDetailsResponse, addressResponse] = await Promise.all([
-        axios.get(BASE_URL+"/Customer/Account/"+customerId),
-        axios.get(BASE_URL+"/Customer/KYC/address/"+customerId),
+        axios.get("http://localhost:8080/Customer/Account/1"),
+        axios.get("http://localhost:8080/Customer/KYC/address/1"),
       ]);
 
       const { data: personalDetails } = personalDetailsResponse;
@@ -110,15 +100,12 @@ const KYCDetails12 = () => {
 
   const fetchCustomerImages = async () => {
     try {
-      const response2 = await axios.get(BASE_URL + `/Customer/User`);
-      const customerId = response2.data;
-  
       const [aadhar, pan, photo] = await Promise.all([
-        axios.get(BASE_URL+"/Customer/documents/aadhar/"+customerId, { responseType: "arraybuffer" }),
-        axios.get(BASE_URL+"/Customer/documents/pan/"+customerId, { responseType: "arraybuffer" }),
-        axios.get(BASE_URL+"/Customer/documents/photo/"+customerId, { responseType: "arraybuffer" }),
+        axios.get("http://localhost:8080/Customer/documents/aadhar/1", { responseType: "arraybuffer" }),
+        axios.get("http://localhost:8080/Customer/documents/pan/1", { responseType: "arraybuffer" }),
+        axios.get("http://localhost:8080/Customer/documents/photo/1", { responseType: "arraybuffer" }),
       ]);
-  
+
       if (aadhar.data && pan.data && photo.data) {
         const [aadharUrl, panUrl, photoUrl] = [URL.createObjectURL(new Blob([aadhar.data])), URL.createObjectURL(new Blob([pan.data])), URL.createObjectURL(new Blob([photo.data]))];
 
@@ -137,12 +124,6 @@ const KYCDetails12 = () => {
       console.error("Error fetching customer images:", error);
     }
   };
-  
-
-  useEffect(() => {
-    fetchCustomerImages();
-    fetchCustomerDetails();
-  }, []);
 
   const setImageRefs = (aadharUrl, panUrl, photoUrl) => {
     const imageRefs = {
@@ -173,13 +154,7 @@ const KYCDetails12 = () => {
     console.log("Form data saved:", formData);
 
     try {
-
-      const response1 = await axios.get(
-        BASE_URL + `/Customer/User`
-      );
-      const customerId = response1.data; // Use response.data to get customerId
-
-      await axios.put(BASE_URL+"/Customer/KYC/address/"+customerId, {
+      await axios.put("http://localhost:8080/Customer/KYC/address/1", {
         address: formData.address,
         city: formData.city,
         state: formData.state,
@@ -187,7 +162,7 @@ const KYCDetails12 = () => {
         nationality: formData.nationality,
       });
 
-      await axios.put(BASE_URL+"/Customer/KYC/CustomerEssentialData/"+customerId, {
+      await axios.put("http://localhost:8080/Customer/KYC/CustomerEssentialData/1", {
         occupation: formData.occupation,
         annualIncome: formData.annualIncome,
         dateOfBirth: dayjs(formData.birthdate).format("YYYY-MM-DD"),
@@ -208,12 +183,6 @@ const KYCDetails12 = () => {
   const handleUploadClick = async () => {
     if (isEditing) {
       try {
-
-        const response1 = await axios.get(
-          BASE_URL + `/Customer/User`
-        );
-        const customerId = response1.data; // Use response.data to get customerId
-
         const formDataArray = [new FormData(), new FormData(), new FormData()];
 
         formDataArray[0].append("imageFile", formData.aadhar);
@@ -222,7 +191,7 @@ const KYCDetails12 = () => {
 
         const uploadPromises = formDataArray.map(async (formData, index) => {
           const fileType = ["aadhar", "pan", "photo"][index];
-          await axios.put(BASE_URL+`/Customer/documents/${fileType}/`+customerId, formData);
+          await axios.put(`http://localhost:8080/Customer/documents/${fileType}/1`, formData);
         });
 
         await Promise.all(uploadPromises);
@@ -242,15 +211,10 @@ const KYCDetails12 = () => {
   const handleUploadClicked = async (fileType) => {
     if (isEditing) {
       try {
-        const response1 = await axios.get(
-          BASE_URL + `/Customer/User`
-        );
-        const customerId = response1.data; // Use response.data to get customerId
-
         const formDataFile = new FormData();
         formDataFile.append("imageFile", formData[fileType]);
 
-        await axios.put(BASE_URL+`/Customer/documents/${fileType}/`+customerId, formDataFile);
+        await axios.put(`http://localhost:8080/Customer/documents/${fileType}/1`, formDataFile);
 
         const successMessage = `${fileType.toUpperCase()} uploaded successfully`;
         console.log(successMessage);
