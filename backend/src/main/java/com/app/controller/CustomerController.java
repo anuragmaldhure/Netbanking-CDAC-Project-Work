@@ -162,7 +162,7 @@ public class CustomerController {
 	//Deposit transaction after getting amount and remarks from request
 	@PostMapping("/FundTransfer/WithdrawMoney/{customerId}")
 	public ResponseEntity<String> withdrawMoneyByCustomer (@PathVariable Long customerId,
-				@RequestBody String remarks, @RequestParam Double amountToWithdraw) {
+				@RequestParam Double amountToWithdraw, @RequestParam String remarks) {
 		try {
 				
 			accountTransactionsService.withdrawMoney(customerId, amountToWithdraw, remarks);

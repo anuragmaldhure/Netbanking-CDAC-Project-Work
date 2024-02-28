@@ -57,10 +57,16 @@ const WithdrawMoney6 = () => {
       }, []); // Empty dependency array ensures useEffect runs only once
 
     const handleChange = (e) => {
-        setWithdrawMoney({...withdrawMoney, [e.target.name]: e.target.value})
-        console.log(withdrawMoney)
+        // setWithdrawMoney({...withdrawMoney, [e.target.name]: e.target.value})
+        // console.log(withdrawMoney)
+        // //react redux
+        // dispatch(updateWithdrawMoney({[e.target.name]: e.target.value }));
+        // Trim the input value to remove leading and trailing white spaces
+        const trimmedValue = e.target.value.trim();
+        setWithdrawMoney({...withdrawMoney, [e.target.name]: trimmedValue});
+        console.log(withdrawMoney);
         //react redux
-        dispatch(updateWithdrawMoney({[e.target.name]: e.target.value }));
+        dispatch(updateWithdrawMoney({[e.target.name]: trimmedValue }));
     }
 
     const inputDataAndAmountValidation = () => {

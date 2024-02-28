@@ -10,8 +10,8 @@ import { useSelector } from 'react-redux';
 
 const WithdrawMoney7 = () => {
   const navigate = useNavigate();
+
   const [otp, setOtp] = useState({ otpValue: "" });
-  // const [generatedOtp, setGeneratedOtp] = useState({ otpValue: "" });
   const [customerData, setCustomerData] = useState(null);
 
   const BASE_URL = "http://localhost:8080";
@@ -23,8 +23,8 @@ const WithdrawMoney7 = () => {
   axios.defaults.headers.post["Content-Type"] = "application/json";
 
   // React Redux
-  const withdrawMoney = useSelector(state => state.amount);
-  const remarks = useSelector(state => state.remarks);
+  const withdrawMoney = useSelector(state => state.withdrawMoney.amount);
+  const remarks = useSelector(state => state.withdrawMoney.remarks);
 
   console.log("1 " + withdrawMoney);
   console.log("2" +remarks);
@@ -50,7 +50,7 @@ const WithdrawMoney7 = () => {
   const generateOTP = async (customerId) => {
     try {
       const response = await axios.get(`${BASE_URL}/Customer/transaction/otp/generate?customerId=${customerId}`);
-      // setGeneratedOtp(response.data); 
+      console.log("Generated OTP : " +response.data); 
     } catch (error) {
       console.error('Error generating OTP:', error);
       throw error; // Handle error as needed
@@ -91,31 +91,29 @@ const WithdrawMoney7 = () => {
   
       console.log("Request URL:", url);
   
-      const fetchResponse = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-  
-      if (fetchResponse.ok) {
-        navigate("/Customer/FundTransfer/WithdrawMoney8");
-      } else {
-        console.error("Failed to withdraw money:", fetchResponse.statusText);
-        toast.error(
-          "🦄 An error occurred while withdrawing money. Please try again!",
-          {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          }
-        );
-      }
+        try {
+            const response = await axios.post(
+                url
+            );
+            console.log(response.data);
+            navigate('/Customer/FundTransfer/WithdrawMoney8')
+        } catch (error) {
+            console.log("Failed to withdraw money:" + error);
+            toast.error(
+              "🦄 An error occurred while withdrawing money. Please try again!",
+              {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              }
+            );
+            throw error;
+        }
     } catch (error) {
       console.error("Error in withdrawing money:", error);
       toast.error(

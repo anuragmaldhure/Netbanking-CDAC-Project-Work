@@ -38,7 +38,7 @@ const WithdrawMoney8 = () => {
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
-                theme: "light",
+                theme: "colored"
                 //transition: Bounce,
             });
         }
@@ -74,7 +74,7 @@ const WithdrawMoney8 = () => {
                         <div style={{ textAlign: 'center', display : 'flex', gap:'20px', justifyContent: 'center'}}>
                             {/* Pagination and Sorting*/}
                             <div>
-                                <Link to="/Customer/Account" className="btn btn-primary">
+                                <Link to="/Customer/Account/ViewAccountBalance" className="btn btn-primary">
                                     Go to Home
                                 </Link>
                             </div>
@@ -112,7 +112,7 @@ const WithdrawMoney8 = () => {
                          <div style={{ textAlign: 'center', display : 'flex', gap:'20px', justifyContent: 'center'}}>
                              {/* Pagination and Sorting*/}
                              <div>
-                                 <Link to="/Customer/Account" className="btn btn-primary">
+                                 <Link to="/Customer/Account/ViewAccountBalance" className="btn btn-primary">
                                      Go to Home
                                  </Link>
                              </div>
