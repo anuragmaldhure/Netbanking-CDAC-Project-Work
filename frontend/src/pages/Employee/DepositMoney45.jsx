@@ -26,7 +26,7 @@ function DepositMoney45() {
                         <br/>
                         <br/>
                         <hr/>
-                        <div style={{ textAlign: 'center' }}>
+                        <div style={{ textAlign: 'center', display : 'flex', gap:'20px', justifyContent: 'center'}}>
                             <Link to="/Employee/Accounts/SearchCustomer47" className="btn btn-primary">
                                 Go to Home
                             </Link>

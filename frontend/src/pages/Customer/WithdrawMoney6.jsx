@@ -175,7 +175,7 @@ const WithdrawMoney6 = () => {
                     </div>
 
                     <div className="input-group mb-3" style={{ width: '50%' }} >
-                        <span className="input-group-text">Amount</span>
+                        <span className="input-group-text">Confirm Amount</span>
                         <div className="form-floating">
                             <input 
                                 type="number" 
@@ -186,7 +186,7 @@ const WithdrawMoney6 = () => {
                                 placeholder="Username" 
                                 onChange={handleChange}
                             />
-                            <label htmlFor="floatingInputGroup2">Enter Amount to withdraw here</label>
+                            <label htmlFor="floatingInputGroup2">Confirm Amount to withdraw here</label>
                         </div>
                     </div>
 

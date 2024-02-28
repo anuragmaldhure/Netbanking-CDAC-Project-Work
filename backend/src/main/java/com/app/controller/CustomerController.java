@@ -245,10 +245,10 @@ public class CustomerController {
 	//by to
 	@PostMapping("/FundTransfer/SendMoney/{customerId}/{receiverAccountNumber}")
 	public ResponseEntity<String> sendMoney(@PathVariable Long customerId, @PathVariable String receiverAccountNumber,
-			@RequestBody String remarks, @RequestParam Double amountToSend) {
+			 @RequestParam String amountToSend, @RequestParam String remarks) {
 		try {
 					
-			accountTransactionsService.sendMoney(customerId, receiverAccountNumber, amountToSend, remarks);
+			accountTransactionsService.sendMoney(customerId, receiverAccountNumber, Double.valueOf(amountToSend), remarks);
 					
 			return ResponseEntity.ok("Successfully sent " + amountToSend + " from account of customer id : "+ customerId +
 					" to another person with account number :" + receiverAccountNumber);

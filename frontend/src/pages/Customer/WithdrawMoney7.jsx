@@ -26,8 +26,8 @@ const WithdrawMoney7 = () => {
   const withdrawMoney = useSelector(state => state.withdrawMoney.amount);
   const remarks = useSelector(state => state.withdrawMoney.remarks);
 
-  console.log("1 " + withdrawMoney);
-  console.log("2" +remarks);
+  // console.log("1 " + withdrawMoney);
+  // console.log("2" +remarks);
 
   useEffect(() => {
     const fetchCustomerData = async () => {
@@ -85,11 +85,11 @@ const WithdrawMoney7 = () => {
       const remark = remarks; 
 
       const response = await axios.post(`${BASE_URL}/Customer/transaction/otp/verify?customerId=${customerId}&otp=${otp.otpValue}`);
-      console.log(response.data); 
+      // console.log(response.data); 
   
       const url = BASE_URL + `/Customer/FundTransfer/WithdrawMoney/${customerId}?amountToWithdraw=${amountToWithdraw}&remarks=${remark}`;
   
-      console.log("Request URL:", url);
+      // console.log("Request URL:", url);
   
         try {
             const response = await axios.post(

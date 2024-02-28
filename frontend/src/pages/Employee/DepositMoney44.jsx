@@ -24,15 +24,15 @@ function DepositMoney44() {
                         </div>
                     </div>
 
-                    <div class="input-group mb-3" style={{ width:'50%'}}>
+                    {/* <div class="input-group mb-3" style={{ width:'50%'}}>
                         <span class="input-group-text">Transaction Password</span>
                         <div class="form-floating">
                             <input type="text" class="form-control" id="floatingInputGroup2" placeholder="Username" />
                             <label for="floatingInputGroup2">Enter your Transaction Password here</label>
                         </div>
-                    </div>
+                    </div> */}
                     <hr/>
-                    <div style={{ textAlign: 'center' }}>
+                    <div style={{ textAlign: 'center', display : 'flex', gap:'20px', justifyContent: 'center'}}>
                             <Link to="/Employee/FundTransfer/DepositMoney45" className="btn btn-primary">
                                 Deposit
                             </Link>
