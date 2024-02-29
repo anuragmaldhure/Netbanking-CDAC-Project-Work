@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 
 import com.app.dto.customer.CustomerAddressDTO;
+import com.app.entities.AccountTransactions;
 import com.app.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,6 +43,9 @@ public class ManagerController {
 	
 	@Autowired
 	private ManagerService managerService;
+
+	@Autowired
+	private AccountTransactionsService accountTransactionsService;
 
 	@Autowired
 	private CustomerAddressService cutstomerAddressService;
@@ -178,6 +182,30 @@ public class ManagerController {
 	public List<CustomerDetailsDTO> getAllCustomerDetails() {
 		System.out.println("in get all customers details by manager id in Manager");
 		return customerService.getAllCustomerDetails();
+	}
+
+	@GetMapping("/GetTotalNumberOfCustomers")
+	public String getTotalNumberOfCustomers() {
+		System.out.println("in get number of customers details by manager id in Manager");
+		return customerService.getTotalNumberOfCustomers();
+	}
+
+	@GetMapping("/GetTotalNumberOfEmployees")
+	public String getTotalNumberOfEmployees() {
+		System.out.println("in get number of employees in Manager");
+		return employeeService.getTotalNumberOfEmployees();
+	}
+
+	@GetMapping("/GetTotalDeposits")
+	public String getTotalDeposits() {
+		System.out.println("in get total deposits in Manager");
+		return customerSavingsAccountService.getTotalDeposits();
+	}
+
+	@GetMapping("/GetTotalTransactionsDone")
+	public String getTotalTransactionsDone() {
+		System.out.println("in get all transactions done in Manager");
+		return accountTransactionsService.getTotalTransactionsDone();
 	}
 
 	//get address details

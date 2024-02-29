@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useNavigate } from "react-router-dom";
 
 import ManagerTopNavigationBar from "../../components/ManagerTopNavigationBar";
 import ManagerSideNavigationBar from "../../components/ManagerSideNavigationBar";
@@ -27,6 +28,8 @@ axios.defaults.headers.common[
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const AddEmployee68 = () => {
+  const navigate = useNavigate();
+
   const [employeeDetails, setEmployeeDetails] = useState({
     employeeFirstName: "",
     employeeLastName: "",
@@ -63,6 +66,9 @@ const AddEmployee68 = () => {
       .then((response) => {
         setOpenDialog(true);
         console.log("Employee added successfully:", response.data);
+        setTimeout(() => {
+          navigate("/Manager/Employee/SearchEmployee67"); // Navigate after 3 seconds
+      }, 3000);
       })
       .catch((error) => {
         console.error("Error adding employee:", error);

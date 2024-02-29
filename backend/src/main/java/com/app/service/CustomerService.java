@@ -2,6 +2,8 @@ package com.app.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import com.app.dto.customer.CreateNewCustomerDTO;
 import com.app.dto.customer.CustomerDetailsDTO;
 import com.app.dto.customer.CustomerEssentialDataDTO;
@@ -38,6 +40,8 @@ public interface CustomerService {
 	void updateLastLogin(Long customerId);
 
 	void doPasswordResetAndSendMailToCustomer(String accountNumber);
+
+	String getTotalNumberOfCustomers();
 
 //	Optional<CustomerDetails> findByCustomerId(Long customerId);
 }

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styles from "./ForgotPasswordForm.module.css";
-import illustration from "../../assets/images/obj.jpg";
+import illustration from "../../assets/images/undraw_login_re_4vu2.svg";
 import axios from "axios";
 
 const ForgotPasswordForm = () => {

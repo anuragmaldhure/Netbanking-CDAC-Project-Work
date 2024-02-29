@@ -279,4 +279,9 @@ public class AccountTransactionsServiceImpl implements AccountTransactionsServic
 			}
 		}	
 	}
+
+	@Override
+	public String getTotalTransactionsDone() {
+		return String.valueOf(accountTransactionsDao.getAllTransactionsNumber());
+	}
 }

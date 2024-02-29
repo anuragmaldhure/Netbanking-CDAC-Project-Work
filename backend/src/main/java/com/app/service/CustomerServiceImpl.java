@@ -313,4 +313,11 @@ public class CustomerServiceImpl implements CustomerService{
         		customer.getAccountHolderLastName(), newlyGeneratedPassword);
 	}
 
+	@Override
+	public String getTotalNumberOfCustomers() {
+		return String.valueOf(customerDao.getAllCustomerDetails()
+				.stream()
+				.map(customer -> mapper.map(customer, CustomerDetailsDTO.class))
+				.collect(Collectors.toList()).size());
+	}
 }

@@ -57,9 +57,15 @@ function CustomerTopNavigationBar() {
           <Link to="/Customer/OtherServices/ContactUs37" className="nav-link">
             Contact Us
           </Link>
-          <div style={{marginRight : '30px', marginLeft : '30px'}}>
-            {customerData &&
-              `:: Last login : ${customerData.lastLoginTimestamp.split('T')[0]} : ${customerData.lastLoginTimestamp.slice(11, 19)}`}
+          <div style={{ marginRight: '30px', marginLeft: '30px' }}>
+            {customerData && customerData.lastLoginTimestamp !== null ? (
+              <span>
+                :: Last login : {customerData.lastLoginTimestamp.split('T')[0]} :{' '}
+                {customerData.lastLoginTimestamp.slice(11, 19)}
+              </span>
+            ) : (
+              <span>:: Last login : New User</span>
+            )}
           </div>
         </div>
       </div>

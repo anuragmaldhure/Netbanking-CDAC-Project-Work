@@ -44,7 +44,7 @@ function ManagerTopNavigationBar() {
                 Manager Portal
               </li>
          <li className="nav-logo">
-                <a className="nav-link disabled" style={{color:"#f5b921", marginLeft:"30px", marginRight:"40px"}}>
+                <a className="nav-link disabled" style={{color:"#f5b921", marginLeft:"20px", marginRight:"20px"}}>
                     {managerData && `${managerData.managerFirstName} ${managerData.managerLastName} (ID: ${managerData.managerId})`}
                 </a>
               </li>
@@ -56,13 +56,13 @@ function ManagerTopNavigationBar() {
                 className="nav-links"
                 onClick={handleClick}
               >
-                Home
+                Dashboard
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink
                 exact
-                to="/about"
+                to="/Manager/Customer/SearchCustomerAccount"
                 activeClassName="active"
                 className="nav-links"
                 onClick={handleClick}
@@ -73,17 +73,23 @@ function ManagerTopNavigationBar() {
             <li className="nav-item">
               <NavLink
                 exact
-                to="/blog"
+                to="/Manager/Employee/SearchEmployee67"
                 activeClassName="active"
                 className="nav-links"
                 onClick={handleClick}
               >
-                Employee
+                Employees
               </NavLink>
             </li>
-            <div style={{marginRight : '30px', marginLeft : '30px', color:"#f5b921"}}>
-            {managerData &&
-              `:: Last login : ${managerData.lastLogin.split('T')[0]} : ${managerData.lastLogin.slice(11, 19)}`}
+            <div style={{marginRight : '10px', marginLeft : '30px', color:"#f5b921"}}>
+            {managerData && managerData.lastLogin !== null ? (
+              <span>
+                :: Last login : {managerData.lastLogin.split('T')[0]} :{' '}
+                {managerData.lastLogin.slice(11, 19)}
+              </span>
+            ) : (
+              <span>:: Last login : New User</span>
+            )}
           </div>
           </ul>
         </div>

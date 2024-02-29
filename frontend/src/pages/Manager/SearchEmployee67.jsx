@@ -15,6 +15,7 @@ import ManagerTopNavigationBar from "../../components/ManagerTopNavigationBar";
 import ManagerSideNavigationBar from "../../components/ManagerSideNavigationBar";
 import "./SearchEmployee67.css"; // Import the CSS file
 import { toast } from 'react-toastify'
+import { useNavigate } from "react-router-dom";
 
 const BASE_URL = "http://localhost:8080";
 
@@ -27,6 +28,7 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 const SearchEmployee67 = () => {
   const [employees, setEmployees] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch data from the server
@@ -101,6 +103,9 @@ const SearchEmployee67 = () => {
           theme: "dark"
           //transition: Bounce,
           });
+          setTimeout(() => {
+            navigate("/Manager/Home"); // Navigate after 3 seconds
+        }, 3000);
       })
       .catch((error) => {
         // Handle error

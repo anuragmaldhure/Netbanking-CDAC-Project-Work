@@ -3,9 +3,12 @@ package com.app.service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
+import com.app.dto.customer.CustomerDetailsDTO;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -83,5 +86,11 @@ public class EmployeeServiceImpl implements EmployeeService{
 		bankEmployee.setLastLogin(new Date(System.currentTimeMillis()));
 		// Save the updated entity
 	    empDao.save(bankEmployee);		
+	}
+
+	@Override
+	public String getTotalNumberOfEmployees() {
+		List<BankEmployeeDetails> list = empDao.getAllEmployeeDetails();
+		return String.valueOf(list.size());
 	}
 }

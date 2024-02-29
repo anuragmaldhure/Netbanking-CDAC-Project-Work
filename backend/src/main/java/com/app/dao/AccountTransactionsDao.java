@@ -22,5 +22,7 @@ public interface AccountTransactionsDao extends JpaRepository<AccountTransaction
 	//Descending
 	@Query(value = "SELECT * FROM account_transactions WHERE Customer_ID IN (SELECT Customer_ID FROM Customer_Details WHERE Customer_ID = ?1) ORDER BY transaction_timestamp DESC", nativeQuery = true)
     Page<AccountTransactions> findAllTransactionsWithCustomerIdInCustomerDetailsPagable(Long customerId, Pageable pageable);
-	
+
+	@Query(value = "SELECT COUNT(*) AS total_entries FROM account_transactions;", nativeQuery = true)
+	Long getAllTransactionsNumber();
 }

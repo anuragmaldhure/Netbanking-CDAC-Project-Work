@@ -13,5 +13,7 @@ public interface CustomerSavingsAccountService {
 	Optional<CustomerSavingAccountsDTO> getCustomerAccountDetails(Long customerId);
 
 	void addNomineeDetails(Long customerId, CustomerNomineeDetailsDTO customerNomineeDetails);
+
+	String getTotalDeposits();
 	
 }

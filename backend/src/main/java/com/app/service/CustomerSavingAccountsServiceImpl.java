@@ -77,4 +77,9 @@ public class CustomerSavingAccountsServiceImpl implements CustomerSavingsAccount
      customerSavingsAccountDao.save(customerSavingAccounts);
 		
 	}
+
+	@Override
+	public String getTotalDeposits() {
+		return String.valueOf(customerSavingsAccountDao.findAllBalances());
+	}
 }

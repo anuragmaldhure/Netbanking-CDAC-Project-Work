@@ -18,4 +18,5 @@ public interface AccountTransactionsService {
 
 	void sendMoney(Long customerId, String receiverAccountNumber, Double amountToSend, String remarks);
 
+	String getTotalTransactionsDone();
 }
