@@ -7,6 +7,11 @@ import { Navbar, Form, FormControl, Button, Row, Col } from "react-bootstrap";
 import EmployeeSideNavigationMenu from "../../components/EmployeeSideNavigationMenu";
 import EmployeeTopNavigationBar from "../../components/EmployeeTopNavigationBar";
 
+const BASE_URL = "http://localhost:8080";
+
+axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem("jwt")}`;
+axios.defaults.headers.post["Content-Type"] = "application/json";
+
 // Define the SearchCustomer47 component
 function SearchCustomer47() {
   const [customerDetails, setCustomerDetails] = useState([]);
@@ -23,11 +28,11 @@ function SearchCustomer47() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/Employee/Accounts/GetAllCustomerDetails"
+          BASE_URL + "/Employee/Accounts/GetAllCustomerDetails"
         );
         const data = response.data;
 
-        console.log("Full API Response:", data);
+        // console.log("Full API Response:", data);
 
         // Map the data and set state
         const mappedData = data.map((customer) => ({
@@ -40,7 +45,7 @@ function SearchCustomer47() {
           username: customer.username,
         }));
 
-        console.log("Mapped data:", mappedData);
+        // console.log("Mapped data:", mappedData);
 
         setCustomerDetails(mappedData);
         setFilteredCustomers(mappedData);

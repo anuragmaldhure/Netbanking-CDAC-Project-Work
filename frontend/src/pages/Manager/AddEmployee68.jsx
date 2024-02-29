@@ -12,9 +12,19 @@ import {
   DialogContentText,
   DialogActions,
 } from "@mui/material";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import ManagerTopNavigationBar from "../../components/ManagerTopNavigationBar";
 import ManagerSideNavigationBar from "../../components/ManagerSideNavigationBar";
+
+const BASE_URL = "http://localhost:8080";
+
+// setting a default authorization header for Axios requests
+axios.defaults.headers.common[
+  "Authorization"
+] = `Bearer ${sessionStorage.getItem("jwt")}`;
+axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const AddEmployee68 = () => {
   const [employeeDetails, setEmployeeDetails] = useState({
@@ -22,6 +32,9 @@ const AddEmployee68 = () => {
     employeeLastName: "",
     mobileNumber: "",
     emailId: "",
+    username: "",
+    password: "",
+    dateOfBirth: new Date(),
   });
 
   const [openDialog, setOpenDialog] = useState(false);
@@ -34,10 +47,17 @@ const AddEmployee68 = () => {
     });
   };
 
+  const handleDateChange = (date) => {
+    setEmployeeDetails({
+      ...employeeDetails,
+      dateOfBirth: date,
+    });
+  };
+
   const handleAddEmployee = () => {
     axios
       .post(
-        "http://localhost:8080/Manager/Employees/AddNewEmployee",
+        BASE_URL+"/Manager/Employees/AddNewEmployee",
         employeeDetails
       )
       .then((response) => {
@@ -104,7 +124,39 @@ const AddEmployee68 = () => {
                 variant="outlined"
                 required
               />
-              {/* Other input fields... */}
+              <TextField
+                fullWidth
+                label="Username"
+                name="username"
+                value={employeeDetails.username}
+                onChange={handleInputChange}
+                margin="normal"
+                variant="outlined"
+                required
+              />
+              <TextField
+                fullWidth
+                label="Password"
+                type="password"
+                name="password"
+                value={employeeDetails.password}
+                onChange={handleInputChange}
+                margin="normal"
+                variant="outlined"
+                required
+              />
+              {/* Use TextField for the date input */}
+              <TextField
+                fullWidth
+                label="Date of Birth"
+                type="date"
+                name="dateOfBirth"
+                value={employeeDetails.dateOfBirth.toISOString().split("T")[0]}
+                onChange={(e) => handleDateChange(new Date(e.target.value))}
+                margin="normal"
+                variant="outlined"
+                required
+              />
               <Button
                 fullWidth
                 variant="contained"

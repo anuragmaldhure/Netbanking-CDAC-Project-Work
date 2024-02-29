@@ -5,7 +5,8 @@ import { Route, Routes } from "react-router-dom";
 
 import PublicPage from "./pages/Public/PublicPage";
 import Login from "./pages/Public/Login";
-import Register from "./pages/Public/Register";
+import Logout from "./pages/Public/Logout";
+import Reset from "./pages/Public/ForgotPasswordForm";
 
 import ViewAccountBalance5 from "./pages/Customer/ViewAccountBalance5";
 import WithdrawMoney6 from "./pages/Customer/WithdrawMoney6";
@@ -13,14 +14,15 @@ import WithdrawMoney7 from "./pages/Customer/WithdrawMoney7";
 import WithdrawMoney8 from "./pages/Customer/WithdrawMoney8";
 
 import SeachCustomer47 from "./pages/Employee/SearchCustomer47";
+import FreezeAccount from "./pages/Employee/FreezeAccount"
 import DepositMoney43 from "./pages/Employee/DepositMoney43";
-import DepositMoney44 from "./pages/Employee/DepositMoney44";
+// import DepositMoney44 from "./pages/Employee/DepositMoney44";
 import DepositMoney45 from "./pages/Employee/DepositMoney45";
 
 //React-toastify
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+// import { FaStreetView } from "react-icons/fa";
 import ViewAccountStatement9 from "./pages/Customer/ViewAccountStatement9";
 
 import CloseAccount18 from "./pages/Customer/CloseAccount18";
@@ -38,29 +40,30 @@ import VerifyApproveKYC51 from "./pages/Employee/VerifyApproveKYC51";
 import SearchCustomer48 from "./pages/Employee/SearchCustomer48";
 import SignUpForm from "./components/PublicPageComponents/SignUpForm";
 import TransferWithinBank23 from "./pages/Customer/TransferWithinBank23";
-
+import { Dashboard } from "@mui/icons-material";
 import KYCDetails12 from "./pages/Customer/KYC_DETAILS_FORM/KYCDetails12";
-import ForgotPasswordForm from "./components/PublicPageComponents/ForgotPasswordForm";
+
 import ManagerHome62 from "./pages/Manager/MangerHome62";
 import SearchCustomerAccount64 from "./pages/Manager/SearchCustomerAccount64";
 import SearchEmployee67 from "./pages/Manager/SearchEmployee67";
-import DeleteEmployee69 from "./pages/Manager/DeleteEmployee69";
+// import DeleteEmployee69 from "./pages/Manager/DeleteEmployee69";
 import AddEmployee68 from "./pages/Manager/AddEmployee68";
 import SearchCustomerAccount65 from "./pages/Manager/SearchCustomerAccount65";
+
 
 function App() {
   return (
     <div>
       <Routes>
-        <Route path="/public" element={<PublicPage />} />
+        <Route path="/" element={<PublicPage />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/reset" element={<ForgotPasswordForm />} />
+        <Route path="/logout" element={< Logout/>} />
+        <Route path="/reset" element={< Reset/>} />
+        
 
+        {/* Public Page Routes */}
         <Route path="/Signup" element={<SignUpForm />} />
-
         {/* CUSTOMER SECTION */}
-
         {/* customer account section */}
         <Route
           path="/Customer/Account/ViewAccountBalance"
@@ -153,6 +156,10 @@ function App() {
           path="/Employee/Accounts/VerifyApproveKYC51/:customerId"
           element={<VerifyApproveKYC51 />}
         />
+        <Route
+          path="/Employee/Accounts/FreezeAccount"
+          element={<FreezeAccount/>}
+        />
 
         {/* employee fund transfer section */}
 
@@ -160,20 +167,22 @@ function App() {
           path="/Employee/FundTransfer/DepositMoney43"
           element={<DepositMoney43 />}
         />
-        <Route
+        {/* <Route
           path="/Employee/FundTransfer/DepositMoney44"
           element={<DepositMoney44 />}
-        />
+        /> */}
         <Route
           path="/Employee/FundTransfer/DepositMoney45"
           element={<DepositMoney45 />}
         />
 
-        {/* MANAGER SECTION */}
+{/* MANAGER SECTION */}
 
         {/* Manager Home section */}
 
         <Route path="/Manager/Home" element={<ManagerHome62 />} />
+
+         {/* Manager managemenet section for customer */}
         <Route
           path="/Manager/Customer/SearchCustomerAccount"
           element={<SearchCustomerAccount64 />}
@@ -182,6 +191,9 @@ function App() {
           path="/Manager/Customer/SearchCustomerAccount65/:customerId"
           element={<SearchCustomerAccount65 />}
         />
+
+        {/* Manager management section for employee */}
+
         <Route
           path="/Manager/Employee/SearchEmployee67"
           element={<SearchEmployee67 />}
@@ -190,15 +202,6 @@ function App() {
           path="/Manager/Employee/AddEmployee68"
           element={<AddEmployee68 />}
         />
-        <Route
-          path="/Manager/Employee/DeleteEmployee69"
-          element={<DeleteEmployee69 />}
-        />
-        {/* 
-
-        {/* Manager managemenet section for customer */}
-
-        {/* Manager management section for employee */}
       </Routes>
       <ToastContainer />
     </div>

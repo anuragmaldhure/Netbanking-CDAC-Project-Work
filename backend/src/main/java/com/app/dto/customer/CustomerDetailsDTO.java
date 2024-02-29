@@ -13,6 +13,8 @@ public class CustomerDetailsDTO {
     private Double annualIncome;
     private Date dateOfBirth;
     private String emailId;
+
+	private String gender;
     private String username;
     private String password;
     private String mobileNumber;
@@ -124,6 +126,13 @@ public class CustomerDetailsDTO {
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
 	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -132,7 +141,7 @@ public class CustomerDetailsDTO {
 				.append(", role=").append(role).append(", accountNumber=").append(accountNumber)
 				.append(", annualIncome=").append(annualIncome).append(", dateOfBirth=").append(dateOfBirth)
 				.append(", emailId=").append(emailId).append(", username=").append(username).append(", password=")
-				.append(password).append(", mobileNumber=").append(mobileNumber).append(", occupation=")
+				.append(password).append(", gender=").append(gender).append(", mobileNumber=").append(mobileNumber).append(", occupation=")
 				.append(occupation).append(", adhaarNumber=").append(adhaarNumber).append(", panNumber=")
 				.append(panNumber).append(", kycStatus=").append(kycStatus).append(", accountActiveStatus=")
 				.append(accountActiveStatus).append(", lastLoginTimestamp=").append(lastLoginTimestamp).append("]");

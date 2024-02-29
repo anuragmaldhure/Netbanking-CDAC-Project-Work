@@ -38,7 +38,7 @@ const WithdrawMoney8 = () => {
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
-                theme: "light",
+                theme: "colored"
                 //transition: Bounce,
             });
         }
@@ -63,7 +63,6 @@ const WithdrawMoney8 = () => {
                         </div>
                         <hr/>
                         <div>
-                            <h4>Transaction id : xxxxx1248214</h4>
                             <h4>Date: {new Date().toISOString().split('T')[0]}</h4>
                             <h4>Time: {new Date().toLocaleTimeString()}</h4>
                             <h4>Remarks : {(withdrawMoney.remarks)}</h4>
@@ -74,7 +73,7 @@ const WithdrawMoney8 = () => {
                         <div style={{ textAlign: 'center', display : 'flex', gap:'20px', justifyContent: 'center'}}>
                             {/* Pagination and Sorting*/}
                             <div>
-                                <Link to="/Customer/Account" className="btn btn-primary">
+                                <Link to="/Customer/Account/ViewAccountBalance" className="btn btn-primary">
                                     Go to Home
                                 </Link>
                             </div>
@@ -105,14 +104,14 @@ const WithdrawMoney8 = () => {
                          <br/>
                          <br/>
                          <div style={{ justifyContent: 'center', alignItems: 'center', width:'80%'}}>
-                             <h1> Please try again! Your transaction wasn't processed!
+                             <h1> Please try again! Your transaction wasn't processed! Something went wrong ... 
                              </h1>
                          </div>
                          <hr/>
                          <div style={{ textAlign: 'center', display : 'flex', gap:'20px', justifyContent: 'center'}}>
                              {/* Pagination and Sorting*/}
                              <div>
-                                 <Link to="/Customer/Account" className="btn btn-primary">
+                                 <Link to="/Customer/Account/ViewAccountBalance" className="btn btn-primary">
                                      Go to Home
                                  </Link>
                              </div>

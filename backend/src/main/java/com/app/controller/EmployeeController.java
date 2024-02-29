@@ -1,11 +1,14 @@
 package com.app.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
+import com.app.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -25,13 +28,9 @@ import com.app.dto.customer.CustomerDocumentsDTO;
 import com.app.dto.customer.CustomerPhotoDTO;
 import com.app.dto.customer.CustomerSavingAccountsDTO;
 import com.app.entities.BankEmployeeDetails;
-import com.app.service.AccountTransactionsService;
-import com.app.service.CustomerAddressService;
-import com.app.service.CustomerDocumentsService;
-import com.app.service.CustomerSavingsAccountService;
-import com.app.service.CustomerService;
-import com.app.service.EmailService;
-import com.app.service.EmployeeService;
+import org.springframework.web.multipart.MultipartFile;
+
+import static org.springframework.http.MediaType.*;
 
 @RestController
 @RequestMapping("/Employee")
@@ -57,6 +56,10 @@ public class EmployeeController {
 	
 	@Autowired
 	private EmailService emailService;
+
+	@Autowired
+	@Qualifier("image_db")
+	private ImageHandlingService imgService;
 	
 	public EmployeeController() {
 		System.out.println("in ctor of " + getClass());
@@ -271,5 +274,27 @@ public class EmployeeController {
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in sending feedback...");
 		}
+	}
+
+	//KYC
+	// serve(download image) of specific customer
+	@GetMapping(value =  "/documents/photo/{customerId}", produces = { IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE })
+	public ResponseEntity<?> serveCustomerPhoto(@PathVariable Long customerId) throws IOException {
+		System.out.println("in download customer photo " + customerId);
+		return ResponseEntity.ok(imgService.downloadCustomerPhoto(customerId));
+	}
+
+	// serve(download image) of specific customer
+	@GetMapping(value =  "/documents/pan/{customerId}", produces = { IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE })
+	public ResponseEntity<?> serveCustomerPAN(@PathVariable Long customerId) throws IOException {
+		System.out.println("in download customer pan " + customerId);
+		return ResponseEntity.ok(imgService.downloadCustomerPAN(customerId));
+	}
+
+	// serve(download image) of specific customer
+	@GetMapping(value =  "/documents/aadhar/{customerId}", produces = { IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE })
+	public ResponseEntity<?> serveCustomerAadhar(@PathVariable Long customerId) throws IOException {
+		System.out.println("in download customer aadhar " + customerId);
+		return ResponseEntity.ok(imgService.downloadCustomerAadhar(customerId));
 	}
 }

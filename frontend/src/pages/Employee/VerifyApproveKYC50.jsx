@@ -19,6 +19,11 @@ import EmployeeSideNavigationMenu from "../../components/EmployeeSideNavigationM
 import EmployeeTopNavigationBar from "../../components/EmployeeTopNavigationBar";
 import "./SearchCustomer47.css";
 
+const BASE_URL = "http://localhost:8080";
+
+axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem("jwt")}`;
+axios.defaults.headers.post["Content-Type"] = "application/json";
+
 function VerifyApproveKYC50() {
   const [customerDetails, setCustomerDetails] = useState([]);
   const [filteredCustomers, setFilteredCustomers] = useState([]);
@@ -34,11 +39,11 @@ function VerifyApproveKYC50() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/Employee/Accounts/GetAllCustomerDetails"
+          BASE_URL+"/Employee/Accounts/GetAllCustomerDetails"
         );
         const data = response.data;
 
-        console.log("Full API Response:", data);
+        // console.log("Full API Response:", data);
 
         // Map the data and set state
         const mappedData = data.map((customer) => ({
@@ -47,11 +52,10 @@ function VerifyApproveKYC50() {
           account_holder_first_name: customer.accountHolderFirstName,
           account_holder_last_name: customer.accountHolderLastName,
           account_number: customer.accountNumber,
-
           username: customer.username,
         }));
 
-        console.log("Mapped data:", mappedData);
+        // console.log("Mapped data:", mappedData);
 
         setCustomerDetails(mappedData);
         setFilteredCustomers(mappedData);

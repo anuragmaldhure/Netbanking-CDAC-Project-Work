@@ -7,6 +7,12 @@ import EmployeeTopNavigationBar from "../../components/EmployeeTopNavigationBar"
 import EmployeeSideNavigationMenu from "../../components/EmployeeSideNavigationMenu";
 import styles from "./VerifyApproveKYC51.module.css";
 
+const BASE_URL = "http://localhost:8080";
+
+axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem("jwt")}`;
+axios.defaults.headers.post["Content-Type"] = "application/json";
+
+
 const VerifyApproveKYC51 = () => {
   const { customerId } = useParams();
   const [showModal, setShowModal] = useState(false);
@@ -34,10 +40,53 @@ const VerifyApproveKYC51 = () => {
   };
 
   useEffect(() => {
+
+    const fetchCustomerAddress = async () => {
+      try {
+        const addressResponse = await axios.get(
+          BASE_URL + "/Employee/Accounts/ViewCustomerAddress/"+customerId
+        );
+        const addressData = addressResponse.data;
+        setCustomerAddress({
+          address: addressData.address || "",
+          city: addressData.city || "",
+          state: addressData.state || "",
+          pincode: addressData.pinCode || "",
+          nationality: addressData.nationality || "",
+        });
+      } catch (error) {
+        console.error("Error fetching customer address:", error);
+      }
+    };
+
+    const fetchCurrentBalance = async () => {
+      try {
+        const bresponse = await axios.get(
+          `${BASE_URL}/Employee/Accounts/GetSavingAccountsDetails/${customerId}`
+        );
+        const  balance  = bresponse.data.balance; // Extract the balance from the response data
+    
+        // Check if the balance is available and set it accordingly
+        if (balance) {
+          setCurrentBalance(balance);
+        } else {
+          console.error("Balance not found in response:", bresponse.data.balance);
+        }
+      } catch (error) {
+        console.error("Error fetching current balance:", error);
+      }
+    };
+
+    fetchCurrentBalance();
+    fetchCustomerAddress();
+    //fetchData();
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/Employee/Accounts/GetAllCustomerDetails`
+          BASE_URL + "/Employee/Accounts/GetAllCustomerDetails"
         );
         const data = response.data;
         const foundCustomer = data.find(
@@ -47,7 +96,7 @@ const VerifyApproveKYC51 = () => {
           id: foundCustomer.customerId,
           accountNumber: foundCustomer.accountNumber,
           customerName: `${foundCustomer.accountHolderFirstName} ${foundCustomer.accountHolderLastName}`,
-          balance: foundCustomer.balance,
+          balance: currentBalance,
           occupation: foundCustomer.occupation,
           annualIncome: foundCustomer.annualIncome,
           gender: foundCustomer.gender,
@@ -65,41 +114,10 @@ const VerifyApproveKYC51 = () => {
         console.error("Error fetching customer data:", error);
       }
     };
-
-    const fetchCustomerAddress = async () => {
-      try {
-        const addressResponse = await axios.get(
-          `http://localhost:8080/Customer/KYC/address/${customerId}`
-        );
-        const addressData = addressResponse.data;
-        setCustomerAddress({
-          address: addressData.address || "",
-          city: addressData.city || "",
-          state: addressData.state || "",
-          pincode: addressData.pinCode || "",
-          nationality: addressData.nationality || "",
-        });
-      } catch (error) {
-        console.error("Error fetching customer address:", error);
-      }
-    };
-
-    const fetchCurrentBalance = async () => {
-      try {
-        const balanceResponse = await axios.get(
-          `http://localhost:8080/Customer/Account/balanceAndAccountNumber/${customerId}`
-        );
-        const [balance, accountNumber] = balanceResponse.data;
-        setCurrentBalance({ balance, accountNumber });
-      } catch (error) {
-        console.error("Error fetching current balance:", error);
-      }
-    };
-
+    // This useEffect will only be called after fetchCurrentBalance() is executed
     fetchData();
-    fetchCustomerAddress();
-    fetchCurrentBalance();
-  }, [customerId]);
+  }, [currentBalance, customerId]); // Include currentBalance and customerId in the dependency array
+  
 
   const showToast = (message) => {
     displayDialog(message);
@@ -121,7 +139,7 @@ const VerifyApproveKYC51 = () => {
   const handleExport = () => {
     const csvContent = `Customer ID,Account Number,Name,Balance,Occupation,Annual Income,Gender,Birth Date,Mobile Number,Email ID,Address,City,State,Pincode,Nationality\n${
       customerDetails &&
-      `${customerDetails.id},${customerDetails.accountNumber},"${customerDetails.customerName}",${customerDetails.balance},"${customerDetails.occupation}",${customerDetails.annualIncome},"${customerDetails.gender}",${customerDetails.birthDate},${customerDetails.mobileNumber},${customerDetails.emailID}`
+      `${customerDetails.id},${customerDetails.accountNumber},"${customerDetails.customerName}",${{currentBalance}},"${customerDetails.occupation}",${customerDetails.annualIncome},"${customerDetails.gender}",${customerDetails.birthDate},${customerDetails.mobileNumber},${customerDetails.emailID}`
     }`;
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -154,7 +172,7 @@ const VerifyApproveKYC51 = () => {
     if (selectedDocument) {
       try {
         const downloadResponse = await axios.get(
-          `http://localhost:8080/Customer/documents/${selectedDocument.type}/${customerId}`,
+          BASE_URL+`/Employee/documents/${selectedDocument.type}/${customerId}`,
           { responseType: "blob" }
         );
         const blob = new Blob([downloadResponse.data]);
@@ -166,6 +184,21 @@ const VerifyApproveKYC51 = () => {
       } catch (error) {
         console.error("Error downloading document:", error);
       }
+    }
+  };
+
+  const fetchDocumentImage = async (selectedDocument,customerId) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/Employee/documents/${selectedDocument}/${customerId}`, {
+        headers: {
+          "Authorization": `Bearer ${sessionStorage.getItem("jwt")}`
+        }
+      });
+  
+      return URL.createObjectURL(new Blob([response.data]));
+    } catch (error) {
+      console.error("Error fetching document image:", error);
+      return null;
     }
   };
 
@@ -191,7 +224,7 @@ const VerifyApproveKYC51 = () => {
       displayDialog(approvingDialogMessage);
 
       const response = await axios.put(
-        `http://localhost:8080/Employee/Accounts/ApproveKYC/${customerId}`
+        `${BASE_URL}/Employee/Accounts/ApproveKYC/${customerId}`
       );
 
       setTimeout(() => {
@@ -226,7 +259,7 @@ const VerifyApproveKYC51 = () => {
       displayDialog(rejectingDialogMessage);
 
       const response = await axios.put(
-        `http://localhost:8080/Employee/Accounts/RejectKYC/${customerId}`
+        `${BASE_URL}/Employee/Accounts/RejectKYC/${customerId}`
       );
 
       setTimeout(() => {
@@ -341,8 +374,8 @@ const VerifyApproveKYC51 = () => {
             <Modal.Body>
               {selectedDocument && (
                 <img
-                  src={`http://localhost:8080/Customer/documents/${selectedDocument.type}/${customerId}`}
-                  alt={selectedDocument.name}
+                  src={fetchDocumentImage(selectedDocument.type,customerId)}
+                  alt={"download to view : " + selectedDocument.name}
                   className="img-fluid"
                 />
               )}

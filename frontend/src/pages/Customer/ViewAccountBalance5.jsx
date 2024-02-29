@@ -1,15 +1,22 @@
-import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import CustomerSideNavigationMenu from "../../components/CustomerSideNavigationMenu";
 import CustomerTopNavigationBar from "../../components/CustomerTopNavigationBar";
-import backgroundImage from "../../resources/12.avif"; // Import your image file
+import backgroundImage from "../../resources/12.avif"; 
 
 const ViewAccountBalance5 = () => {
-  const customerId = 1;
+  const [customerData, setCustomerData] = useState(null);
   const [transactions, setTransactions] = useState([]);
   const [accountDetails, setAccountDetails] = useState({});
+
+  const BASE_URL = "http://localhost:8080";
+
+  // setting a default authorization header for Axios requests
+  axios.defaults.headers.common[
+    "Authorization"
+  ] = `Bearer ${sessionStorage.getItem("jwt")}`;
+  axios.defaults.headers.post["Content-Type"] = "application/json";
 
   const [pageNumber, setPageNumber] = useState(0); // Initial page number
   const pageSize = 7; // Number of transactions per page
@@ -27,46 +34,68 @@ const ViewAccountBalance5 = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCustomerData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/Customer/Account/getPaginated&SortedAllTransactions/${customerId}?pageNumber=${pageNumber}&pageSize=${pageSize}`
+          BASE_URL + `/Customer/User/GetMyDetails`
         );
-        setTransactions(response.data); // Assuming response.data contains the list of transactions
-
-        // Disable the previous button if on the first page
-        setDisablePreviousButton(pageNumber === 0);
-
-        // Disable the next button if the length of transactions is less than the page size
-        setDisableNextButton(response.data.length < pageSize);
+        setCustomerData(response.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching customer data:", error);
       }
     };
-    fetchData();
-  }, [pageNumber]); // Fetch data when the page number changes
+
+    fetchCustomerData();
+  }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Use the customerId from your component
-        const customerId = 1; // Change this to the actual customerId
-        const response = await axios.get(
-          `http://localhost:8080/Customer/Account/balanceAndAccountNumber/${customerId}`
-        );
+    if (customerData) {
+      const customerId = customerData.customerId;
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            BASE_URL +
+              `/Customer/Account/getPaginated&SortedAllTransactions/${customerId}?pageNumber=${pageNumber}&pageSize=${pageSize}`
+          );
+          setTransactions(response.data); // Assuming response.data contains the list of transactions
 
-        // Assuming the API response contains an array with two elements: [balance, accountNumber]
-        const [balance, accountNumber] = response.data;
+          // Disable the previous button if on the first page
+          setDisablePreviousButton(pageNumber === 0);
 
-        // Set the state with the fetched account details
-        setAccountDetails({ balance, accountNumber });
-      } catch (error) {
-        console.error("Error fetching account details:", error);
-      }
-    };
+          // Disable the next button if the length of transactions is less than the page size
+          setDisableNextButton(response.data.length < pageSize);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
 
-    fetchData();
-  }, []); // Run once when the component mounts
+      fetchData();
+    }
+  }, [customerData, pageNumber]);
+
+  useEffect(() => {
+    if (customerData) {
+      const customerId = customerData.customerId;
+      const fetchbalanceAndAccountNumberData = async () => {
+        try {
+          const response = await axios.get(
+            BASE_URL +
+              `/Customer/Account/balanceAndAccountNumber/${customerId}`
+          );
+
+          // Assuming the API response contains an array with two elements: [balance, accountNumber]
+          const [balance, accountNumber] = response.data;
+
+          // Set the state with the fetched account details
+          setAccountDetails({ balance, accountNumber });
+        } catch (error) {
+          console.error("Error fetching account details:", error);
+        }
+      };
+
+      fetchbalanceAndAccountNumberData();
+    }
+  }, [customerData]);
 
   const backgroundStyle = {
     backgroundImage: `url(${backgroundImage})`,
@@ -87,7 +116,8 @@ const ViewAccountBalance5 = () => {
             backgroundColor: "lightcyan",
             ...backgroundStyle,
           }}
-        >
+        
+          >
           <br />
           <h2>
             <strong>Net Balance : ₹ {accountDetails.balance}</strong>

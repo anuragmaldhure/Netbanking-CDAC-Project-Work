@@ -14,6 +14,15 @@ import {
 import ManagerTopNavigationBar from "../../components/ManagerTopNavigationBar";
 import ManagerSideNavigationBar from "../../components/ManagerSideNavigationBar";
 import "./SearchEmployee67.css"; // Import the CSS file
+import { toast } from 'react-toastify'
+
+const BASE_URL = "http://localhost:8080";
+
+// setting a default authorization header for Axios requests
+axios.defaults.headers.common[
+  "Authorization"
+] = `Bearer ${sessionStorage.getItem("jwt")}`;
+axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const SearchEmployee67 = () => {
   const [employees, setEmployees] = useState([]);
@@ -22,7 +31,7 @@ const SearchEmployee67 = () => {
   useEffect(() => {
     // Fetch data from the server
     axios
-      .get("http://localhost:8080/Manager/Accounts/GetAllEmployeesDetails")
+      .get(BASE_URL+"/Manager/Accounts/GetAllEmployeesDetails")
       .then((response) => {
         setEmployees(response.data);
       })
@@ -42,7 +51,7 @@ const SearchEmployee67 = () => {
       filteredEmployees
         .map(
           (employee) =>
-            `${employee.employeeId},${employee.employeeFirstName},${employee.employeeLastName},${employee.mobileNumber},${employee.emailId}`
+            `${employee.employeeId},${employee.employeeFirstName},${employee.employeeLastName},${employee.mobileNumber},${employee.emailId},${employee.username}`
         )
         .join("\n");
 
@@ -77,14 +86,36 @@ const SearchEmployee67 = () => {
   const handleDelete = (empId) => {
     // Implement delete functionality
     axios
-      .delete(`http://localhost:8080/Manager/Accounts/RemoveEmployee/${empId}`)
+      .delete(`${BASE_URL}/Manager/Employees/RemoveEmployee/${empId}`)
       .then((response) => {
         // Handle success, maybe refresh the employee list
-        console.log("Employee deleted successfully");
+        // console.log("Employee deleted successfully");
+        toast.success('🦄 Employee deleted successfully!', {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark"
+          //transition: Bounce,
+          });
       })
       .catch((error) => {
         // Handle error
         console.error("Error deleting employee:", error);
+        toast.error("Error deleting employee:", error, {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark"
+          //transition: Bounce,
+          });
       });
   };
 
@@ -112,6 +143,11 @@ const SearchEmployee67 = () => {
                   <TableCell>Last Name</TableCell>
                   <TableCell>Mobile Number</TableCell>
                   <TableCell>Email</TableCell>
+                  <TableCell>Username</TableCell>
+                  {/* <TableCell>Password</TableCell> */}
+                  <TableCell>DOB</TableCell>
+                  <TableCell>Joining Date Stamp</TableCell>
+                  <TableCell>Last Login Date Stamp</TableCell>
                   <TableCell>Action</TableCell> {/* New column for action */}
                   {/* Add more columns as needed */}
                 </TableRow>
@@ -124,6 +160,11 @@ const SearchEmployee67 = () => {
                     <TableCell>{employee.employeeLastName}</TableCell>
                     <TableCell>{employee.mobileNumber}</TableCell>
                     <TableCell>{employee.emailId}</TableCell>
+                    <TableCell>{employee.username}</TableCell>
+                    {/* <TableCell>{employee.password}</TableCell> */}
+                    <TableCell>{employee.dateOfBirth}</TableCell>
+                    <TableCell>{employee.joiningTimestamp}</TableCell>
+                    <TableCell>{employee.lastLogin}</TableCell>
                     <TableCell>
                       <Button
                         variant="outlined"

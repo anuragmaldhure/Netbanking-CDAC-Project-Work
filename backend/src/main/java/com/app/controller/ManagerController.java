@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
+import com.app.dto.customer.CustomerAddressDTO;
+import com.app.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +27,6 @@ import com.app.dto.customer.CustomerDetailsDTO;
 import com.app.dto.customer.CustomerSavingAccountsDTO;
 import com.app.entities.BankEmployeeDetails;
 import com.app.entities.ManagerDetails;
-import com.app.service.CustomerSavingsAccountService;
-import com.app.service.CustomerService;
-import com.app.service.EmployeeService;
-import com.app.service.ManagerService;
 
 @RestController
 @RequestMapping("/Manager")
@@ -44,6 +42,9 @@ public class ManagerController {
 	
 	@Autowired
 	private ManagerService managerService;
+
+	@Autowired
+	private CustomerAddressService cutstomerAddressService;
 	
 	public ManagerController() {
 		System.out.println("in ctor of " + getClass());
@@ -175,7 +176,14 @@ public class ManagerController {
 	//get all customer details details
 	@GetMapping("/GetAllCustomerDetails")
 	public List<CustomerDetailsDTO> getAllCustomerDetails() {
-		System.out.println("in get all customers details by manager id in Employee");
+		System.out.println("in get all customers details by manager id in Manager");
 		return customerService.getAllCustomerDetails();
+	}
+
+	//get address details
+	@GetMapping("/ViewCustomerAddress/{customerId}")
+	public Optional<CustomerAddressDTO> getAddressDetails(@PathVariable Long customerId) {
+		System.out.println("in get Customer address by c id in Manager");
+		return cutstomerAddressService.getAddressDetails(customerId);
 	}
 }

@@ -6,10 +6,10 @@ body {
   font-family: "Arial", sans-serif;
 }
 
-.container {
+/* .container-man {
   display: flex;
   min-height: 100vh;
-}
+} */
 
 .content {
   flex-grow: 1;

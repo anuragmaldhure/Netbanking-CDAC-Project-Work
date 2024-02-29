@@ -115,22 +115,18 @@ function ManagerSideNavigationBar() {
       links: [
         {
           to: "/Manager/Employee/SearchEmployee67",
-          label: "Search Employee",
+          label: "Manage Employees",
         },
         {
           to: "/Manager/Employee/AddEmployee68",
           label: "Add Employee",
         },
-        // {
-        //   to: "/Manager/Employee/DeleteEmployee69",
-        //   label: "Delete Employee",
-        // },
       ],
     },
     
     {
       heading: "Logout",
-      links: [{ to: "/", label: "Log Out" }],
+      links: [{ to: "/logout", label: "Log Out" }],
     },
   ];
 

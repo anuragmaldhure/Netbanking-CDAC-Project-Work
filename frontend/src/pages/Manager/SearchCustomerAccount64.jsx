@@ -7,6 +7,14 @@ import { Navbar, Form, FormControl, Button, Row, Col } from "react-bootstrap";
 import ManagerTopNavigationBar from "../../components/ManagerTopNavigationBar";
 import ManagerSideNavigationBar from "../../components/ManagerSideNavigationBar";
 
+const BASE_URL = "http://localhost:8080";
+
+// setting a default authorization header for Axios requests
+axios.defaults.headers.common[
+  "Authorization"
+] = `Bearer ${sessionStorage.getItem("jwt")}`;
+axios.defaults.headers.post["Content-Type"] = "application/json";
+
 function SearchCustomerAccount64() {
   const [customerDetails, setCustomerDetails] = useState([]);
   const [filteredCustomers, setFilteredCustomers] = useState([]);
@@ -20,12 +28,11 @@ function SearchCustomerAccount64() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/Employee/Accounts/GetAllCustomerDetails"
-          // "http://localhost:8080/Manager/GetAllCustomerDetails"
+          `${BASE_URL}/Manager/GetAllCustomerDetails`
         );
         const data = response.data;
 
-        console.log("Full API Response:", data);
+        // console.log("Full API Response:", data);
 
         const mappedData = data.map((customer) => ({
           customer_id: customer.customerId,
@@ -35,7 +42,7 @@ function SearchCustomerAccount64() {
           username: customer.username,
         }));
 
-        console.log("Mapped data:", mappedData);
+        // console.log("Mapped data:", mappedData);
 
         setCustomerDetails(mappedData);
         setFilteredCustomers(mappedData);

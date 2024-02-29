@@ -16,7 +16,7 @@ import { FaPhoneAlt, FaEnvelope } from "react-icons/fa";
 import CustomerSideNavigationMenu from "../../components/CustomerSideNavigationMenu";
 import CustomerTopNavigationBar from "../../components/CustomerTopNavigationBar";
 import FAQDialog from "./FAQDialog"; // Import the FAQDialog component
-import faqData from "./faqData";
+import faqData from "../../resources/faqData";
 
 const ContactUs37 = () => {
   const [openFAQDialog, setOpenFAQDialog] = useState(false);
@@ -57,27 +57,13 @@ const ContactUs37 = () => {
                 <Typography variant="h6">Contact Information</Typography>
                 <Typography variant="body1" style={{ marginTop: "10px" }}>
                   <FaPhoneAlt style={{ marginRight: "5px" }} />
-                  Phone: +1 (555) 123-4567
+                  Phone: +91 9XXXXXXXXXX
+                  ; +91 9XXXXXXXXXX
                 </Typography>
                 <Typography variant="body1" style={{ marginTop: "10px" }}>
                   <FaEnvelope style={{ marginRight: "5px" }} />
-                  Email: info@example.com
+                  Email: aarna.netbanking@gmail.com
                 </Typography>
-              </Paper>
-            </Grid>
-
-            {/* Contact Form */}
-            <Grid item xs={12} md={6}>
-              <Paper elevation={3} style={{ padding: "20px" }}>
-                <Typography variant="h6">Have a Query?</Typography>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  style={{ marginTop: "10px" }}
-                  onClick={handleContactDialogOpen}
-                >
-                  Contact Us
-                </Button>
               </Paper>
             </Grid>
           </Grid>
@@ -100,42 +86,6 @@ const ContactUs37 = () => {
         handleClose={handleFAQDialogClose}
         faqData={faqData}
       />
-
-      {/* Contact Dialog */}
-      <Dialog open={openContactDialog} onClose={handleContactDialogClose}>
-        <DialogTitle>Contact Us</DialogTitle>
-        <DialogContent>
-          <TextField
-            label="Name"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Email"
-            type="email"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Message"
-            multiline
-            rows={4}
-            variant="outlined"
-            fullWidth
-            margin="normal"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleContactDialogClose} color="secondary">
-            Cancel
-          </Button>
-          <Button onClick={handleContactDialogClose} color="primary">
-            Submit
-          </Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 };

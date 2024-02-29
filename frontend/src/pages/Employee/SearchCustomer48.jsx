@@ -7,6 +7,11 @@ import EmployeeTopNavigationBar from "../../components/EmployeeTopNavigationBar"
 import EmployeeSideNavigationMenu from "../../components/EmployeeSideNavigationMenu";
 import styles from "./SearchCustomer48.module.css";
 
+const BASE_URL = "http://localhost:8080";
+
+axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem("jwt")}`;
+axios.defaults.headers.post["Content-Type"] = "application/json";
+
 const SearchCustomer48 = () => {
   const { customerId } = useParams();
 
@@ -17,56 +22,18 @@ const SearchCustomer48 = () => {
   const [uploadedDocuments, setUploadedDocuments] = useState([]);
   const [currentBalance, setCurrentBalance] = useState(null); // New state for current balance
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/Employee/Accounts/GetAllCustomerDetails"
-        );
-
-        const data = response.data;
-        const mappedData = data.map((customer) => ({
-          id: customer.customerId,
-          accountNumber: customer.accountNumber,
-          customerName: `${customer.accountHolderFirstName} ${customer.accountHolderLastName}`,
-          balance: customer.balance,
-          occupation: customer.occupation,
-          annualIncome: customer.annualIncome,
-          gender: customer.gender,
-          birthDate: customer.dateOfBirth,
-          mobileNumber: customer.mobileNumber,
-          emailID: customer.emailId,
-        }));
-
-        const foundCustomer = mappedData.find(
-          (customer) => customer.id === Number(customerId)
-        );
-
-        setCustomerDetails(foundCustomer);
-
-        setUploadedDocuments([
-          { id: 1, name: "AADHAR CARD", type: "aadhar" },
-          { id: 2, name: "PAN CARD", type: "pan" },
-          { id: 3, name: "PROFILE PHOTO", type: "photo" },
-        ]);
-      } catch (error) {
-        console.error("Error fetching customer data:", error);
-      }
-    };
-
-    fetchData();
-  }, [customerId]);
+  const [photo, setPhoto] = useState(null); 
+  const [aadhar, setAadhar] = useState(null); 
+  const [pan, setPan] = useState(null); 
 
   useEffect(() => {
+
     const fetchCustomerAddress = async () => {
       try {
         const addressResponse = await axios.get(
-          `http://localhost:8080/Customer/KYC/address/${customerId}`
+          BASE_URL + "/Employee/Accounts/ViewCustomerAddress/"+customerId
         );
-        console.log("Address Response:", addressResponse.data);
-
         const addressData = addressResponse.data;
-
         setCustomerAddress({
           address: addressData.address || "",
           city: addressData.city || "",
@@ -79,28 +46,63 @@ const SearchCustomer48 = () => {
       }
     };
 
-    fetchCustomerAddress();
-  }, [customerId]);
-
-  useEffect(() => {
     const fetchCurrentBalance = async () => {
       try {
-        const balanceResponse = await axios.get(
-          `http://localhost:8080/Customer/Account/balanceAndAccountNumber/${customerId}`
+        const bresponse = await axios.get(
+          `${BASE_URL}/Employee/Accounts/GetSavingAccountsDetails/${customerId}`
         );
-        console.log("Balance Response:", balanceResponse.data);
-
-        const [balance, accountNumber] = balanceResponse.data;
-
-        // Update the state with the current balance
-        setCurrentBalance({ balance, accountNumber });
+        const  balance  = bresponse.data.balance; // Extract the balance from the response data
+    
+        // Check if the balance is available and set it accordingly
+        if (balance) {
+          setCurrentBalance(balance);
+        } else {
+          console.error("Balance not found in response:", bresponse.data.balance);
+        }
       } catch (error) {
         console.error("Error fetching current balance:", error);
       }
     };
 
     fetchCurrentBalance();
+    fetchCustomerAddress();
+    //fetchData();
   }, [customerId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          BASE_URL + "/Employee/Accounts/GetAllCustomerDetails"
+        );
+        const data = response.data;
+        const foundCustomer = data.find(
+          (customer) => customer.customerId === Number(customerId)
+        );
+        setCustomerDetails({
+          id: foundCustomer.customerId,
+          accountNumber: foundCustomer.accountNumber,
+          customerName: `${foundCustomer.accountHolderFirstName} ${foundCustomer.accountHolderLastName}`,
+          balance: currentBalance,
+          occupation: foundCustomer.occupation,
+          annualIncome: foundCustomer.annualIncome,
+          gender: foundCustomer.gender,
+          birthDate: foundCustomer.dateOfBirth,
+          mobileNumber: foundCustomer.mobileNumber,
+          emailID: foundCustomer.emailId,
+        });
+        setUploadedDocuments([
+          { id: 1, name: "AADHAR CARD", type: "aadhar" },
+          { id: 2, name: "PAN CARD", type: "pan" },
+          { id: 3, name: "PROFILE PHOTO", type: "photo" },
+        ]);
+      } catch (error) {
+        console.error("Error fetching customer data:", error);
+      }
+    };
+    // This useEffect will only be called after fetchCurrentBalance() is executed
+    fetchData();
+  }, [currentBalance, customerId]); // Include currentBalance and customerId in the dependency array
 
   const handleExport = () => {
     // Construct the CSV content based on customer details
@@ -109,7 +111,7 @@ const SearchCustomer48 = () => {
       [customerDetails] // Wrap customerDetails in an array
         .map(
           (customer) =>
-            `${customer.id},${customer.accountNumber},"${customer.customerName}",${customer.balance},"${customer.occupation}",${customer.annualIncome},"${customer.gender}",${customer.birthDate},${customer.mobileNumber},${customer.emailID}`
+            `${customer.id},${customer.accountNumber},"${customer.customerName}",${currentBalance},"${customer.occupation}",${customer.annualIncome},"${customer.gender}",${customer.birthDate},${customer.mobileNumber},${customer.emailID}`
         )
         .join("\n");
 
@@ -159,7 +161,7 @@ const SearchCustomer48 = () => {
     if (selectedDocument) {
       try {
         const downloadResponse = await axios.get(
-          `http://localhost:8080/Customer/documents/${selectedDocument.type}/${customerId}`,
+          BASE_URL+`/Employee/documents/${selectedDocument.type}/${customerId}`,
           { responseType: "blob" }
         );
 
@@ -174,6 +176,36 @@ const SearchCustomer48 = () => {
       }
     }
   };
+
+  useEffect(() => {
+    const fetchDocumentImage = async () => {
+      try {
+        const responseP = await axios.get(`${BASE_URL}/Employee/documents/photo/${customerId}`, {
+          headers: {
+            "Authorization": `Bearer ${sessionStorage.getItem("jwt")}`
+          }
+        });
+        setPhoto(URL.createObjectURL(responseP.data));
+        const responseA = await axios.get(`${BASE_URL}/Employee/documents/aadhar/${customerId}`, {
+          headers: {
+            "Authorization": `Bearer ${sessionStorage.getItem("jwt")}`
+          }
+        });
+        setAadhar(URL.createObjectURL(responseA.data));
+        const responsePan = await axios.get(`${BASE_URL}/Employee/documents/pan/${customerId}`, {
+          headers: {
+            "Authorization": `Bearer ${sessionStorage.getItem("jwt")}`
+          }
+        });
+        setPan(URL.createObjectURL(responsePan.data)); 
+      } catch (error) {
+        console.error("Error fetching document image:", error);
+        return null;
+      }
+    };
+    fetchDocumentImage();
+  }, [customerId]); 
+  
 
   // Render the component
   return (
@@ -196,7 +228,7 @@ const SearchCustomer48 = () => {
                 <strong>Name :</strong> {customerDetails?.customerName}
               </div>
               <div className="mb-3">
-                <strong>Balance :</strong> {currentBalance?.balance}
+                <strong>Balance :</strong> {currentBalance}
               </div>
 
               <div className="mb-3">
@@ -269,8 +301,16 @@ const SearchCustomer48 = () => {
               {/* Display the document as an image */}
               {selectedDocument && (
                 <img
-                  src={`http://localhost:8080/Customer/documents/${selectedDocument.type}/${customerId}`}
-                  alt={selectedDocument.name}
+                  src={
+                    selectedDocument.type === "photo"
+                      ? {photo}
+                      : selectedDocument.type === "aadhar"
+                      ? {aadhar}
+                      : selectedDocument.type === "pan"
+                      ? {pan}
+                      : null
+                  }
+                  alt={"download to view :" + selectedDocument.name}
                   className="img-fluid"
                 />
               )}
