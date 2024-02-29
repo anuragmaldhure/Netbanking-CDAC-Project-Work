@@ -16,14 +16,12 @@ const DiscoverSection = () => {
         <div
           className={`text col-lg-6 col-md-6 col-12 pt-5 pb-5 ${styles.text}`}
         >
-          <h6 className={styles.title}>UNLIMITED ACCESS</h6>
-          <h2 className={styles.heading}>Login to your account at any time</h2>
+          <h6 className={styles.title}>CONVENIENT ACCESS</h6>
+          <h2 className={styles.heading}>Login Anytime, Anywhere</h2>
           <p className={styles.description}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto
-            esse sed maiores ratione quas obcaecati error quae. Earum voluptas
-            quaerat et omnis provident maiores placeat velit vitae adipisci
-            necessitatibus? Minus!
+            Access your account seamlessly from any device, whether it's your laptop, tablet, or smartphone. Enjoy the convenience of managing your account on the go, without any restrictions on time or location. We keep security top notch and all transactions need OTP verification from your email.
           </p>
+
           <ScrollLink
             to="service" // Replace 'service' with the ID of the next section
             spy={true}

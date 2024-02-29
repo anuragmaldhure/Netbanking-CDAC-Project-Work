@@ -11,13 +11,11 @@ const SignUpSection = () => {
           className={`text col-lg-6 col-md-6 col-12 pt-5 pb-5 ${styles.text}`}
         >
           <h6>JOIN OUR TEAM</h6>
-          <h2>Creating an account is extremely easy</h2>
+          <h2>Creating an account is incredibly simple</h2>
           <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Expedita,
-            laboriosam? Molestias, quaerat? Quasi magni adipisci itaque beatae
-            quo, sequi ipsa aspernatur natus mollitia non suscipit dolor. Unde
-            nisi enim nobis?
+            Joining our team is just a few clicks away. Experience a seamless registration process that takes only minutes to complete. Get ready to embark on a rewarding journey with us!
           </p>
+
           <Link to="/Signup" className={styles.startNow}>
             
               Start Now

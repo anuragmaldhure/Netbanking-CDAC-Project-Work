@@ -26,8 +26,7 @@ const ServiceSection = () => {
             />
             <h5 className="fw-bold pt-4">Reduce Expenses</h5>
             <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Aspernatur, at exercitationem beatae hic doloremque ea.
+              Take control of your finances now! Implement strategic cost-saving measures to significantly reduce expenses and improve financial health. Let us guide you through making informed decisions for long-term savings and stability. Virtual / Neo banking also reduces our operational expneses.
             </p>
           </ScrollLink>
           {/* Second Card */}
@@ -46,8 +45,7 @@ const ServiceSection = () => {
             />
             <h5 className="fw-bold pt-4">Virtual Offices</h5>
             <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Aspernatur, at exercitationem beatae hic doloremque ea.
+              Welcome to the future of work! Our virtual office solutions provide a modern and flexible workspace that adapts to your needs. With advanced technology and seamless connectivity, collaborate effectively with your team from anywhere. Experience convenience and efficiency, redefining the way you work.
             </p>
           </ScrollLink>
           {/* Third Card */}
@@ -66,14 +64,13 @@ const ServiceSection = () => {
             />
             <h5 className="fw-bold pt-4">Premium Benefits</h5>
             <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Aspernatur, at exercitationem beatae hic doloremque ea.
+              Enjoy a range of advantages, including personalized services, priority access to events, and special discounts. Our commitment to excellence ensures you receive exceptional value and unparalleled benefits. Join us in unlocking a world of privileges designed to enhance your lifestyle and satisfaction.
             </p>
           </ScrollLink>
         </div>
       </div>
     </section>
-  );
+  );  
 };
 
 export default ServiceSection;
