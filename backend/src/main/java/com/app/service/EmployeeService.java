@@ -20,6 +20,8 @@ public interface EmployeeService {
 
 	Optional<BankEmployeeDetails> getEmployeeDetailsByUsername(String username);
 
+	Optional<BankEmployeeDetails> getEmployeeDetailsByUsernameIfPresent(String username);
+
 	void updateLastLogin(Long employeeId);
 
 	String getTotalNumberOfEmployees();

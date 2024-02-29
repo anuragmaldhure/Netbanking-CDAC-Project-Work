@@ -31,7 +31,7 @@ function EmployeeTopNavigationBar() {
         <nav className="navbar" style={{backgroundColor: '#e3f2fd', display: 'block'}}>
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
                 <div className="container-fluid">
-                    <a className="navbar-brand" href=".">Aarna Bank | Bank Employee Portal</a>
+                    <a className="navbar-brand" href=".">Aarna Bank | Employee Portal</a>
                     <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0"> 
                             <li className="nav-item">

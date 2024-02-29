@@ -207,7 +207,7 @@ public class EmailService {
 	            helper.setSubject("Aarna Bank : ₹ "+ amountToSend +" sent to account number "+accountNumber);
 	            String messageString = "Dear "+ accountHolderFirstName + " "+ accountHolderLastName +", You have successfully sent ₹" + amountToSend + " "
 	            		+ "to account number : "+ accountNumber +
-	    				"Third party Transaction details for your reference : \n\n" +
+	    				" Third party Transaction details for your reference : \n\n" +
 	    			    "Receiver Account Number : "+ accountNumber +"\n" +
 	    			    "Receiver Account Holder Name : "+ accountHolderFirstName2 + " "+ accountHolderLastName2 + "\n" +
 	    			    "Transaction Id : "+ transactionId +"\n" +
@@ -239,9 +239,9 @@ public class EmailService {
 
 	            helper.setTo(emailId);
 	            helper.setSubject("Aarna Bank : ₹ "+ amountToSend +" deposited by account number "+accountNumber);
-	            String messageString = "Dear "+ accountHolderFirstName + " "+ accountHolderLastName +", You have successfully sent ₹" + amountToSend + " "
-	            		+ "to account number : "+ accountNumber +
-	    				"Third party Transaction details for your reference : \n\n" +
+	            String messageString = "Dear "+ accountHolderFirstName + " "+ accountHolderLastName +", You have successfully received ₹" + amountToSend + " "
+	            		+ " by account number : "+ accountNumber +
+	    				" Third party Transaction details for your reference : \n\n" +
 	    			    "Sender Account Number : "+ accountNumber +"\n" +
 	    			    "Sender Account Holder Name : "+ accountHolderFirstName2 + " "+ accountHolderLastName2 + "\n" +
 	    			    "Transaction Id : "+ transactionId +"\n" +

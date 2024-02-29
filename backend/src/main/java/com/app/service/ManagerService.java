@@ -34,6 +34,16 @@ public class ManagerService {
 	    }
 	}
 
+	public Optional<ManagerDetails> getManagerByUsernameIfPresent(String username) {
+		ManagerDetails manager = managerDao.findByUsername(username);
+		if (manager != null) {
+			return Optional.of(manager);
+		} else {
+			return Optional.empty(); // Emp not found, return empty Optional
+		}
+	}
+
+
 	public ManagerDetails addManagerDetails(NewManagerDTO managerDetailsDTO) {
 		ManagerDetails newManager = new ManagerDetails();
 		newManager.setManagerFirstName(managerDetailsDTO.getManagerFirstName());
@@ -44,6 +54,7 @@ public class ManagerService {
 		newManager.setManagerCreationTimestamp(new Date());
 		return managerDao.save(newManager);
 	}
+
 
 	public void updateLastLogin(Long managerId) {
 		ManagerDetails manager = managerDao.findById(managerId)

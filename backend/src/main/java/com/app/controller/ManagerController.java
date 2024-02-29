@@ -135,6 +135,16 @@ public class ManagerController {
 	public ResponseEntity<?> addEmpDetails(@RequestBody BankEmployeeDTO empDetails) {
 	    try {
 	        System.out.println("Adding new employee: " + empDetails);
+			//check if username already taken
+			if(customerService.getCustomerDetailsByUsernameIfPresent(empDetails.getUsername()).isPresent()){
+				return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Username already taken! Please try different username");
+			}
+			else if(employeeService.getEmployeeDetailsByUsernameIfPresent(empDetails.getUsername()).isPresent()){
+				return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Username already taken! Please try different username");
+			}
+			else if (managerService.getManagerByUsernameIfPresent(empDetails.getUsername()).isPresent()){
+				return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Username already taken! Please try different username");
+			}
 	        // Call service method to add employee
 	        BankEmployeeDetails savedEmployee = employeeService.addEmpDetails(empDetails);
 	        return ResponseEntity.status(HttpStatus.CREATED).body(savedEmployee);
@@ -166,6 +176,16 @@ public class ManagerController {
 	public ResponseEntity<?> addManagerDetails(@RequestBody NewManagerDTO managerDetailsDTO) {
 	    try {
 	        System.out.println("Adding new manager dto: " + managerDetailsDTO);
+			//check if username already taken
+			if(customerService.getCustomerDetailsByUsernameIfPresent(managerDetailsDTO.getUsername()).isPresent()){
+				return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Username already taken! Please try different username");
+			}
+			else if(employeeService.getEmployeeDetailsByUsernameIfPresent(managerDetailsDTO.getUsername()).isPresent()){
+				return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Username already taken! Please try different username");
+			}
+			else if (managerService.getManagerByUsernameIfPresent(managerDetailsDTO.getUsername()).isPresent()){
+				return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Username already taken! Please try different username");
+			}
 	        // Call service method to add manaegr
 	        ManagerDetails savedManagerDetails = managerService.addManagerDetails(managerDetailsDTO);
 	        return ResponseEntity.status(HttpStatus.CREATED).body(savedManagerDetails);

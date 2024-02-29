@@ -3,6 +3,8 @@ package com.app.controller;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
+import com.app.service.EmployeeService;
+import com.app.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,8 @@ import com.app.dto.customer.CreateNewCustomerDTO;
 import com.app.entities.CustomUserDetails;
 import com.app.service.CustomerService;
 
+import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/")
@@ -26,9 +30,16 @@ public class UserSigninSignupController {
 	
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private EmployeeService employeeService;
+
+    @Autowired
+    private ManagerService managerService;
     
     @Autowired
     private JwtUtils utils;
+
 
     @Autowired
     private AuthenticationManager mgr;
@@ -37,6 +48,16 @@ public class UserSigninSignupController {
     @PostMapping("signup")
     public ResponseEntity<?> userSignup(@RequestBody @Valid CreateNewCustomerDTO  customerDTO) {
     	System.out.println("in sign up " + customerDTO);
+        //check if username already taken
+        if(customerService.getCustomerDetailsByUsernameIfPresent(customerDTO.getUsername()).isPresent()){
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Username already taken! Please try different username");
+        }
+        else if(employeeService.getEmployeeDetailsByUsernameIfPresent(customerDTO.getUsername()).isPresent()){
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Username already taken! Please try different username");
+        }
+        else if (managerService.getManagerByUsernameIfPresent(customerDTO.getUsername()).isPresent()){
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Username already taken! Please try different username");
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(customerService.registerNewCustomer(customerDTO));
     }
 

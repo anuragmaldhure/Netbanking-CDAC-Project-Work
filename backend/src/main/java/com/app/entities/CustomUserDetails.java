@@ -11,9 +11,9 @@ import java.util.Collection;
 import java.util.Collections;
 
 
-@NoArgsConstructor
-@Getter
-@Setter
+//@NoArgsConstructor
+//@Getter
+//@Setter
 public class CustomUserDetails implements UserDetails {
 
     private CustomerDetails customerDetails;
@@ -88,6 +88,37 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-    
+
+    public CustomerDetails getCustomerDetails() {
+        return customerDetails;
+    }
+
+    public void setCustomerDetails(CustomerDetails customerDetails) {
+        this.customerDetails = customerDetails;
+    }
+
+    public BankEmployeeDetails getBankEmployeeDetails() {
+        return bankEmployeeDetails;
+    }
+
+    public void setBankEmployeeDetails(BankEmployeeDetails bankEmployeeDetails) {
+        this.bankEmployeeDetails = bankEmployeeDetails;
+    }
+
+    public ManagerDetails getManagerDetails() {
+        return managerDetails;
+    }
+
+    public void setManagerDetails(ManagerDetails managerDetails) {
+        this.managerDetails = managerDetails;
+    }
+
+    public CustomUserDetails(CustomerDetails customerDetails, BankEmployeeDetails bankEmployeeDetails, ManagerDetails managerDetails) {
+        this.customerDetails = customerDetails;
+        this.bankEmployeeDetails = bankEmployeeDetails;
+        this.managerDetails = managerDetails;
+    }
+    public CustomUserDetails() {
+    }
 }
 

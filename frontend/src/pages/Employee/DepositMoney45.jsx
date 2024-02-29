@@ -153,14 +153,14 @@ const DepositMoney45 = () => {
                          <div style={{ textAlign: 'center', display : 'flex', gap:'20px', justifyContent: 'center'}}>
                              {/* Pagination and Sorting*/}
                              <div>
-                                 <Link to="/Customer/Account/ViewAccountBalance" className="btn btn-primary">
-                                     Go to Home
+                                <Link to="/Employee/Accounts/SearchCustomer47" className="btn btn-primary">
+                                    Go to Home
                                  </Link>
                              </div>
      
                              <div>
-                                 <Link to="/Customer/FundTransfer/WithdrawMoney6" className="btn btn-warning">
-                                     Withdraw Again
+                                <Link to="/Employee/FundTransfer/DepositMoney43" className="btn btn-warning">
+                                    Deposit Again
                                  </Link>
                              </div>
                          </div>

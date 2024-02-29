@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 
 import com.app.dto.customer.CustomerDetailsDTO;
+import com.app.entities.CustomerDetails;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -76,6 +77,16 @@ public class EmployeeServiceImpl implements EmployeeService{
 	    } else {
 	        throw new EntityNotFoundException("Employee not found with username: " + username);
 	    }
+	}
+
+	@Override
+	public Optional<BankEmployeeDetails> getEmployeeDetailsByUsernameIfPresent(String username) {
+		BankEmployeeDetails emp = empDao.findByUsername(username);
+		if (emp != null) {
+			return Optional.of(emp);
+		} else {
+			return Optional.empty(); // Emp not found, return empty Optional
+		}
 	}
 
 	@Override

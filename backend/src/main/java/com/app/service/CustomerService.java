@@ -43,5 +43,7 @@ public interface CustomerService {
 
 	String getTotalNumberOfCustomers();
 
+	Optional<CustomerDetailsDTO> getCustomerDetailsByUsernameIfPresent(String username);
+
 //	Optional<CustomerDetails> findByCustomerId(Long customerId);
 }

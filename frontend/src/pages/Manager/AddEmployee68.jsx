@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 import {
   TextField,
   Button,
@@ -64,14 +65,20 @@ const AddEmployee68 = () => {
         employeeDetails
       )
       .then((response) => {
-        setOpenDialog(true);
-        console.log("Employee added successfully:", response.data);
-        setTimeout(() => {
-          navigate("/Manager/Employee/SearchEmployee67"); // Navigate after 3 seconds
-      }, 3000);
+        if (response.status === 201) { // Check if response code is 201
+          setOpenDialog(true);
+          console.log("Employee added successfully:", response.data);
+          setTimeout(() => {
+            navigate("/Manager/Employee/SearchEmployee67"); // Navigate after 3 seconds
+          }, 3000);
+        }
       })
       .catch((error) => {
-        console.error("Error adding employee:", error);
+        if (error.response && error.response.status === 417) {
+          toast.error("Username already taken!");
+        } else {
+          console.error("Error adding employee:", error);
+        }
       });
   };
 

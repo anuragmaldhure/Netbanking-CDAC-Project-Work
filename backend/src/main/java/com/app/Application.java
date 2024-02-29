@@ -27,5 +27,4 @@ public class Application {
 																// --> dest , during the mapping
 		return modelMapper; //configured model mapper instance related to SC
 	}
-
 }

@@ -278,6 +278,19 @@ public class CustomerServiceImpl implements CustomerService{
 	    }
 	}
 
+	@Override
+	public Optional<CustomerDetailsDTO> getCustomerDetailsByUsernameIfPresent(String username) {
+		CustomerDetails customer = customerDao.findByUsername(username);
+		if (customer != null) {
+			// Map CustomerDetails entity to CustomerDetailsDTO
+			CustomerDetailsDTO customerDetailsDTO = mapper.map(customer, CustomerDetailsDTO.class);
+			return Optional.of(customerDetailsDTO);
+		} else {
+			return Optional.empty(); // Customer not found, return empty Optional
+		}
+	}
+
+
 
 	@Override
 	public void updateLastLogin(Long customerId) {

@@ -68,14 +68,19 @@ const SignUpForm = () => {
         toast.success("Account created successfully");
         // Redirect to login page after successful signup
         navigate("/login");
-      } else {
-        // Handle other response status codes if needed
+      }
+      else if(response.status === 417){
+        console.log("Username already exists", response.data);
+        toast.error("Username already exists! Please try with some different username");
+      } 
+      else {
+        // Handle other response status codes if any
       }
     } catch (error) {
       // Handle error
       console.error("Error creating account:", error);
       // Display error message
-      toast.error("Error creating account. Please try again later.");
+      toast.error("Error creating account. Try different username");
     }
   };
 

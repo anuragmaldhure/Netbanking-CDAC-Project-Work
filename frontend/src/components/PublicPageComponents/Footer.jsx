@@ -11,12 +11,12 @@ const Footer = () => {
         style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
       >
         <p>
-          {/* Copyright text */}© 2023 Copyright : 
+          {/* Copyright text */}© 2024 Copyright : 
           <a
             className="text-white"
             href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
           >
-            : AARNA BANK
+            : Aarna Bank by Anurag, Avdhut, Ganesh, Manthan
           </a>
         </p>
       </div>
