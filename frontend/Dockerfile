@@ -10,5 +10,8 @@ RUN npm install -g npm@8.11.0
 
 COPY . . 
 
-RUN npm run build
+# RUN npm run build
+
+#cmd -c npm start
+CMD [ "npm", "start" ]
 

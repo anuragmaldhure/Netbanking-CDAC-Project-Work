@@ -1,0 +1,38 @@
+services:
+  # Service 1
+  spring_boot_backend_security_jwt_template:
+    build:
+      context: spring_boot_backend_security_jwt_template
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      DB_URL: jdbc:mysql://bankdb-container/Aarna
+      DB_USERNAME: D3_80316_Anurag
+      DB_PASSWORD: 80316
+    depends_on: 
+      - bankdb-container
+    
+  # Service 2
+  aarnabank:
+    build:
+      context: aarnabank
+      dockerfile: Dockerfile
+    ports:
+      - 80:3000
+    depends_on:
+      - spring_boot_backend_security_jwt_template
+  
+  # Service 3
+  bankdb-container:
+    image: mysql:8.1.0-oracle
+    volumes:
+      - dbdata:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: Aarna
+      MYSQL_ROOT_PASSWORD: 80316
+      MYSQL_USER: D3_80316_Anurag
+      MYSQL_PASSWORD: 80316
+
+volumes:
+  dbdata:

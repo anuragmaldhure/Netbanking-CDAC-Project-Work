@@ -135,9 +135,11 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+						<imageName>aarna-bank-image:latest</imageName>
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>spring-boot-aarna-bank-aws-exe</finalName>
 	</build>
 
 </project>
