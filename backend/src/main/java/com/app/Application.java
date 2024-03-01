@@ -23,7 +23,7 @@ public class Application {
 														// between src n dest will be
 														// transferred , during the
 														// mapping
-				.setPropertyCondition(Conditions.isNotNull()); // only non null properties will be transferred from src
+				.setPropertyCondition(Conditions.isNotNull()); // only non-null properties will be transferred from src
 																// --> dest , during the mapping
 		return modelMapper; //configured model mapper instance related to SC
 	}

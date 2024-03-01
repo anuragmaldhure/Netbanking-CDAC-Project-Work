@@ -50,6 +50,17 @@ const SignUpForm = () => {
     if (formValues.password !== formValues.confirmPassword) {
       toast.error("Passwords do not match");
       return;
+    }else{
+      toast.info("🦄 Processing... Please wait", {
+        position: "top-center",
+        autoClose: 7000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored"
+    });
     }
 
     try {
@@ -61,7 +72,7 @@ const SignUpForm = () => {
         emailId: formValues.email,
         mobileNumber: formValues.phone,
       });
-  
+ 
       // Check if the response status is 201 (Created) or not
       if (response.status === 201) {
         console.log("Account created successfully:", response.data);
