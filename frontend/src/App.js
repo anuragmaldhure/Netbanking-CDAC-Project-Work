@@ -16,7 +16,7 @@ import WithdrawMoney8 from "./pages/Customer/WithdrawMoney8";
 import SeachCustomer47 from "./pages/Employee/SearchCustomer47";
 import FreezeAccount from "./pages/Employee/FreezeAccount"
 import DepositMoney43 from "./pages/Employee/DepositMoney43";
-// import DepositMoney44 from "./pages/Employee/DepositMoney44";
+import DepositMoney44 from "./pages/Employee/DepositMoney44";
 import DepositMoney45 from "./pages/Employee/DepositMoney45";
 
 //React-toastify
@@ -167,10 +167,10 @@ function App() {
           path="/Employee/FundTransfer/DepositMoney43"
           element={<DepositMoney43 />}
         />
-        {/* <Route
+        <Route
           path="/Employee/FundTransfer/DepositMoney44"
           element={<DepositMoney44 />}
-        /> */}
+        />
         <Route
           path="/Employee/FundTransfer/DepositMoney45"
           element={<DepositMoney45 />}

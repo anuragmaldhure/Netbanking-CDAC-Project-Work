@@ -19,17 +19,6 @@ const DepositMoney45 = () => {
     const navigate = useNavigate(); 
     const [empId, setEmpId] = useState();
 
-    toast.info("🦄 Processing... Please wait", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored"
-    });
-
     const empIdFunction = async () => {
         try {
             const response = await axios.get(
@@ -49,48 +38,6 @@ const DepositMoney45 = () => {
     useEffect(() => {
         empIdFunction(); 
     }, []);
-
-    const depositMoneyFunction = async () => {
-        try {
-            const url = BASE_URL + `/Employee/FundTransfer/DepositMoney/${empId}/${accountNumberRedux}?amountToDeposit=${depositMoneyRedux}&remarks=${remarksRedux}`;
-            console.log("Request URL:", url);
-
-            const response = await axios.post(url);
-            console.log(response.data);
-            toast.success("🦄 ₹"+depositMoneyRedux+" deposit successfull!", {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored"
-            });
-            
-            setTimeout(() => {
-                navigate("/Employee/Accounts/SearchCustomer47"); // Navigate to "/Employee/Accounts/SearchCustomer47" after 3 seconds
-            }, 3000);
-        } catch (error) {
-            console.log("Failed to deposit money:", error);
-            toast.error("🦄 An error occurred while depositing money. Please try again!", {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-        }
-    };
-
-    useEffect(() => {
-        if (empId) {
-            depositMoneyFunction();
-        }
-    }, [empId]);
 
     if(depositMoneyRedux != ''){
             return ( 
@@ -146,7 +93,7 @@ const DepositMoney45 = () => {
                          <br/>
                          <br/>
                          <div style={{ justifyContent: 'center', alignItems: 'center', width:'80%'}}>
-                             <h1> Please try again! Your transaction wasn't processed! Something went wrong ... 
+                             <h1> Money was deposited successfully but something went wrong ... Please check customer balance
                              </h1>
                          </div>
                          <hr/>

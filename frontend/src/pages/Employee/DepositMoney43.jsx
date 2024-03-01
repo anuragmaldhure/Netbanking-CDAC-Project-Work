@@ -76,7 +76,7 @@ const DepositMoney43 = () => {
                             theme: "dark",
                             });
                     }else{
-                        navigate('/Employee/FundTransfer/DepositMoney45');
+                        navigate('/Employee/FundTransfer/DepositMoney44');
                     }
                 }
                 return prevState; // Return previous state to prevent updating state
