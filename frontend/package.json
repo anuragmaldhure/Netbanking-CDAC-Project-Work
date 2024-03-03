@@ -2,6 +2,7 @@
   "name": "aarnabank",
   "version": "0.1.0",
   "private": true,
+  "proxy":"http://spring_boot_backend_security_jwt_template:8080", 
   "dependencies": {
     "@date-io/date-fns": "^3.0.0",
     "@emotion/react": "^11.11.3",
@@ -13,10 +14,6 @@
     "@mui/x-data-grid": "^6.19.4",
     "@mui/x-date-pickers": "^6.19.4",
     "@reduxjs/toolkit": "^2.2.1",
-    "@syncfusion/ej2-react-buttons": "^24.2.7",
-    "@syncfusion/ej2-react-charts": "^24.2.8",
-    "@syncfusion/ej2-react-layouts": "^24.2.4",
-    "@syncfusion/ej2-react-popups": "^24.2.8",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
