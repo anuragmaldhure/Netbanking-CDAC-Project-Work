@@ -67,3 +67,51 @@ CMD [ "npm", "start" ]
 >docker compose up --build
 
 
+
+
+docker volume create <volume_name>
+
+sudo docker volume create bankdbvolume
+
+sudo docker container run -itd --name bankdb -e MYSQL_ROOT_PASSWORD=80316 -v bankdbvolume:/var/lib/mysql -p 3306:3306 mysql:8.1.0 
+
+sudo docker container ls
+
+sudo docker container exec -it 687bfae5b24d8100d6f4fc024599d2d108d1ad66a8926db02fa7a1b55aa35e84 bash
+
+mysql -u root -p80316
+
+
+
+
+Now different 
+
+
+sudo docker container run -itd --name frontend  -p 80:3000 anuragmaldhure/aarna-bank-frontend-image
+
+
+sudo docker container run -itd --name backend  -p 8080:8080 anuragmaldhure/aarna-bank-backend-image
+
+docker image inspect anuragmaldhure/aarna-bank-backend-image | grep Architecture
+
+
+docker build -t anuragmaldhure/aarna-bank-backend-image --platform linux/amd64 .
+
+docker image push anuragmaldhure/aarna-bank-backend-image
+
+docker build -t anuragmaldhure/aarna-bank-frontend-image --platform linux/amd64 .
+
+docker image push anuragmaldhure/aarna-bank-frontend-image
+
+sudo docker container restart 7dda0c6c613fc4f6d9a21d77929d8e92e8fb80ef142a924c37f4863804113793
+
+sudo docker ps -a
+
+sudo docker container ls
+
+sudo docker rm container 
+
+sudo docker rmi 
+
+
+

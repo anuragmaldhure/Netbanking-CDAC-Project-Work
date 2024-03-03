@@ -33,7 +33,7 @@ DELIMITER ;
 
 
 
-INSERT INTO Offers (offer_availability, offer_details, offer_minimum_balance, offer_title) VALUES
+INSERT INTO offers (offer_availability, offer_details, offer_minimum_balance, offer_title) VALUES
 (1, 'Bhai, ab tum bhi VIP ho! Apna account kholo aur ₹1000 ka balance rakho toh aapko milega free movie tickets ka voucher.', 1000, 'VIP Membership'),
 (1, 'Arre yaar, ₹6000 ka balance rakho aur paao ₹500 ka free recharge! Kya scene hai!', 6000, 'Recharge Bonanza'),
 (1, 'Dil khol ke shopping karne ka time aa gaya! Bas ₹11000 ka balance rakho aur paao 10% discount shopping vouchers.', 11000, 'Shopping Fiesta'),
@@ -56,10 +56,22 @@ INSERT INTO Offers (offer_availability, offer_details, offer_minimum_balance, of
 (1, 'Is baar India ki shaan! ₹96000 ka balance rakho aur paao patriotic merchandise.', 96000, 'Proud Indian'),
 (1, 'Ab toh bank se dosti hai! ₹100000 ka balance rakho aur paao priority customer benefits.', 100000, 'Banking Royalty');
 
-//manager
-INSERT INTO manager (manager_first_name, manager_last_name, password, username)
-VALUES ('Anurag', 'Maldhure', '12345', 'anurag');
 
+
+-- {
+--   "managerFirstName": "Avdhut",
+--   "managerLastName": "Tarwal",
+--   "username": "avdhut",
+--   "password": "09876",
+--   "managerCreationTimestamp": "2024-03-03T10:02:43.799304",
+--   "lastLogin": null
+-- }
+
+
+-- {
+--   "username": "avdhut",
+--   "password": "09876"
+-- }
 
 
 
