@@ -66,8 +66,8 @@ Generated using Swagger : [API Documentation](https://github.com/anuragmaldhure/
 
 - Followed agile software development methodology for iterative development and quick adaptation.
 - Managed project constraints effectively to deliver value incrementally that can be seen as in commits of this repository.
-- Initially started with use case diagram and ER diagram using, SRS and database schema design (Initial design available in daywise progress directory). However, after multiple iterations, reduced the scope and put it into future scope.
-- Before starting with backend and frontend development, had discussion with team over UX and UI design after studying few bank websites. So for better understanding and visualisation for refernce, we had designed templates using Figma. After multiple iterations, final concept reduced to [UI/UX design](https://github.com/anuragmaldhure/Netbanking-CDAC-Project-Work/tree/main/UX%3AUI)
+- Initially started with use case diagram and ER diagram using, SRS and database schema design (Initial design available in daywise progress directory). However, after multiple iterations, reduced the scope and put it into future scope. [Use case diagram](https://github.com/anuragmaldhure/Netbanking-CDAC-Project-Work/blob/main/USE_CASE.pdf)
+- Before starting with backend and frontend development, had discussion with team over UX and UI design after studying few bank websites. So for better understanding and visualisation for refernce, we had designed templates using Figma. After multiple iterations, final concept was reduced to [UI/UX design](https://github.com/anuragmaldhure/Netbanking-CDAC-Project-Work/tree/main/UX%3AUI)
 
 ## Deployment
 
