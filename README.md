@@ -1,119 +1,88 @@
+# Retail Net Banking Web Application
 
+A user-friendly and secure full-stack retail net banking web application managing three roles: Customer, Employee, and Manager.
 
-# Netbanking-CDAC-Project-Work
+## Table of Contents
 
-## Overview
+- [Introduction](#introduction)
+- [Technologies Used](#technologies-used)
+- [Features](#features)
+- [Security Measures](#security-measures)
+- [Database Management](#database-management)
+- [Project Management Methodology](#project-management-methodology)
+- [Deployment](#deployment)
+- [Challenges Faced](#challenges-faced)
+- [Contributing](#contributing)
+- [License](#license)
 
-Welcome to the Netbanking-CDAC-Project-Work repository! This project is a comprehensive retail banking website developed as part of the CDAC Project Work. The application caters to three distinct user roles - Customer, Employee, and Manager - offering a range of features tailored to provide a seamless banking experience.
+## Introduction
+
+This project is a full-stack retail net banking web application developed to provide a user-friendly and secure platform for managing banking operations. It includes three distinct roles: Customer, Employee, and Manager, each with specific functionalities tailored to their needs.
+[Video Explanation](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
+
+## Technologies Used
+
+- Frontend:
+  - ![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white)
+  - ![Redux](https://img.shields.io/badge/-Redux-764ABC?logo=redux&logoColor=white)
+  - ![HTML5](https://img.shields.io/badge/-HTML5-E34F26?logo=html5&logoColor=white)
+  - ![CSS](https://img.shields.io/badge/-CSS-1572B6?logo=css3&logoColor=white)
+  - ![Bootstrap](https://img.shields.io/badge/-Bootstrap-563D7C?logo=bootstrap&logoColor=white)
+  - ![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?logo=javascript&logoColor=black)
+
+- Backend:
+  - ![Spring Boot](https://img.shields.io/badge/-Spring%20Boot-6DB33F?logo=springboot&logoColor=white)
+  - ![Java](https://img.shields.io/badge/-Java-007396?logo=java&logoColor=white)
+  - ![Spring](https://img.shields.io/badge/-Spring-6DB33F?logo=spring&logoColor=white)
+
+- Database:
+  - ![MySQL](https://img.shields.io/badge/-MySQL-4479A1?logo=mysql&logoColor=white)
+
+- Other Tools:
+  - ![GitHub](https://img.shields.io/badge/-GitHub-181717?logo=github&logoColor=white)
+  - ![Postman](https://img.shields.io/badge/-Postman-FF6C37?logo=postman&logoColor=white)
+  - ![Swagger](https://img.shields.io/badge/-Swagger-85EA2D?logo=swagger&logoColor=black)
+  - ![Docker](https://img.shields.io/badge/-Docker-2496ED?logo=docker&logoColor=white)
+  - ![AWS](https://img.shields.io/badge/-AWS-232F3E?logo=amazonaws&logoColor=white)
 
 ## Features
 
-### Customer
+- User authentication with JWT
+- Role-based authorization
+- Email notifications
+- KYC verification
+- OTP-verified transactions
 
-1. **Account Management:**
-   - Add Money: Customers can conveniently add funds to their accounts.
-   - Withdraw Money: Enables customers to withdraw money from their accounts.
+## Security Measures
 
-2. **Transactions:**
-   - View Transaction History: Customers can review their transaction history.
-   - Deposit Money: Facilitates the deposit of funds into the customer's account.
+- Implemented JWT authentication for secure user login.
+- Utilized Spring Security for role-based authorization.
+- Followed best practices for secure data handling and storage.
 
-3. **KYC (Know Your Customer):**
-   - Submit KYC Information: Customers can submit their KYC details securely.
-   - Check KYC Approval Status: Allows customers to track the status of their KYC approval.
+## Database Management
 
-### Employee
+- MySQL database managed using Hibernate ORM with a 'code-first' approach.
+- Ensured efficient data storage and retrieval for optimized performance.
 
-1. **Customer Management:**
-   - View Customer Details: Employees have access to detailed customer information.
-   - Approve or Reject KYC Requests: Ensures proper verification of KYC details.
+## Project Management Methodology
 
-2. **Database Insights:**
-   - View Graphs and Analytics: Employees can analyze database-related graphs and gain insights.
+- Followed agile software development methodology for iterative development and quick adaptation.
+- Managed project constraints effectively to deliver value incrementally.
 
-### Manager
+## Deployment
 
-1. **Employee Management:**
-   - Add Employee: Managers can add new employees to the system for better workforce management.
+The application was deployed on Amazon Web Services (AWS) for accessibility and scalability using Docker containers. 
+[Watch AWS Deployed App Video](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
 
-2. **Overall Management:**
-   - View Both Employee and Customer Details: Provides a consolidated view of both employee and customer information.
+## Challenges Faced
 
-## Installation
-
-Follow these steps to set up the project locally:
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/anuragmaldhure/Netbanking-CDAC-Project-Work.git
-   ```
-
-2. **Navigate to the project directory:**
-   ```bash
-   cd Netbanking-CDAC-Project-Work
-   ```
-
-3. **Install Dependencies:**
-   ```bash
-   
-
-4. **Run the Application:**
-   ```bash
-  
-
-## Usage
-
-This section provides guidance on how users can interact with the application. It includes detailed information on navigating different user roles, performing transactions, and utilizing various features.
-
-### Customer Usage
-
-- **Login:**
-  - Customers can log in using their credentials.
-
-- **Account Management:**
-  - Add Money: Navigate to the 'Add Money' section and enter the desired amount.
-  - Withdraw Money: Access the 'Withdraw Money' option and specify the withdrawal amount.
-
-- **Transactions:**
-  - View Transaction History: Visit the 'Transaction History' page to see past transactions.
-  - Deposit Money: Utilize the 'Deposit Money' functionality to add funds to the account.
-
-- **KYC:**
-  - Submit KYC Information: Access the 'KYC Submission' page to submit necessary details.
-  - Check KYC Approval Status: Check the 'KYC Status' page for the approval status.
-
-### Employee Usage
-
-- **Login:**
-  - Employees can log in with their credentials.
-
-- **Customer Management:**
-  - View Customer Details: Navigate to the 'Customer Details' section for comprehensive customer information.
-  - Approve or Reject KYC Requests: Access the 'KYC Approval' section to manage KYC requests.
-
-- **Database Insights:**
-  - View Graphs and Analytics: Explore the 'Analytics Dashboard' for graphical representations of database information.
-
-### Manager Usage
-
-- **Login:**
-  - Managers can log in using their credentials.
-
-- **Employee Management:**
-  - Add Employee: Access the 'Add Employee' section to include new members to the team.
-
-- **Overall Management:**
-  - View Both Employee and Customer Details: Utilize the 'Overview' page for a consolidated view of employee and customer information.
+- Time constraints leading to feature adjustments.
+- Addressed technical challenges related to parallel development, integration deployment and performace optimization.
 
 ## Contributing
 
-We welcome contributions to enhance and improve the project. Please follow the guidelines in [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
+Contributions are welcome! Feel free to fork this repository and submit pull requests to contribute to the project.
 
 ## License
 
-
-
-## Contact
-
-For any inquiries, feedback, or support, please contact at aarna.netbanking@gmail.com.
-
+This project is licensed under the [MIT License](LICENSE).
