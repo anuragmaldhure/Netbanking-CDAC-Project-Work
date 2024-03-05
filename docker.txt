@@ -1,117 +1,79 @@
-Deploy
+Set up docker on EC2 instance (linux) (Instructions on Docker hub)
 
-React ->
+Test docker :: 
 
-Docker file :
+sudo docker run hello-world
 
-> docker build -t aarna-bank-react:latest .
-
-> docker run -p 3000:3000 aarna-bank-react
-
-Do rpm start in running container terminal
-
-Check on browser
-
-
-
-SpringBoot ->
-
-Docker File
-
-> docker build -t aarna-bank-springboot:latest .
-
-> docker run -i -p 8080:8080 aarna-bank-springboot sh
-
-Will fail due to communication with missing mysql
-
-
-
-MySQL ->
-
-> docker pull mysql:8.1.0-oracle
-
-> docker network create db-network
-
-> docker run --name bankdb-container --network db-network -e MYSQL_ROOT_PASSWORD=80316 -d mysql:8.1.0-oracle
-
-> docker run -it --network db-network --rm mysql:8.1.0-oracle mysql -hbankdb-container -uroot -p80316
-
-spring.datasource.url=jdbc:mysql://bankdb-container/Aarna?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
-
-spring.datasource.username=root
-
-
-> docker build -t aarna-bank-springboot:db_version .
-
-> docker run -it --network db-network -p 8080:8080 aarna-bank-springboot:db_version
-
-Ctrl + C after done testing
-
-
-https://youtu.be/89l2o70GdO8?si=5ls-_75OqNhz1KMC
-
-Checking requests part is remaining
-
-touch docker-compose.yml
-
-spring.datasource.username=D3_80316_Anurag
-
->Write into it
-
-
-# RUN npm run build
-
-CMD [ "npm", "start" ]
- In frontend Dockerfile
-
->docker compose up --build
-
-
-
+MySQL container ::
 
 docker volume create <volume_name>
 
 sudo docker volume create bankdbvolume
 
-sudo docker container run -itd --name bankdb -e MYSQL_ROOT_PASSWORD=80316 -v bankdbvolume:/var/lib/mysql -p 3306:3306 mysql:8.1.0 
+sudo docker volume inspect bankdbvolume
+
+sudo docker container run -itd --name bankdb -e MYSQL_ROOT_PASSWORD=80316 -v bankdbvolume:/var/lib/mysql -p 3306:3306 mysql:latest          8.1.0  
 
 sudo docker container ls
 
-sudo docker container exec -it 687bfae5b24d8100d6f4fc024599d2d108d1ad66a8926db02fa7a1b55aa35e84 bash
+sudo docker container exec -it 72c8cfc87443efadb7cb800850e3c80142ad02679d66a2d64e1e6a4ffd9ef600 bash
+
+Or
+
+sudo docker container exec -it 72c8cfc87443 bash
 
 mysql -u root -p80316
 
+Clean ::
 
+sudo docker ps
 
+sudo docker container stop 
 
-Now different 
+sudo docker container ls -a
 
+sudo docker container rm
 
-sudo docker container run -itd --name frontend  -p 80:3000 anuragmaldhure/aarna-bank-frontend-image
+sudo docker volume rm bankdbvolume
 
-
-sudo docker container run -itd --name backend  -p 8080:8080 anuragmaldhure/aarna-bank-backend-image
-
-docker image inspect anuragmaldhure/aarna-bank-backend-image | grep Architecture
-
+Backend container ::
 
 docker build -t anuragmaldhure/aarna-bank-backend-image --platform linux/amd64 .
 
+docker image inspect anuragmaldhure/aarna-bank-backend-image | grep Architecture 
+(since my macbook m1 arch was arm64 and ec2 instance was amd64)
+
 docker image push anuragmaldhure/aarna-bank-backend-image
+
+sudo docker container run -itd --name backend  -p 8080:8080 anuragmaldhure/aarna-bank-backend-image
+
+Frontend container ::
 
 docker build -t anuragmaldhure/aarna-bank-frontend-image --platform linux/amd64 .
 
 docker image push anuragmaldhure/aarna-bank-frontend-image
 
+sudo docker container run -itd --name frontend  -p 80:3000 anuragmaldhure/aarna-bank-frontend-image
+
+Restart, Logs and Clean ::
+
 sudo docker container restart 7dda0c6c613fc4f6d9a21d77929d8e92e8fb80ef142a924c37f4863804113793
 
-sudo docker ps -a
+sudo docker container logs 5168e9bb9907957d636aa7cc92ae4b454525264d5d8ad7e055e68447354d27bd
+
+sudo docker container logs 01345f0a8d30fb9e7d0bc22c2ed5cef7b960a3ff7921df37a26f99a537e24f6f
 
 sudo docker container ls
 
+sudo docker ps -a
+
 sudo docker rm container 
 
-sudo docker rmi 
+sudo docker image ls
+
+
+
+
 
 
 
