@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom'; 
 
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "http://65.2.82.68:8080";
 
 axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem("jwt")}`;
 axios.defaults.headers.post["Content-Type"] = "application/json";

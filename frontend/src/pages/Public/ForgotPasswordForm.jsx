@@ -7,7 +7,7 @@ import axios from "axios";
 
 const ForgotPasswordForm = () => {
   const [accountNumber, setAccountNumber] = useState("");
-  const BASE_URL = "http://localhost:8080";
+  const BASE_URL = "http://65.2.82.68:8080";
 
   const handleInputChange = (e) => {
     setAccountNumber(e.target.value);

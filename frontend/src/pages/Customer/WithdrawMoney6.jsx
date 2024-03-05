@@ -22,7 +22,7 @@ const WithdrawMoney6 = () => {
     // const [balance, setBalance] = useState({balanceAmount : 12345});
     const [balance, setBalance] = useState();
 
-    const BASE_URL = "http://localhost:8080";
+    const BASE_URL = "http://65.2.82.68:8080";
 
     // setting a default authorization header for Axios requests
     axios.defaults.headers.common[

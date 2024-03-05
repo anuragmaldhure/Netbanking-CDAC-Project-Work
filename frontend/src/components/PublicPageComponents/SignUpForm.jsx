@@ -9,7 +9,7 @@ import axios from "axios";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
-  const BASE_URL = "http://localhost:8080";
+  const BASE_URL = "http://65.2.82.68:8080";
 
   const [formValues, setFormValues] = useState({
     fName: "",

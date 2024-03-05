@@ -4,7 +4,7 @@ import ManagerTopNavigationBar from "../../components/ManagerTopNavigationBar";
 import ManagerSideNavigationBar from "../../components/ManagerSideNavigationBar";
 import "./ManagerHome62.css"; // Import CSS file for styling
 
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "http://65.2.82.68:8080";
 
 axios.defaults.headers.common[
   "Authorization"

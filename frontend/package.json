@@ -2,7 +2,7 @@
   "name": "aarnabank",
   "version": "0.1.0",
   "private": true,
-  "proxy":"http://3.110.204.206:8080", 
+  "proxy": "http://65.2.82.68:8080",
   "dependencies": {
     "@date-io/date-fns": "^3.0.0",
     "@emotion/react": "^11.11.3",

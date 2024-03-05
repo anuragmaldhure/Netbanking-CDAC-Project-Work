@@ -13,7 +13,7 @@ const Login = () => {
   const [passwordInput, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const BASE_URL = "http://localhost:8080";
+  const BASE_URL = "http://65.2.82.68:8080";
 
   // clear if any previous data
   if (sessionStorage.getItem("jwt") || sessionStorage.getItem("role")) {

@@ -17,7 +17,7 @@ import "./SearchEmployee67.css"; // Import the CSS file
 import { toast } from 'react-toastify'
 import { useNavigate } from "react-router-dom";
 
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "http://65.2.82.68:8080";
 
 // setting a default authorization header for Axios requests
 axios.defaults.headers.common[

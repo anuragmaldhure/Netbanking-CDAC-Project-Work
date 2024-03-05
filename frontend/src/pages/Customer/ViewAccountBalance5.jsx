@@ -10,7 +10,7 @@ const ViewAccountBalance5 = () => {
   const [transactions, setTransactions] = useState([]);
   const [accountDetails, setAccountDetails] = useState({});
 
-  const BASE_URL = "http://localhost:8080";
+  const BASE_URL = "http://65.2.82.68:8080";
 
   // setting a default authorization header for Axios requests
   axios.defaults.headers.common[

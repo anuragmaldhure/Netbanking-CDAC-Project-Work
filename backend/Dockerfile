@@ -3,6 +3,9 @@
 # COPY ${JAR_FILE} spring-boot-aarna-bank-aws-exe.jar
 # ENTRYPOINT ["java", "-jar", "/spring-boot-aarna-bank-aws-exe.jar"]
 
+# Use an amd64-compatible base image
+FROM --platform=linux/amd64 ubuntu:22.04
+
 #### Stage 1: Build the application
 FROM adoptopenjdk/openjdk11:ubi as build
 

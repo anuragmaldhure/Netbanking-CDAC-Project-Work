@@ -14,7 +14,7 @@ const WithdrawMoney7 = () => {
   const [otp, setOtp] = useState({ otpValue: "" });
   const [customerData, setCustomerData] = useState(null);
 
-  const BASE_URL = "http://localhost:8080";
+  const BASE_URL = "http://65.2.82.68:8080";
 
   // Setting a default authorization header for Axios requests
   axios.defaults.headers.common[

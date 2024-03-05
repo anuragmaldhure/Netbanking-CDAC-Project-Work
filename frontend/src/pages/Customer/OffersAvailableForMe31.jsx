@@ -21,7 +21,7 @@ const OffersAvailableForMe31 = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [offers, setOffers] = useState([]);
 
-  const BASE_URL = "http://localhost:8080";
+  const BASE_URL = "http://65.2.82.68:8080";
 
   // setting a default authorization header for Axios requests
   axios.defaults.headers.common[

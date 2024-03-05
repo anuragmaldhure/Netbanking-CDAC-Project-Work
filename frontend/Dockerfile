@@ -1,3 +1,6 @@
+# Use an amd64-compatible base image
+FROM --platform=linux/amd64 ubuntu:22.04
+
 FROM node:17-alpine3.15
 
 #Copy from host machine/source - first . path is relative to docker file, second is relative to root on container
