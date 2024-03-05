@@ -53,6 +53,7 @@ Generated using Swagger : [API Documentation](https://github.com/anuragmaldhure/
 - Time based (valid for 2 minutes) otp generation and verification at Server Side implemented by server side caching and multithreading
 - Employee Management by Manager
 - Auto-generated account numbers during account creation and password during forgot password service using custom strategy at server side
+- JWT token expires after 20 minutes of Login and User need to relogin for a new session
 
 ## Database Management
 
