@@ -57,21 +57,10 @@ INSERT INTO offers (offer_availability, offer_details, offer_minimum_balance, of
 (1, 'Ab toh bank se dosti hai! ₹100000 ka balance rakho aur paao priority customer benefits.', 100000, 'Banking Royalty');
 
 
+DROP TRIGGER IF EXISTS update_balance_trigger;
 
--- {
---   "managerFirstName": "Avdhut",
---   "managerLastName": "Tarwal",
---   "username": "avdhut",
---   "password": "09876",
---   "managerCreationTimestamp": "2024-03-03T10:02:43.799304",
---   "lastLogin": null
--- }
+SHOW CREATE TRIGGER trigger_name;
 
-
--- {
---   "username": "avdhut",
---   "password": "09876"
--- }
 
 
 
