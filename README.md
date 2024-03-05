@@ -49,7 +49,7 @@ Generated using Swagger : [API Documentation](https://github.com/anuragmaldhure/
 
 - Implemented JWT authentication for secure user login.
 - Utilized Spring Security for role-based authorization.
-- Followed best practices for secure data handling like storage of password encrytion using org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+- Followed best practices for secure data handling like storage of password by one way encrytion using org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 - Time based (valid for 2 minutes) otp generation and verification at Server Side implemented by server side caching and multithreading
 - Employee Management by Manager
 - Auto-generated account numbers during account creation and password during forgot password service using custom strategy at server side
@@ -58,7 +58,8 @@ Generated using Swagger : [API Documentation](https://github.com/anuragmaldhure/
 
 - MySQL database managed using Hibernate ORM with a 'code-first' approach.
 - Ensured efficient data storage and retrieval for optimized performance.
-- Used Triggers at Database level as per requirements due to normalized database to maintain data consistency and reduce data redundancy
+- Used Triggers at Database level as per requirements due to normalized database to maintain data consistency and reduce data redundancy.
+- [EER diagram](https://github.com/anuragmaldhure/Netbanking-CDAC-Project-Work/blob/main/MySQL%20EER%20Diagram.png)
 
 ## Project Management Methodology
 
@@ -67,8 +68,9 @@ Generated using Swagger : [API Documentation](https://github.com/anuragmaldhure/
 
 ## Deployment
 
-The application was deployed on Amazon Web Services (AWS) for accessibility and scalability using Docker containers. 
-[Watch AWS Deployed App Video](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
+- The application was deployed on Amazon Web Services (AWS) for accessibility and scalability using Docker containers. 
+- [Docker commands for containerization and deployment on AWS EC2](https://github.com/anuragmaldhure/Netbanking-CDAC-Project-Work/blob/main/docker.txt)
+- [Watch AWS Deployed App Video](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
 
 ## Challenges Faced
 
