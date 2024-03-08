@@ -162,6 +162,9 @@ public class CustomerServiceImpl implements CustomerService{
             customer.setKycStatus(false);
 //    		System.out.println("3***");
 
+			CustomerSavingAccounts s =  customerSavingsAccountDao.findByCustomer(customerId);
+			s.setKycRejectedTimestamp(new Date());
+			customerSavingsAccountDao.save(s);
             // Save the updated customer
             customerDao.save(customer);	       
         }
@@ -180,6 +183,10 @@ public class CustomerServiceImpl implements CustomerService{
 		if(customer.getKycStatus()== null || customer.getKycStatus()== false) {
 	        // Update the kyc status
 	        customer.setKycStatus(true);
+
+			CustomerSavingAccounts s =  customerSavingsAccountDao.findByCustomer(customerId);
+			s.setKycVerifiedTimestamp(new Date());
+			customerSavingsAccountDao.save(s);
 
 	        // Save the updated customer
 	        customerDao.save(customer);	
