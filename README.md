@@ -60,14 +60,14 @@ Generated using Swagger : [API Documentation](https://github.com/anuragmaldhure/
 - MySQL database managed using Hibernate ORM with a 'code-first' approach.
 - Ensured efficient data storage and retrieval for optimized performance.
 - Used Triggers at Database level as per requirements due to normalized database to maintain data consistency and reduce data redundancy.
-- [EER diagram](https://github.com/anuragmaldhure/Netbanking-CDAC-Project-Work/blob/main/MySQL%20EER%20Diagram.png)
+- [EER diagram](https://github.com/anuragmaldhure/Netbanking-CDAC-Project-Work/blob/main/MySQL%20EER%20Diagram.png) [ER diagram](https://github.com/anuragmaldhure/Netbanking-CDAC-Project-Work/blob/main/ER%20Diagram.pdf)
 - [SQL trigger and offers setup](https://github.com/anuragmaldhure/Netbanking-CDAC-Project-Work/blob/main/anurag.sql)
 
 ## Project Management Methodology
 
 - Followed agile software development methodology for iterative development and quick adaptation.
 - Managed project constraints effectively to deliver value incrementally that can be seen as in commits of this repository.
-- Initially started with use case diagram and ER diagram using, SRS and database schema design (Initial design available in daywise progress directory). However, after multiple iterations, reduced the scope and put it into future scope. [Use case diagram](https://github.com/anuragmaldhure/Netbanking-CDAC-Project-Work/blob/main/USE_CASE.pdf)
+- Initially started with use case diagram and ER diagram using, SRS and database schema design (Initial design available in daywise progress directory). However, after multiple iterations, reduced the scope and put it into future scope. [Use case diagram](https://github.com/anuragmaldhure/Netbanking-CDAC-Project-Work/blob/main/Final-Use%20Case%20digaram.draw.io.pdf)
 - Before starting with backend and frontend development, had discussion with team over UX and UI design after studying few bank websites. So for better understanding and visualisation for refernce, we had designed templates using Figma. After multiple iterations, final concept was reduced to [UI/UX design](https://github.com/anuragmaldhure/Netbanking-CDAC-Project-Work/tree/main/UX%3AUI)
 
 ## Deployment
