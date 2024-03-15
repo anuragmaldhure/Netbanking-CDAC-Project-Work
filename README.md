@@ -83,7 +83,10 @@ Generated using Swagger : [API Documentation](https://github.com/anuragmaldhure/
 
 ## Contributing
 
-Contributions are welcome! Feel free to fork this repository and submit pull requests to contribute to the project.
+Contributions are welcome! Feel free to fork this repository and submit pull requests to contribute to the project. But it is requested to give due credits for this original work done by us.
+
+## Project Group Photo
+[Project Group Photo](https://github.com/anuragmaldhure/Netbanking-CDAC-Project-Work/blob/main/ProjectGroupPhoto.jpeg)
 
 ## License
 
